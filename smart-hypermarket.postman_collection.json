@@ -1,0 +1,142 @@
+{
+  "info": {
+    "_postman_id": "35d8e2ca-e2e3-4553-8e42-24551ec3cf9a",
+    "name": "smart-hypermarket",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56948210"
+  },
+  "item": [
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Milk\",\r\n  \"description\": \"Fresh full-fat milk\",\r\n  \"price\": 50,\r\n  \"category\": \"Dairy\",\r\n  \"stock\": 20,\r\n  \"image\": null\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Milk\",\r\n  \"description\": \"Fresh full-fat milk\",\r\n  \"price\": 50,\r\n  \"category\": \"Dairy\",\r\n  \"stock\": 20,\r\n  \"image\": null\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/6a7c416e7f260d8d5b6f52ba",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products",
+            "6a7c416e7f260d8d5b6f52ba"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Milk\",\r\n  \"description\": \"Fresh full-fat milk - Updated\",\r\n  \"price\": 60,\r\n  \"category\": \"Dairy\",\r\n  \"stock\": 30,\r\n  \"image\": null\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/6a7c416e7f260d8d5b6f52ba",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products",
+            "6a7c416e7f260d8d5b6f52ba"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Milk\",\r\n  \"description\": \"Fresh full-fat milk - Updated\",\r\n  \"price\": 60,\r\n  \"category\": \"Dairy\",\r\n  \"stock\": 30,\r\n  \"image\": null\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/products/6a7c416e7f260d8d5b6f52ba",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "products",
+            "6a7c416e7f260d8d5b6f52ba"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
