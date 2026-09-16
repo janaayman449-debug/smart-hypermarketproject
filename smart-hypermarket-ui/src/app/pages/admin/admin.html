@@ -1,0 +1,378 @@
+﻿<div class="admin-nav-links" style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+  <div class="admin-link-item" [class.tab-active]="activeTab() === 'products'" (click)="setTab('products')">Products</div>
+  <div class="admin-link-item" [class.tab-active]="activeTab() === 'orders'" (click)="setTab('orders')">Orders</div>
+  <div class="admin-link-item" [class.tab-active]="activeTab() === 'customers'" (click)="setTab('customers')">Customers</div>
+  <div class="admin-link-item" [class.tab-active]="activeTab() === 'analytics'" (click)="setTab('analytics')">Analytics</div>
+  <div class="admin-link-item" [class.tab-active]="activeTab() === 'messages'" (click)="setTab('messages')" style="display:flex; align-items:center; gap:8px;">
+    <span>Messages</span>
+    @if (unreadMessagesCount() > 0) {
+      <span class="stock-pill stock-out">{{ unreadMessagesCount() }}</span>
+    }
+  </div>
+  <div class="admin-link-item" [class.tab-active]="activeTab() === 'returns'" (click)="setTab('returns')" style="display:flex; align-items:center; gap:8px;">
+    <span>Returns</span>
+    @if (pendingReturnsCount() > 0) {
+      <span class="stock-pill stock-out">{{ pendingReturnsCount() }}</span>
+    }
+  </div>
+</div>
+
+<!-- Products tab -->
+@if (activeTab() === 'products') {
+  <div class="panel-header">
+    <h3>Products</h3>
+    <button class="btn-admin-primary" (click)="openAddForm()">
+      <i class="fa-solid fa-plus"></i> Add product
+    </button>
+  </div>
+
+  @if (showAddForm()) {
+    <div class="add-product-form">
+      @if (addProductError()) {
+        <div class="form-error">{{ addProductError() }}</div>
+      }
+      <div class="add-form-row">
+        <div class="form-field">
+          <label>Name</label>
+          <input type="text" class="field-input" [ngModel]="newProduct().name" (ngModelChange)="newProduct.set({ ...newProduct(), name: $event })" placeholder="Fresh Bananas 1kg" />
+        </div>
+        <div class="form-field">
+          <label>Category</label>
+          <input type="text" class="field-input" [ngModel]="newProduct().category" (ngModelChange)="newProduct.set({ ...newProduct(), category: $event })" placeholder="Fruits" />
+        </div>
+      </div>
+      <div class="add-form-row">
+        <div class="form-field">
+          <label>Price (EGP)</label>
+          <input type="number" class="field-input" [ngModel]="newProduct().price" (ngModelChange)="newProduct.set({ ...newProduct(), price: $event })" placeholder="35" />
+        </div>
+        <div class="form-field">
+          <label>Stock</label>
+          <input type="number" class="field-input" [ngModel]="newProduct().stock" (ngModelChange)="newProduct.set({ ...newProduct(), stock: $event })" placeholder="120" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Description</label>
+        <input type="text" class="field-input" [ngModel]="newProduct().description" (ngModelChange)="newProduct.set({ ...newProduct(), description: $event })" placeholder="Optional short description" />
+      </div>
+
+      <div class="form-field">
+        <label>Product Image</label>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        @if (previewUrl) {
+          <img [src]="previewUrl" style="width:70px; height:70px; object-fit:cover; border-radius:8px; margin-top:6px;" />
+        }
+      </div>
+
+      <div class="add-form-actions">
+        <button class="btn-admin-ghost" (click)="cancelAddProduct()">Cancel</button>
+        <button class="btn-admin-primary" (click)="submitAddProduct()">
+          <i class="fa-solid fa-check"></i> Save product
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- ⬇️ فورم التعديل الجديد -->
+  @if (showEditForm()) {
+    <div class="add-product-form">
+      @if (editProductError()) {
+        <div class="form-error">{{ editProductError() }}</div>
+      }
+      <div class="add-form-row">
+        <div class="form-field">
+          <label>Name</label>
+          <input type="text" class="field-input" [ngModel]="editProduct().name" (ngModelChange)="editProduct.set({ ...editProduct(), name: $event })" />
+        </div>
+        <div class="form-field">
+          <label>Category</label>
+          <input type="text" class="field-input" [ngModel]="editProduct().category" (ngModelChange)="editProduct.set({ ...editProduct(), category: $event })" />
+        </div>
+      </div>
+      <div class="add-form-row">
+        <div class="form-field">
+          <label>Price (EGP)</label>
+          <input type="number" class="field-input" [ngModel]="editProduct().price" (ngModelChange)="editProduct.set({ ...editProduct(), price: $event })" />
+        </div>
+        <div class="form-field">
+          <label>Stock</label>
+          <input type="number" class="field-input" [ngModel]="editProduct().stock" (ngModelChange)="editProduct.set({ ...editProduct(), stock: $event })" />
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Description</label>
+        <input type="text" class="field-input" [ngModel]="editProduct().description" (ngModelChange)="editProduct.set({ ...editProduct(), description: $event })" />
+      </div>
+
+      <div class="form-field">
+        <label>Product Image (اختياري — سيب فاضي لو مش عايز تغيّرها)</label>
+        <input type="file" accept="image/*" (change)="onEditFileSelected($event)" />
+        @if (editPreviewUrl) {
+          <img [src]="editPreviewUrl" style="width:70px; height:70px; object-fit:cover; border-radius:8px; margin-top:6px;" />
+        }
+      </div>
+
+      <div class="add-form-actions">
+        <button class="btn-admin-ghost" (click)="cancelEditProduct()">Cancel</button>
+        <button class="btn-admin-primary" (click)="submitEditProduct()">
+          <i class="fa-solid fa-check"></i> Update product
+        </button>
+      </div>
+    </div>
+  }
+  <!-- ⬆️ لحد هنا -->
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of productService.products(); track product.id) {
+        <tr>
+          <td>
+            <img [src]="product.image" style="width:40px; height:40px; object-fit:cover; border-radius:6px;" />
+          </td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.price }} EGP</td>
+          <td>
+            <span class="stock-pill" [ngClass]="stockClass(product.stock)">
+              {{ stockLabel(product.stock) }}
+            </span>
+          </td>
+          <td class="row-actions">
+            <button class="icon-btn" aria-label="Edit" (click)="openEditForm(product)"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button class="icon-btn" aria-label="Delete" (click)="deleteProduct(product.id)"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<!-- Orders tab -->
+@if (activeTab() === 'orders') {
+  <div class="panel-header">
+    <h3>Orders</h3>
+  </div>
+
+  <div class="order-filter-row">
+    <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'All'" (click)="setOrderFilter('All')">All</div>
+    <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Placed'" (click)="setOrderFilter('Placed')">Placed</div>
+    <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'OutForDelivery'" (click)="setOrderFilter('OutForDelivery')">Out for Delivery</div>
+    <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Delivered'" (click)="setOrderFilter('Delivered')">Delivered</div>
+    <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Cancelled'" (click)="setOrderFilter('Cancelled')">Cancelled</div>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Update Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (order of filteredOrders(); track order.id) {
+        <tr>
+          <td>{{ order.orderNumber }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>{{ order.createdAt | date:'short' }}</td>
+          <td><span class="status-pill">{{ order.orderStatus }}</span></td>
+          <td>{{ order.grandTotal }} EGP</td>
+          <td>
+            <select
+              class="field-input"
+              [ngModel]="order.orderStatus"
+              (ngModelChange)="changeOrderStatus(order.id, $event)"
+            >
+              <option value="Placed">Placed</option>
+              <option value="OutForDelivery">Out for Delivery</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<!-- Customers tab -->
+<!-- Customers tab -->
+@if (activeTab() === 'customers') {
+  <div class="panel-header">
+    <h3>Customers</h3>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>Orders</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (customer of customers(); track customer.id) {
+        <tr>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.phone }}</td>
+          <td><span class="status-pill">{{ customer.role }}</span></td>
+          <td>{{ customer.ordersCount }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+<!-- Analytics tab -->
+@if (activeTab() === 'analytics') {
+  <div class="panel-header">
+    <h3>Analytics</h3>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-label">Total Revenue</span>
+      <span class="stat-value">{{ totalRevenue() }} EGP</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Total Products</span>
+      <span class="stat-value">{{ productService.products().length }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Low Stock Items</span>
+      <span class="stat-value">{{ lowStockCount() }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Total Orders</span>
+      <span class="stat-value">{{ orderService.orders().length }}</span>
+    </div>
+  </div>
+}
+
+<!-- Messages tab -->
+@if (activeTab() === 'messages') {
+  <div class="panel-header">
+    <h3>Messages</h3>
+  </div>
+
+  @if (messagesLoading()) {
+    <p>جارٍ التحميل...</p>
+  }
+
+  @if (messagesError()) {
+    <div class="form-error">{{ messagesError() }}</div>
+  }
+
+  @if (!messagesLoading() && messages().length === 0 && !messagesError()) {
+    <p>لا توجد رسائل حتى الآن.</p>
+  }
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Subject</th>
+        <th>Message</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (msg of messages(); track msg._id) {
+        <tr>
+          <td>
+            <span class="stock-pill" [ngClass]="msg.read ? 'stock-ok' : 'stock-low'">
+              {{ msg.read ? 'مقروءة' : 'جديدة' }}
+            </span>
+          </td>
+          <td>{{ msg.name }}</td>
+          <td>{{ msg.email }}</td>
+          <td>{{ msg.subject }}</td>
+          <td style="max-width: 240px; white-space: normal;">{{ msg.message }}</td>
+          <td>{{ msg.createdAt | date:'short' }}</td>
+          <td class="row-actions">
+            @if (!msg.read) {
+              <button class="icon-btn" aria-label="Mark as read" (click)="markMessageRead(msg)">
+                <i class="fa-solid fa-check"></i>
+              </button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<!-- Returns tab -->
+@if (activeTab() === 'returns') {
+  <div class="panel-header">
+    <h3>Returns</h3>
+  </div>
+
+  @if (orderService.returns().length === 0) {
+    <p>لا توجد طلبات إرجاع حتى الآن.</p>
+  }
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Customer</th>
+        <th>Product</th>
+        <th>Reason</th>
+        <th>Refund</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Update Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of orderService.returns(); track r.id) {
+        <tr>
+          <td>{{ r.orderNumber }}</td>
+          <td>{{ r.customerName }}</td>
+          <td>{{ r.productName }}</td>
+          <td>{{ r.reason }}</td>
+          <td>{{ r.refundAmount }} EGP</td>
+          <td>{{ r.createdAt | date:'short' }}</td>
+          <td>
+            <span class="stock-pill" [ngClass]="r.status === 'Refunded' ? 'stock-ok' : r.status === 'Rejected' ? 'stock-out' : 'stock-low'">
+              {{ r.status }}
+            </span>
+          </td>
+          <td>
+            <select
+              class="field-input"
+              [ngModel]="r.status"
+              (ngModelChange)="changeReturnStatus(r.id, $event)"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Refunded">Refunded</option>
+            </select>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

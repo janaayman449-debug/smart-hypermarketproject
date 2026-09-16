@@ -21,7 +21,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6,
     },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
 
+    resetPasswordExpires: {
+      type: Date,
+      default: null,
+    },
     phone: {
       type: String,
       required: true,
@@ -32,7 +40,11 @@ const userSchema = new mongoose.Schema(
       enum: ["admin", "staff", "customer"],
       default: "customer",
     },
-
+points: {
+  type: Number,
+  default: 0,
+  min: 0,
+},
     photo: {
       type: String,
       default: null,

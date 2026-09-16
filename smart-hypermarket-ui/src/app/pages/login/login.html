@@ -1,0 +1,160 @@
+﻿<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="auth-brand">
+      Smart <b>Hypermarket</b>
+    </div>
+
+    <h2>
+      {{ 'auth.loginTitle' | translate }}
+    </h2>
+
+    <p class="auth-subtitle">
+      {{ 'auth.loginSubtitle' | translate }}
+    </p>
+
+    <div
+      class="auth-error"
+      *ngIf="errorKey()"
+    >
+      {{ errorKey()! | translate }}
+    </div>
+
+    <form
+      #loginForm="ngForm"
+      (ngSubmit)="onSubmit(loginForm)"
+      novalidate
+    >
+
+      <div class="field">
+
+        <label for="email">
+          {{ 'auth.email' | translate }}
+        </label>
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          [(ngModel)]="email"
+          #emailField="ngModel"
+          required
+          email
+          [class.invalid]="
+            emailField.invalid &&
+            (emailField.touched || submitted())
+          "
+        >
+
+        @if (
+          emailField.invalid &&
+          (emailField.touched || submitted())
+        ) {
+
+          <span class="error-msg">
+
+            {{
+              emailField.errors?.['required']
+                ? ('auth.required' | translate)
+                : ('auth.invalidEmail' | translate)
+            }}
+
+          </span>
+        }
+
+      </div>
+
+
+      <div class="field">
+
+        <label for="password">
+          {{ 'auth.password' | translate }}
+        </label>
+
+        <input
+          id="password"
+          name="password"
+          type="password"
+          [(ngModel)]="password"
+          #passwordField="ngModel"
+          required
+          minlength="6"
+          [class.invalid]="
+            passwordField.invalid &&
+            (passwordField.touched || submitted())
+          "
+        >
+
+        @if (
+          passwordField.invalid &&
+          (passwordField.touched || submitted())
+        ) {
+
+          <span class="error-msg">
+
+            {{
+              passwordField.errors?.['required']
+                ? ('auth.required' | translate)
+                : ('auth.minPassword' | translate)
+            }}
+
+          </span>
+        }
+
+      </div>
+
+
+      <div class="field-row">
+
+        <label class="remember">
+
+          <input
+            type="checkbox"
+            name="rememberMe"
+            [(ngModel)]="rememberMe"
+          >
+
+          {{ 'auth.remember' | translate }}
+
+        </label>
+
+
+        <a
+       
+  routerLink="/forgot-password"
+  class="forgot"
+>
+  {{ 'auth.forgotPassword' | translate }}
+</a>
+      </div>
+
+
+      <button
+        class="btn btn-primary auth-submit"
+        type="submit"
+        [disabled]="loading()"
+      >
+
+        {{
+          loading()
+            ? ('auth.loading' | translate)
+            : ('auth.loginButton' | translate)
+        }}
+
+      </button>
+
+
+      <p class="auth-switch">
+
+        {{ 'auth.noAccount' | translate }}
+
+        <a routerLink="/register">
+          {{ 'auth.createAccount' | translate }}
+        </a>
+
+      </p>
+
+    </form>
+
+  </div>
+</div>

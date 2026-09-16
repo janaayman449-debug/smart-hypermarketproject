@@ -1,0 +1,104 @@
+<div class="panel-header">
+  <h3>{{ 'admin.offers' | translate }}</h3>
+  <button class="btn-admin-primary" (click)="openAddForm()">
+    <i class="fa-solid fa-plus"></i> {{ 'admin.addOffer' | translate }}
+  </button>
+</div>
+
+@if (showAddForm()) {
+  <div class="add-product-form">
+    @if (addOfferError()) {
+      <div class="form-error">{{ addOfferError() | translate }}</div>
+    }
+
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.offerCode' | translate }}</label>
+        <input type="text" class="field-input" [ngModel]="newOffer().code" (ngModelChange)="newOffer.set({ ...newOffer(), code: $event })" placeholder="WELCOME10" />
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.offerTitle' | translate }}</label>
+        <input type="text" class="field-input" [ngModel]="newOffer().title" (ngModelChange)="newOffer.set({ ...newOffer(), title: $event })" placeholder="خصم 10% على كل السلة" />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label>{{ 'admin.description' | translate }}</label>
+      <input type="text" class="field-input" [ngModel]="newOffer().description" (ngModelChange)="newOffer.set({ ...newOffer(), description: $event })" placeholder="صالح لأول طلب أو عميل جديد" />
+    </div>
+
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.discountType' | translate }}</label>
+        <select class="field-input" [ngModel]="newOffer().discountType" (ngModelChange)="newOffer.set({ ...newOffer(), discountType: $event })">
+          <option value="percentage">{{ 'admin.percentage' | translate }}</option>
+          <option value="fixed">{{ 'admin.fixedAmount' | translate }}</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.discountValue' | translate }}</label>
+        <input type="number" class="field-input" [ngModel]="newOffer().discountValue" (ngModelChange)="newOffer.set({ ...newOffer(), discountValue: $event })" placeholder="10" />
+      </div>
+    </div>
+
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.minSpend' | translate }}</label>
+        <input type="number" class="field-input" [ngModel]="newOffer().minSpend" (ngModelChange)="newOffer.set({ ...newOffer(), minSpend: $event })" placeholder="0" />
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.expiresAt' | translate }}</label>
+        <input type="date" class="field-input" [ngModel]="newOffer().expiresAt" (ngModelChange)="newOffer.set({ ...newOffer(), expiresAt: $event })" />
+      </div>
+    </div>
+
+    <div class="add-form-actions">
+      <button class="btn-admin-ghost" (click)="cancelAddOffer()">{{ 'admin.cancel' | translate }}</button>
+      <button class="btn-admin-primary" (click)="submitAddOffer()">
+        <i class="fa-solid fa-check"></i> {{ 'admin.saveOffer' | translate }}
+      </button>
+    </div>
+  </div>
+}
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>{{ 'admin.offerCode' | translate }}</th>
+      <th>{{ 'admin.offerTitle' | translate }}</th>
+      <th>{{ 'admin.discountValue' | translate }}</th>
+      <th>{{ 'admin.minSpend' | translate }}</th>
+      <th>{{ 'admin.status' | translate }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (offer of offersService.offers(); track offer.id) {
+      <tr>
+        <td><code>{{ offer.code }}</code></td>
+        <td>{{ offer.title }}</td>
+        <td>
+          @if (offer.discountType === 'percentage') {
+            {{ offer.discountValue }}%
+          } @else {
+            {{ offer.discountValue }} EGP
+          }
+        </td>
+        <td>{{ offer.minSpend }} EGP</td>
+        <td>
+          <span class="stock-pill" [ngClass]="offer.active ? 'stock-ok' : 'stock-out'">
+            {{ (offer.active ? 'admin.active' : 'admin.inactive') | translate }}
+          </span>
+        </td>
+        <td class="row-actions">
+          <button class="icon-btn" [attr.aria-label]="offer.active ? 'Deactivate' : 'Activate'" (click)="toggleActive(offer)">
+            <i class="fa-solid" [class.fa-toggle-on]="offer.active" [class.fa-toggle-off]="!offer.active"></i>
+          </button>
+          <button class="icon-btn" aria-label="Delete" (click)="deleteOffer(offer.id)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

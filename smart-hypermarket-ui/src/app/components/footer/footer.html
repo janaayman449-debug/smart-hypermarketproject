@@ -1,0 +1,162 @@
+﻿
+<footer class="site-footer">
+
+  <div class="container footer-grid">
+
+    <!-- Brand -->
+    <div class="footer-brand">
+
+      <a routerLink="/" class="logo-text">
+        <strong>Smart</strong> Hypermarket
+      </a>
+
+      <p>
+        {{ 'footer.brandDesc' | translate }}
+      </p>
+
+      <div class="socials">
+
+        <a
+          class="icon-circle"
+          href="#"
+          aria-label="Facebook"
+        >
+          f
+        </a>
+
+        <a
+          class="icon-circle"
+          href="#"
+          aria-label="Instagram"
+        >
+          ◎
+        </a>
+
+        <a
+          class="icon-circle"
+          href="#"
+          aria-label="WhatsApp"
+        >
+          ☎
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+
+      <h4>
+        {{ 'footer.quickLinks' | translate }}
+      </h4>
+
+      <ul>
+
+        <li>
+          <a routerLink="/products">
+            {{ 'footer.products' | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/offers">
+            {{ 'footer.offersDiscounts' | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/categories">
+            {{ 'footer.categories' | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/returns">
+            {{ 'footer.trackOrder' | translate }}
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+
+    <!-- Customer Service -->
+    <div class="footer-col">
+
+      <h4>
+        {{ 'footer.customerService' | translate }}
+      </h4>
+
+      <ul>
+
+        <li>
+          <a href="#">
+            {{ 'footer.faq' | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/returns">
+            {{ 'footer.returnPolicy' | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            {{ 'footer.shippingDelivery' | translate }}
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/contact">
+            {{ 'footer.contactUs' | translate }}
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+
+    <!-- Order Line -->
+    <div class="footer-col">
+
+      <h4>
+        {{ 'footer.orderLine' | translate }}
+      </h4>
+
+      <p class="phone">
+        {{ 'footer.phone' | translate }}
+      </p>
+
+      <p class="hours">
+        {{ 'footer.hours' | translate }}
+      </p>
+
+    </div>
+
+
+    <!-- Newsletter Signup -->
+    <div class="footer-col">
+
+      <app-newsletter-form></app-newsletter-form>
+
+    </div>
+
+  </div>
+
+
+  <div class="container footer-bottom">
+
+    <p>
+      © {{ year }}
+      {{ 'footer.rights' | translate }}
+    </p>
+
+  </div>
+
+</footer>
+

@@ -1,0 +1,210 @@
+﻿.tint-sage       { --tint: var(--color-sage); }
+.tint-cream      { --tint: var(--color-cream-dim); }
+.tint-gold       { --tint: #f6e8c8; }
+.tint-clay-tint  { --tint: #f3e0d5; }
+
+.categories-page {
+  padding-block: 48px 80px;
+}
+
+.page-head {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.page-head h1 {
+  font-size: clamp(28px, 3.4vw, 38px);
+}
+
+.page-head p {
+  margin-top: 10px;
+  color: var(--color-ink-soft);
+}
+
+/* ---- Bento grid ---- */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 168px;
+  gap: 18px;
+}
+
+.category-card.featured {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.category-card.wide {
+  grid-column: span 2;
+}
+
+/* ---- Card base ---- */
+.category-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 22px;
+  border-radius: 22px;
+  text-align: start;
+  border: 1px solid rgba(39, 75, 61, 0.08);
+  background: #fffdf9;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow:
+    0 1px 2px rgba(15, 35, 30, 0.04),
+    0 10px 24px rgba(15, 35, 30, 0.05);
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease;
+}
+
+.category-card:hover,
+.category-card:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(39, 75, 61, 0.16);
+  box-shadow:
+    0 2px 4px rgba(15, 35, 30, 0.06),
+    0 20px 36px rgba(15, 35, 30, 0.14);
+}
+
+.category-card:active {
+  transform: translateY(-2px);
+}
+
+/* decorative blob behind the icon, tinted per category */
+.card-blob {
+  position: absolute;
+  top: -30%;
+  inset-inline-end: -20%;
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  background: var(--tint);
+  opacity: 0.55;
+  filter: blur(2px);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.category-card:hover .card-blob {
+  transform: scale(1.15) translateY(4%);
+  opacity: 0.8;
+}
+
+/* ---- Icon badge ---- */
+.category-icon {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(15, 35, 30, 0.08);
+  border: 3px solid #fffdf9;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.category-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.category-card:hover .category-icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+
+
+
+.category-card.featured .category-icon {
+  width: 100px;
+  height: 100px;
+}
+.category-card.featured .category-icon svg {
+  width: 38px;
+  height: 38px;
+}
+
+/* ---- Text ---- */
+.category-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.category-name {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--color-forest-deep);
+}
+
+.category-card.featured .category-name {
+  font-size: 24px;
+}
+
+.category-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-moss);
+}
+
+.cta-arrow {
+  width: 14px;
+  height: 14px;
+  transform: rotate(180deg); /* points toward reading direction in RTL */
+  transition: transform 0.25s ease;
+}
+
+.category-card:hover .cta-arrow {
+  transform: rotate(180deg) translateX(-3px);
+}
+
+[dir='ltr'] .cta-arrow {
+  transform: rotate(0deg);
+}
+
+[dir='ltr'] .category-card:hover .cta-arrow {
+  transform: translateX(3px);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 980px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+  }
+
+  .category-card.featured {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+
+  .category-card.wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 560px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .category-card,
+  .category-card.featured,
+  .category-card.wide {
+    grid-column: span 1;
+    padding: 20px;
+  }
+}

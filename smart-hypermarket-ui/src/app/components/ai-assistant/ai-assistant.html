@@ -1,0 +1,103 @@
+﻿<!-- Floating AI Trigger Bubble -->
+<div class="ai-assistant-wrapper">
+  @if (!isOpen()) {
+    <button class="ai-floating-btn" (click)="toggleChat()" title="Talk with SmartBot AI Assistant">
+      <div class="bot-icon-glow">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </div>
+      <div class="bot-label">
+        <span class="bot-name">{{ translate('aiAssistant.name') }}</span>
+        <span class="bot-status"><i class="fa-solid fa-circle"></i> {{ translate('aiAssistant.online') }}</span>
+      </div>
+    </button>
+  }
+
+  <!-- AI Chat Window -->
+  @if (isOpen()) {
+    <div class="ai-chat-window animate-fade">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="header-bot-info">
+          <div class="bot-avatar">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div>
+            <div class="bot-title-row">
+              <h4>{{ translate('aiAssistant.headerTitle') }}</h4>
+              <span class="ai-badge">AI 2.0</span>
+            </div>
+            <p class="bot-sub">{{ translate('aiAssistant.headerSub') }}</p>
+          </div>
+        </div>
+        <div class="chat-header-actions">
+          <button class="chat-support-btn" (click)="contactSupport()" [title]="translate('aiAssistant.customerServiceLabel')">
+            <i class="fa-solid fa-headset"></i>
+          </button>
+          <button class="chat-close-btn" (click)="toggleChat()">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Body -->
+      <div class="chat-body">
+        @for (msg of messages(); track msg.id) {
+          <div class="chat-message" [class.user-msg]="msg.sender === 'user'" [class.bot-msg]="msg.sender === 'ai'">
+            <div class="msg-bubble">
+              <p class="msg-text">{{ msg.text }}</p>
+              <span class="msg-time">{{ msg.time }}</span>
+
+              <!-- Optional Product Card Attachment from AI -->
+              @if (msg.productCard) {
+                <div class="ai-product-recommendation">
+                  <img [src]="msg.productCard.image" [alt]="msg.productCard.name" />
+                  <div class="rec-info">
+                    <strong>{{ msg.productCard.name }}</strong>
+                    <span>{{ msg.productCard.price }} {{ translate('home.currency') }}</span>
+                    <button class="btn-quick-add" (click)="addSuggestedProduct(msg.productCard)">
+                      <i class="fa-solid fa-plus"></i> {{ translate('aiAssistant.addToBasket') }}
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Bot Suggestions Pills -->
+            @if (msg.suggestions && msg.suggestions.length > 0 && msg.sender === 'ai') {
+              <div class="suggestions-container">
+                @for (sug of msg.suggestions; track sug) {
+                  <button class="suggestion-chip" (click)="sendMessage(sug)">
+                    {{ sug }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @if (isTyping()) {
+          <div class="chat-message bot-msg">
+            <div class="msg-bubble typing-bubble">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Chat Input Footer -->
+      <div class="chat-footer">
+        <input
+          type="text"
+          [ngModel]="inputText()"
+          (ngModelChange)="inputText.set($event)"
+          [placeholder]="translate('aiAssistant.inputPlaceholder')"
+          (keyup.enter)="sendMessage()" />
+        <button class="send-btn" (click)="sendMessage()" [disabled]="!inputText().trim()">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  }
+</div>

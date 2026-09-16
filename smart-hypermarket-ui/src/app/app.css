@@ -1,0 +1,107 @@
+:host {
+  display: block;
+}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green-900: #12351d;
+  --green-800: #174822;
+  --green-700: #22602b;
+  --green-600: #328238;
+  --green-500: #4f9b3d;
+  --lime: #b7d83f;
+  --cream: #f7f5ed;
+  --white: #ffffff;
+  --dark: #172018;
+  --gray: #6d746d;
+  --border: #e4e6dd;
+  --gold: #d4a72c;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.container {
+  width: min(1180px, 92%);
+  margin: auto;
+}
+
+.section {
+  padding: 70px 0;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  color: var(--green-900);
+}
+
+.section-subtitle {
+  color: var(--gray);
+  margin-top: 10px;
+}
+
+.btn {
+  border: none;
+  padding: 13px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  transition: 0.25s;
+}
+
+.btn-primary {
+  background: var(--green-700);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--green-900);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--green-700);
+  color: var(--green-700);
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 45px 0;
+  }
+
+  .section-title {
+    font-size: 30px;
+  }
+}

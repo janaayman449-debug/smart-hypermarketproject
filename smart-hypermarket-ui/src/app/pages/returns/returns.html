@@ -1,0 +1,102 @@
+﻿<div class="page-head">
+  <div class="crumbs">Home / <b>{{ 'returns.title' | translate }}</b></div>
+  <h1>{{ 'returns.title' | translate }}</h1>
+  <p>{{ 'returns.subtitle' | translate }}</p>
+</div>
+
+<div class="returns-wrap">
+
+  @if (successMessage()) {
+    <div class="success-banner">{{ 'returns.submitSuccess' | translate }}</div>
+  }
+
+  <section class="panel">
+    <h2>{{ 'returns.newRequest' | translate }}</h2>
+
+    <div class="field">
+      <label>{{ 'returns.selectOrder' | translate }}</label>
+      <select [ngModel]="selectedOrderId()" (ngModelChange)="selectOrder($event)">
+        <option [ngValue]="null" disabled selected>{{ 'returns.chooseOrder' | translate }}</option>
+        @for (order of eligibleOrders; track order.id) {
+          <option [ngValue]="order.id">{{ order.orderNumber }} — {{ order.orderStatus }}</option>
+        }
+      </select>
+      @if (!eligibleOrders.length) {
+        <div class="hint">{{ 'returns.noEligibleOrders' | translate }}</div>
+      }
+    </div>
+
+    @if (selectedOrder; as order) {
+      <div class="return-items">
+        @for (item of order.items; track item.product.id) {
+          <div class="return-item">
+            <img [src]="item.product.image" [alt]="item.product.name">
+            <div class="item-info">
+              <div class="item-name">{{ item.product.name }}</div>
+              <div class="item-unit">{{ item.product.unit }}</div>
+            </div>
+            <div class="qty-picker">
+              <button type="button" (click)="decQty(item.product.id)">−</button>
+              <span>{{ qtyFor(item.product.id) }}</span>
+              <button type="button" (click)="incQty(item.product.id, item.quantity)">+</button>
+            </div>
+            <div class="max-note">/ {{ item.quantity }}</div>
+          </div>
+        }
+
+        <div class="field">
+          <label>{{ 'returns.reason' | translate }}</label>
+          <select [(ngModel)]="reason">
+            <option value="" disabled selected>{{ 'returns.chooseReason' | translate }}</option>
+            <option value="damaged">{{ 'returns.reasons.damaged' | translate }}</option>
+            <option value="wrongItem">{{ 'returns.reasons.wrongItem' | translate }}</option>
+            <option value="expired">{{ 'returns.reasons.expired' | translate }}</option>
+            <option value="qualityIssue">{{ 'returns.reasons.qualityIssue' | translate }}</option>
+            <option value="other">{{ 'returns.reasons.other' | translate }}</option>
+          </select>
+          @if (submitted() && !reason) {
+            <span class="error-msg">{{ 'auth.required' | translate }}</span>
+          }
+        </div>
+
+        <div class="refund-row">
+          <span>{{ 'returns.estimatedRefund' | translate }}</span>
+          <b>EGP {{ refundEstimate }}</b>
+        </div>
+
+        @if (submitted() && !hasSelectedItems) {
+          <span class="error-msg">{{ 'returns.selectAtLeastOne' | translate }}</span>
+        }
+
+        <button class="btn-primary" (click)="submitReturn()">{{ 'returns.submit' | translate }}</button>
+      </div>
+    }
+  </section>
+
+  <section class="panel">
+    <h2>{{ 'returns.myRequests' | translate }}</h2>
+
+    @if (myReturns.length) {
+      <div class="request-list">
+        @for (r of myReturns; track r.id) {
+          <div class="request-card">
+            <div class="request-head">
+              <div>
+                <div class="order-number">{{ r.orderNumber }}</div>
+                <div class="order-date">{{ formatDate(r.createdAt) }}</div>
+              </div>
+              <div class="status-badge" [class]="r.status">{{ ('returns.status.' + r.status) | translate }}</div>
+            </div>
+            <div class="request-items">{{ r.productName }}</div>
+            <div class="request-footer">
+              <span>{{ 'returns.reasonLabel' | translate }}: {{ ('returns.reasons.' + r.reason) | translate }}</span>
+              <b>EGP {{ r.refundAmount }}</b>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="empty">{{ 'returns.empty' | translate }}</div>
+    }
+  </section>
+</div>

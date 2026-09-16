@@ -1,0 +1,27 @@
+<div class="newsletter-form-wrap">
+  @if (submitted()) {
+    <div class="newsletter-success">
+      {{ 'newsletter.success' | translate }}
+    </div>
+  } @else {
+    <form (ngSubmit)="onSubmit()" novalidate>
+      <label for="newsletter-email">{{ 'newsletter.title' | translate }}</label>
+
+      <div class="newsletter-input-row">
+        <input
+          id="newsletter-email"
+          type="email"
+          [value]="email()"
+          (input)="onEmailChange($any($event.target).value)"
+          (blur)="onBlur()"
+          [placeholder]="'newsletter.placeholder' | translate"
+        />
+        <button type="submit">{{ 'newsletter.subscribe' | translate }}</button>
+      </div>
+
+      @if (showError()) {
+        <span class="newsletter-error">{{ 'newsletter.invalidEmail' | translate }}</span>
+      }
+    </form>
+  }
+</div>

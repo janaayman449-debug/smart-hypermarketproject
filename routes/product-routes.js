@@ -9,17 +9,47 @@ import {
 } from "../controllers/product-controller.js";
 
 import upload from "../middleware/upload.js";
+import protect from "../middleware/auth-middleware.js";
 
 const router = express.Router();
 
-router.post("/", upload.single("image"), createProduct);
+const adminOnly = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({
+      status: "fail",
+      message: "Admins only",
+    });
+  }
 
+  next();
+};
+
+// Public routes
 router.get("/", getAllProducts);
-
 router.get("/:id", getProductById);
 
-router.patch("/:id", upload.single("image"), updateProduct);
+// Admin only CRUD
+router.post(
+  "/",
+  protect,
+  adminOnly,
+  upload.single("image"),
+  createProduct
+);
 
-router.delete("/:id", deleteProduct);
+router.patch(
+  "/:id",
+  protect,
+  adminOnly,
+  upload.single("image"),
+  updateProduct
+);
+
+router.delete(
+  "/:id",
+  protect,
+  adminOnly,
+  deleteProduct
+);
 
 export default router;

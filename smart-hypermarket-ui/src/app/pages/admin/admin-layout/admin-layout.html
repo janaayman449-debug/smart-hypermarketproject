@@ -1,0 +1,21 @@
+<div class="admin-nav-links" style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+  <a class="admin-link-item" routerLink="products" routerLinkActive="tab-active">{{ 'admin.products' | translate }}</a>
+  <a class="admin-link-item" routerLink="orders" routerLinkActive="tab-active">{{ 'admin.orders' | translate }}</a>
+  <a class="admin-link-item" routerLink="offers" routerLinkActive="tab-active">{{ 'admin.offers' | translate }}</a>
+  <a class="admin-link-item" routerLink="customers" routerLinkActive="tab-active">{{ 'admin.customers' | translate }}</a>
+  <a class="admin-link-item" routerLink="analytics" routerLinkActive="tab-active">{{ 'admin.analytics' | translate }}</a>
+  <a class="admin-link-item" routerLink="messages" routerLinkActive="tab-active" style="display:flex; align-items:center; gap:8px;">
+    <span>{{ 'admin.messages' | translate }}</span>
+    @if (unreadMessagesCount() > 0) {
+      <span class="stock-pill stock-out">{{ unreadMessagesCount() }}</span>
+    }
+  </a>
+  <a class="admin-link-item" routerLink="returns" routerLinkActive="tab-active" style="display:flex; align-items:center; gap:8px;">
+    <span>{{ 'admin.returns' | translate }}</span>
+    @if (pendingReturnsCount() > 0) {
+      <span class="stock-pill stock-out">{{ pendingReturnsCount() }}</span>
+    }
+  </a>
+</div>
+
+<router-outlet></router-outlet>

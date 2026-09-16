@@ -1,0 +1,133 @@
+<div class="contact-page-container">
+  <div class="contact-header-banner">
+    <div class="container">
+      <span class="banner-eyebrow">{{ 'contact.eyebrow' | translate }}</span>
+      <h1>{{ 'contact.title' | translate }}</h1>
+      <p>{{ 'contact.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="container contact-grid">
+
+    <!-- Contact info -->
+    <div class="contact-info-card">
+      <h3>{{ 'contact.getInTouch' | translate }}</h3>
+
+      <div class="contact-info-row">
+        <i class="fa-solid fa-location-dot"></i>
+        <div>
+          <strong>{{ 'contact.storeAddress' | translate }}</strong>
+          <span>{{ 'contact.storeAddressValue' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="contact-info-row">
+        <i class="fa-solid fa-phone"></i>
+        <div>
+          <strong>{{ 'contact.callUs' | translate }}</strong>
+          <span>+20 100 000 0000</span>
+        </div>
+      </div>
+
+      <div class="contact-info-row">
+        <i class="fa-solid fa-envelope"></i>
+        <div>
+          <strong>{{ 'contact.email' | translate }}</strong>
+          <span>support&#64;smarthyper.com</span>
+        </div>
+      </div>
+
+      <div class="contact-info-row">
+        <i class="fa-solid fa-clock"></i>
+        <div>
+          <strong>{{ 'contact.workingHours' | translate }}</strong>
+          <span>{{ 'contact.workingHoursValue' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="contact-socials">
+        <a aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+    <!-- Contact form -->
+    <div class="contact-form-card">
+      @if (submitted()) {
+        <div class="contact-success-banner">
+          <i class="fa-solid fa-circle-check"></i>
+          {{ 'contact.successMsg' | translate }}
+        </div>
+      }
+
+      @if (errorMsg()) {
+        <div class="contact-success-banner" style="background:#fbeaea;border-color:#e3b3b3;color:#7a1f1f;">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          {{ 'contact.errorMsg' | translate }}
+        </div>
+      }
+
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>{{ 'contact.fullName' | translate }}</label>
+            <input
+              type="text"
+              formControlName="name"
+              class="field-input"
+              [placeholder]="'contact.namePlaceholder' | translate"
+            />
+            @if (nameField?.invalid && nameField?.touched) {
+              <small class="field-error">{{ 'contact.nameError' | translate }}</small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>{{ 'contact.emailAddress' | translate }}</label>
+            <input
+              type="email"
+              formControlName="email"
+              class="field-input"
+              [placeholder]="'contact.emailPlaceholder' | translate"
+            />
+            @if (emailField?.invalid && emailField?.touched) {
+              <small class="field-error">{{ 'contact.emailError' | translate }}</small>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'contact.subject' | translate }}</label>
+          <input
+            type="text"
+            formControlName="subject"
+            class="field-input"
+            [placeholder]="'contact.subjectPlaceholder' | translate"
+          />
+          @if (subjectField?.invalid && subjectField?.touched) {
+            <small class="field-error">{{ 'contact.subjectError' | translate }}</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'contact.message' | translate }}</label>
+          <textarea
+            formControlName="message"
+            rows="5"
+            class="field-input"
+            [placeholder]="'contact.messagePlaceholder' | translate"
+          ></textarea>
+          @if (messageField?.invalid && messageField?.touched) {
+            <small class="field-error">{{ 'contact.messageError' | translate }}</small>
+          }
+        </div>
+
+        <button type="submit" class="btn-luxury-primary" [disabled]="sending()">
+          <i class="fa-solid fa-paper-plane"></i>
+          {{ sending() ? ('contact.sending' | translate) : ('contact.send' | translate) }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

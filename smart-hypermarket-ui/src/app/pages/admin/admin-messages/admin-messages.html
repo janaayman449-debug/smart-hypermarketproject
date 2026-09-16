@@ -1,0 +1,52 @@
+<div class="panel-header">
+  <h3>{{ 'admin.messages' | translate }}</h3>
+</div>
+
+@if (messagesService.loading()) {
+  <p>{{ 'admin.loading' | translate }}</p>
+}
+
+@if (messagesService.error()) {
+  <div class="form-error">{{ messagesService.error() }}</div>
+}
+
+@if (!messagesService.loading() && messagesService.messages().length === 0 && !messagesService.error()) {
+  <p>{{ 'admin.noMessages' | translate }}</p>
+}
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>{{ 'admin.status' | translate }}</th>
+      <th>{{ 'admin.name' | translate }}</th>
+      <th>Email</th>
+      <th>{{ 'admin.subject' | translate }}</th>
+      <th>{{ 'admin.message' | translate }}</th>
+      <th>{{ 'admin.date' | translate }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (msg of messagesService.messages(); track msg._id) {
+      <tr>
+        <td>
+          <span class="stock-pill" [ngClass]="msg.read ? 'stock-ok' : 'stock-low'">
+            {{ (msg.read ? 'admin.read' : 'admin.new') | translate }}
+          </span>
+        </td>
+        <td>{{ msg.name }}</td>
+        <td>{{ msg.email }}</td>
+        <td>{{ msg.subject }}</td>
+        <td style="max-width: 240px; white-space: normal;">{{ msg.message }}</td>
+        <td>{{ msg.createdAt | date:'short' }}</td>
+        <td class="row-actions">
+          @if (!msg.read) {
+            <button class="icon-btn" aria-label="Mark as read" (click)="markMessageRead(msg)">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,144 @@
+﻿<div class="profile-page-container">
+  <div class="profile-header-banner">
+    <div class="container">
+      <span class="banner-eyebrow">{{ 'profile.eyebrow' | translate }}</span>
+      <h1>{{ 'profile.title' | translate }}</h1>
+      <p>{{ 'profile.subtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="container profile-grid">
+    <!-- Left Column: User Card & Points Badge -->
+    <div class="profile-summary-card animate-fade">
+      <div class="profile-avatar-pod">
+  <div class="profile-avatar-initials">
+    {{ authService.currentUser()?.name | slice:0:1 }}
+  </div>
+</div>
+      <span class="badge-role" [class.admin]="authService.isAdmin()">
+        {{ authService.currentUser()?.role | uppercase }}
+      </span>
+
+      <h2 class="profile-name">{{ authService.currentUser()?.name }}</h2>
+      <span class="profile-email">{{ authService.currentUser()?.email }}</span>
+
+      <!-- Loyalty Rewards Pod -->
+      <div class="rewards-pod">
+        <div class="rewards-inner-top">
+          <i class="fa-solid fa-star-half-stroke"></i>
+          <div>
+            <small>{{ 'profile.rewardsBalance' | translate }}</small>
+            <strong>{{ authService.currentUser()?.points || 0 }} {{ 'profile.points' | translate }}</strong>
+          </div>
+        </div>
+        <div class="rewards-value-strip">
+          <span>{{ 'profile.worth' | translate }} <strong>{{ ((authService.currentUser()?.points || 0) * 0.1) | number:'1.0-0' }} EGP</strong> {{ 'profile.walletCredit' | translate }}</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="profile-nav-links">
+        <a class="prof-link-item" [class.tab-active]="activeTab === 'details'" (click)="setTab('details')">
+          <i class="fa-solid fa-id-card"></i>
+          <span>{{ 'profile.accountDetails' | translate }}</span>
+          <i class="fa-solid fa-chevron-right arrow-mini"></i>
+        </a>
+        <a class="prof-link-item" [class.tab-active]="activeTab === 'orders'" (click)="setTab('orders')">
+          <i class="fa-solid fa-truck-fast"></i>
+          <span>{{ 'profile.myOrders' | translate }}</span>
+          <i class="fa-solid fa-chevron-right arrow-mini"></i>
+        </a>
+        <a routerLink="/wishlist" class="prof-link-item">
+          <i class="fa-solid fa-heart"></i>
+          <span>{{ 'profile.wishlist' | translate }}</span>
+          <i class="fa-solid fa-chevron-right arrow-mini"></i>
+        </a>
+        <a routerLink="/returns" class="prof-link-item">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span>{{ 'profile.returns' | translate }}</span>
+          <i class="fa-solid fa-chevron-right arrow-mini"></i>
+        </a>
+        @if (authService.isAdmin()) {
+          <a routerLink="/admin" class="prof-link-item admin-highlight">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>{{ 'profile.adminPortal' | translate }}</span>
+            <i class="fa-solid fa-chevron-right arrow-mini"></i>
+          </a>
+        }
+      </div>
+    </div>
+
+    <!-- Right Column: switches between Account Details and My Orders -->
+    @if (activeTab === 'orders') {
+
+      <div class="profile-orders-panel animate-fade">
+        <app-orders [embedded]="true" />
+      </div>
+
+    } @else {
+
+    <div class="profile-details-card animate-fade">
+      <div class="details-header">
+        <h3>{{ 'profile.accountInfo' | translate }}</h3>
+        <button class="btn-edit-toggle" (click)="isEditing = !isEditing">
+          <i class="fa-solid" [class.fa-pen-to-square]="!isEditing" [class.fa-xmark]="isEditing"></i>
+          {{ isEditing ? ('profile.cancel' | translate) : ('profile.editDetails' | translate) }}
+        </button>
+      </div>
+
+      @if (saveMessage) {
+        <div class="save-toast-banner animate-fade">
+          <i class="fa-solid fa-circle-check"></i> {{ saveMessage }}
+        </div>
+      }
+
+      <form (submit)="saveProfile()" class="profile-form">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>{{ 'profile.fullName' | translate }}</label>
+            <input type="text" [(ngModel)]="name" name="name" [disabled]="!isEditing" class="field-input" required />
+          </div>
+
+          <div class="form-group">
+            <label>{{ 'profile.phoneNumber' | translate }}</label>
+            <input type="tel" [(ngModel)]="phone" name="phone" [disabled]="!isEditing" class="field-input" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.emailAddress' | translate }}</label>
+          <input type="email" [value]="email" disabled class="field-input disabled-input" />
+          <small class="note-text">{{ 'profile.emailNote' | translate }}</small>
+        </div>
+
+        <div class="form-group">
+          <label>{{ 'profile.deliveryAddress' | translate }}</label>
+          <textarea [(ngModel)]="address" name="address" [disabled]="!isEditing" rows="3" class="field-input"></textarea>
+        </div>
+
+        @if (isEditing) {
+          <div class="form-action-row animate-fade">
+            <button type="submit" class="btn-luxury-primary">
+              <i class="fa-solid fa-check"></i> {{ 'profile.saveChanges' | translate }}
+            </button>
+          </div>
+        }
+      </form>
+
+      <!-- Payment Preferences Preview -->
+      <div class="saved-payment-preview">
+        <h4>{{ 'profile.savedPayment' | translate }}</h4>
+        <div class="payment-card-mini">
+          <i class="fa-brands fa-cc-visa"></i>
+          <div>
+            <strong>{{ 'profile.visaEnding' | translate }} •••• 4242</strong>
+            <small>{{ 'profile.expires' | translate }} 12/28 • {{ 'profile.defaultPayment' | translate }}</small>
+          </div>
+          <span class="active-badge">{{ 'profile.active' | translate }}</span>
+        </div>
+      </div>
+    </div>
+
+    }
+  </div>
+</div>

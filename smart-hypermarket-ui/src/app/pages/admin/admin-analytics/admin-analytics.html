@@ -1,0 +1,22 @@
+<div class="panel-header">
+  <h3>{{ 'admin.analytics' | translate }}</h3>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span class="stat-label">{{ 'admin.totalRevenue' | translate }}</span>
+    <span class="stat-value">{{ totalRevenue() }} EGP</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">{{ 'admin.totalProducts' | translate }}</span>
+    <span class="stat-value">{{ productService.products().length }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">{{ 'admin.lowStockItems' | translate }}</span>
+    <span class="stat-value">{{ lowStockCount() }}</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">{{ 'admin.totalOrders' | translate }}</span>
+    <span class="stat-value">{{ orderService.orders().length }}</span>
+  </div>
+</div>

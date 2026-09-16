@@ -1,0 +1,63 @@
+@if (cart.isDrawerOpen()) {
+  <div class="drawer-overlay" (click)="close()"></div>
+
+  <aside class="cart-drawer">
+    <div class="drawer-head">
+      <h3>{{ 'cart.title' | translate }}</h3>
+      <button type="button" class="close-btn" (click)="close()" aria-label="Close">✕</button>
+    </div>
+
+    @if (cart.items().length === 0) {
+      <div class="drawer-empty">
+        <p>{{ 'cart.empty' | translate }}</p>
+        <a class="btn btn-primary" routerLink="/products" (click)="close()">
+          {{ 'cart.continueShopping' | translate }}
+        </a>
+      </div>
+    } @else {
+      <div class="drawer-items">
+        @for (item of cart.items(); track item.product.id) {
+          <div class="drawer-item">
+            <img [src]="item.product.image" [alt]="item.product.name" />
+            <div class="drawer-item-body">
+              <h4>{{ item.product.name }}</h4>
+              <p class="unit">{{ item.product.unit }}</p>
+              <div class="qty-row">
+                <button type="button" class="qty-btn" (click)="decrease(item.product.id, item.quantity)">−</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" class="qty-btn" (click)="increase(item.product.id, item.quantity)">+</button>
+                <button type="button" class="remove-link" (click)="remove(item.product.id)">
+                  {{ 'cart.remove' | translate }}
+                </button>
+              </div>
+            </div>
+            <div class="drawer-item-price">
+              {{ item.finalPrice }} {{ 'home.currency' | translate }}
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="drawer-footer">
+        <div class="summary-row">
+          <span>{{ 'cart.subtotal' | translate }}</span>
+          <strong>{{ cart.subtotal() }} {{ 'home.currency' | translate }}</strong>
+        </div>
+        @if (cart.categoryDiscountTotal() > 0) {
+          <div class="summary-row discount">
+            <span>{{ 'cart.discount' | translate }}</span>
+            <strong>-{{ cart.categoryDiscountTotal() }} {{ 'home.currency' | translate }}</strong>
+          </div>
+        }
+        <div class="summary-row total">
+          <span>{{ 'cart.total' | translate }}</span>
+          <strong>{{ cart.grandTotal() }} {{ 'home.currency' | translate }}</strong>
+        </div>
+
+        <a class="btn btn-primary full-width" routerLink="/cart" (click)="close()">
+          {{ 'cart.viewCart' | translate }}
+        </a>
+      </div>
+    }
+  </aside>
+}

@@ -1,0 +1,236 @@
+<section class="checkout-page">
+  <div class="container">
+    @if (placedOrder(); as order) {
+      <div class="order-success">
+        <div class="success-icon">✓</div>
+        <h1>{{ 'checkout.successTitle' | translate }}</h1>
+        <p>{{ 'checkout.successSub' | translate }} <strong>{{ order.orderNumber }}</strong></p>
+        <p class="redirect-note">{{ 'checkout.redirecting' | translate }}</p>
+      </div>
+    } @else if (cart.items().length === 0) {
+      <div class="empty-checkout">
+        <p>{{ 'checkout.emptyCart' | translate }}</p>
+        <a class="btn btn-primary" routerLink="/products">{{ 'cart.continueShopping' | translate }}</a>
+      </div>
+    } @else {
+      <h1>{{ 'checkout.title' | translate }}</h1>
+
+      <form #checkoutForm="ngForm" (ngSubmit)="placeOrder(checkoutForm)" class="checkout-layout" novalidate>
+        <div class="checkout-form">
+          <!-- Customer info -->
+          <div class="form-card">
+            <h3>{{ 'checkout.customerInfo' | translate }}</h3>
+
+            <div class="form-group">
+              <label for="name">{{ 'checkout.fullName' | translate }}</label>
+              <input
+                id="name"
+                type="text"
+                name="customerName"
+                [(ngModel)]="customerName"
+                #nameField="ngModel"
+                required
+                class="form-input"
+                [class.invalid]="submitted() && nameField.invalid"
+              />
+              @if (submitted() && nameField.invalid) {
+                <span class="error-text">{{ 'checkout.required' | translate }}</span>
+              }
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">{{ 'checkout.email' | translate }}</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="customerEmail"
+                  [(ngModel)]="customerEmail"
+                  #emailField="ngModel"
+                  required
+                  email
+                  class="form-input"
+                  [class.invalid]="submitted() && emailField.invalid"
+                />
+                @if (submitted() && emailField.invalid) {
+                  <span class="error-text">{{ 'checkout.invalidEmail' | translate }}</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="phone">{{ 'checkout.phone' | translate }}</label>
+                <input
+                  id="phone"
+                  type="tel"
+                  name="customerPhone"
+                  [(ngModel)]="customerPhone"
+                  #phoneField="ngModel"
+                  required
+                  pattern="^01[0-2,5]{1}[0-9]{8}$"
+                  class="form-input"
+                  [class.invalid]="submitted() && phoneField.invalid"
+                />
+                @if (submitted() && phoneField.invalid) {
+                  <span class="error-text">{{ 'checkout.invalidPhone' | translate }}</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery info -->
+          <div class="form-card">
+            <h3>{{ 'checkout.deliveryInfo' | translate }}</h3>
+
+            <div class="form-group">
+              <label for="address">{{ 'checkout.address' | translate }}</label>
+              <input
+                id="address"
+                type="text"
+                name="deliveryAddress"
+                [(ngModel)]="deliveryAddress"
+                #addressField="ngModel"
+                required
+                class="form-input"
+                [class.invalid]="submitted() && addressField.invalid"
+              />
+              @if (submitted() && addressField.invalid) {
+                <span class="error-text">{{ 'checkout.required' | translate }}</span>
+              }
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">{{ 'checkout.city' | translate }}</label>
+                <input
+                  id="city"
+                  type="text"
+                  name="deliveryCity"
+                  [(ngModel)]="deliveryCity"
+                  #cityField="ngModel"
+                  required
+                  class="form-input"
+                  [class.invalid]="submitted() && cityField.invalid"
+                />
+                @if (submitted() && cityField.invalid) {
+                  <span class="error-text">{{ 'checkout.required' | translate }}</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="slot">{{ 'checkout.deliverySlot' | translate }}</label>
+                <select id="slot" name="deliverySlot" [(ngModel)]="deliverySlot" class="form-input">
+                  <option value="express">{{ 'checkout.slotExpress' | translate }}</option>
+                  <option value="morning">{{ 'checkout.slotMorning' | translate }}</option>
+                  <option value="afternoon">{{ 'checkout.slotAfternoon' | translate }}</option>
+                  <option value="evening">{{ 'checkout.slotEvening' | translate }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">{{ 'checkout.notes' | translate }}</label>
+              <textarea
+                id="notes"
+                name="deliveryNotes"
+                [(ngModel)]="deliveryNotes"
+                rows="2"
+                class="form-input"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="form-card">
+            <h3>{{ 'checkout.paymentMethod' | translate }}</h3>
+
+            <div class="payment-options">
+              <label class="payment-option" [class.selected]="paymentMethod === 'Cash'">
+                <input type="radio" name="paymentMethod" value="Cash" [(ngModel)]="paymentMethod" />
+                <span>{{ 'checkout.cashOnDelivery' | translate }}</span>
+              </label>
+              <label class="payment-option" [class.selected]="paymentMethod === 'Card'">
+                <input type="radio" name="paymentMethod" value="Card" [(ngModel)]="paymentMethod" />
+                <span>{{ 'checkout.creditCard' | translate }}</span>
+              </label>
+            </div>
+
+            @if (paymentMethod === 'Card') {
+              <div class="form-group" style="margin-top: 14px;">
+                <label for="cardNumber">{{ 'checkout.cardNumber' | translate }}</label>
+                <input
+                  id="cardNumber"
+                  type="text"
+                  name="cardNumber"
+                  [(ngModel)]="cardNumber"
+                  #cardField="ngModel"
+                  [required]="paymentMethod === 'Card'"
+                  minlength="12"
+                  maxlength="19"
+                  placeholder="•••• •••• •••• ••••"
+                  class="form-input"
+                  [class.invalid]="submitted() && cardField.invalid"
+                />
+                @if (submitted() && cardField.invalid) {
+                  <span class="error-text">{{ 'checkout.invalidCard' | translate }}</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Order summary -->
+        <aside class="checkout-summary">
+          <h3>{{ 'checkout.orderSummary' | translate }}</h3>
+
+          <div class="summary-items">
+            @for (item of cart.items(); track item.product.id) {
+              <div class="summary-item">
+                <img [src]="item.product.image" [alt]="item.product.name" />
+                <div class="summary-item-body">
+                  <span class="name">{{ item.product.name }}</span>
+                  <span class="qty">× {{ item.quantity }}</span>
+                </div>
+                <span class="price">{{ item.finalPrice }} {{ 'home.currency' | translate }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="summary-row">
+            <span>{{ 'cart.subtotal' | translate }}</span>
+            <strong>{{ cart.subtotal() }} {{ 'home.currency' | translate }}</strong>
+          </div>
+          @if (cart.categoryDiscountTotal() > 0) {
+            <div class="summary-row discount">
+              <span>{{ 'cart.discount' | translate }}</span>
+              <strong>-{{ cart.categoryDiscountTotal() }} {{ 'home.currency' | translate }}</strong>
+            </div>
+          }
+          @if (cart.couponDiscountTotal() > 0) {
+            <div class="summary-row discount">
+              <span>{{ 'cart.couponDiscount' | translate }}</span>
+              <strong>-{{ cart.couponDiscountTotal() }} {{ 'home.currency' | translate }}</strong>
+            </div>
+          }
+          <div class="summary-row">
+            <span>{{ 'cart.deliveryFee' | translate }}</span>
+            <strong>
+              @if (cart.deliveryFee() === 0) {
+                {{ 'cart.free' | translate }}
+              } @else {
+                {{ cart.deliveryFee() }} {{ 'home.currency' | translate }}
+              }
+            </strong>
+          </div>
+          <div class="summary-row total">
+            <span>{{ 'cart.total' | translate }}</span>
+            <strong>{{ cart.grandTotal() }} {{ 'home.currency' | translate }}</strong>
+          </div>
+
+          <button type="submit" class="btn btn-primary full-width">
+            {{ 'checkout.placeOrder' | translate }}
+          </button>
+        </aside>
+      </form>
+    }
+  </div>
+</section>

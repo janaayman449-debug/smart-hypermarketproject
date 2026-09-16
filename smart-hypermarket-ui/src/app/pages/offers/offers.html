@@ -1,0 +1,127 @@
+﻿<div class="offers-page-container">
+  <section class="flash-sale-hero">
+    <div class="container flash-inner">
+      <div class="flash-copy">
+        <span class="flash-badge"><i class="fa-solid fa-bolt"></i> {{ 'offers.limitedTime' | translate }}</span>
+        <h1>{{ 'offers.heroTitle' | translate }}</h1>
+        <p>{{ 'offers.heroSub' | translate }}</p>
+
+        <div class="countdown-timer-wrap">
+          <div class="timer-box">
+            <span class="num">{{ hours() < 10 ? '0' + hours() : hours() }}</span>
+            <small>{{ 'offers.hours' | translate }}</small>
+          </div>
+          <span class="timer-colon">:</span>
+          <div class="timer-box">
+            <span class="num">{{ minutes() < 10 ? '0' + minutes() : minutes() }}</span>
+            <small>{{ 'offers.minutes' | translate }}</small>
+          </div>
+          <span class="timer-colon">:</span>
+          <div class="timer-box">
+            <span class="num">{{ seconds() < 10 ? '0' + seconds() : seconds() }}</span>
+            <small>{{ 'offers.seconds' | translate }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flash-visual">
+        <div class="discount-big-circle animate-float">
+          <span>{{ 'offers.upTo' | translate }}</span>
+          <strong>35%</strong>
+          <small>{{ 'offers.off' | translate }}</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="coupons-showcase-section">
+    <div class="container">
+      <div class="section-title-wrap text-center">
+        <span class="eyebrow-arrow">{{ 'offers.promoVouchers' | translate }}</span>
+        <h2 class="section-serif-heading">{{ 'offers.activeCoupons' | translate }}</h2>
+        <p class="section-subtitle">{{ 'offers.couponHint' | translate }}</p>
+      </div>
+
+      @if (offerService.offers().length === 0) {
+        <p class="no-results">{{ 'offers.noOffers' | translate }}</p>
+      }
+
+      <div class="coupons-grid">
+        @for (o of offerService.offers(); track o.id) {
+          <div class="coupon-ticket-card animate-fade">
+            <div class="coupon-left-notch"></div>
+            <div class="coupon-right-notch"></div>
+
+            <div class="coupon-inner-content">
+              <div class="coupon-header-row">
+                <span class="deal-tag">
+                  @if (o.minSpend > 0) {
+                    {{ 'offers.minSpendPrefix' | translate }} {{ o.minSpend }} {{ 'home.currency' | translate }}
+                  } @else {
+                    {{ 'offers.noMinimum' | translate }}
+                  }
+                </span>
+                <i class="fa-solid fa-ticket-simple"></i>
+              </div>
+
+              <h3 class="discount-title">{{ o.title }}</h3>
+              <p class="discount-desc">{{ o.description }}</p>
+
+              <div class="coupon-action-row">
+                <div class="code-pill">
+                  <code>{{ o.code }}</code>
+                </div>
+
+                <button class="btn-copy-coupon" (click)="copyCoupon(o.code)">
+                  @if (copiedCode === o.code) {
+                    <i class="fa-solid fa-check"></i> {{ 'offers.applied' | translate }}
+                  } @else {
+                    <i class="fa-regular fa-copy"></i> {{ 'offers.copyApply' | translate }}
+                  }
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="deals-products-section">
+    <div class="container">
+      <div class="section-title-wrap text-center">
+        <span class="eyebrow-arrow">{{ 'offers.handpicked' | translate }}</span>
+        <h2 class="section-serif-heading">{{ 'offers.bestPicks' | translate }}</h2>
+      </div>
+
+      <div class="product-grid">
+        @for (prod of productService.getProducts().slice(0, 4); track prod.id) {
+          <article class="product-card">
+            <div class="product-media">
+              <a [routerLink]="['/product', prod.id]">
+                <img [src]="prod.image" [alt]="productName(prod.name)" loading="lazy" />
+              </a>
+              <span class="deal-save-ribbon">{{ 'offers.save20' | translate }}</span>
+            </div>
+
+            <div class="product-body">
+              <span class="product-category">{{ categoryLabel(prod.category) }}</span>
+              <h3><a [routerLink]="['/product', prod.id]" class="product-title-link">{{ productName(prod.name) }}</a></h3>
+              <p class="unit">{{ prod.unit }}</p>
+
+              <div class="price-row">
+                <div>
+                  <span class="price">{{ prod.price }} {{ 'home.currency' | translate }}</span>
+                  <span class="old-price">{{ (prod.price * 1.25) | number:'1.0-0' }} {{ 'home.currency' | translate }}</span>
+                </div>
+                <button class="btn-round" (click)="addDealProduct(prod)">
+                  <i class="fa-solid fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+</div>

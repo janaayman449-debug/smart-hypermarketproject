@@ -1,0 +1,85 @@
+@if (product(); as p) {
+  <div class="pd-page">
+    <div class="container">
+      <div class="crumbs">
+        <a routerLink="/">{{ 'nav.home' | translate }}</a> /
+        <a routerLink="/products">{{ 'nav.products' | translate }}</a> /
+        <a [routerLink]="['/products']" [queryParams]="{ category: p.category }">{{ categoryLabel(p.category) }}</a> /
+        <b>{{ productName(p.name) }}</b>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-media">
+          <img [src]="p.image" [alt]="productName(p.name)" />
+        </div>
+
+        <div class="pd-info">
+          <span class="pd-category">{{ categoryLabel(p.category) }}</span>
+          <h1>{{ productName(p.name) }}</h1>
+          <p class="pd-desc">{{ p.description }}</p>
+
+          <div class="pd-price-row">
+            <span class="pd-price">{{ p.price }} {{ 'home.currency' | translate }}</span>
+            <span class="pd-unit">/ {{ p.unit }}</span>
+          </div>
+
+          @if (p.stock > 0) {
+            <span class="stock-badge in-stock">{{ 'productDetails.inStock' | translate }} ({{ p.stock }})</span>
+          } @else {
+            <span class="stock-badge out-stock">{{ 'productDetails.outOfStock' | translate }}</span>
+          }
+
+          <div class="pd-actions">
+            <div class="qty-stepper">
+              <button type="button" (click)="decreaseQty()" [disabled]="quantity() <= 1">−</button>
+              <span>{{ quantity() }}</span>
+              <button type="button" (click)="increaseQty()" [disabled]="quantity() >= p.stock">+</button>
+            </div>
+
+            <button
+              class="btn btn-primary add-cart-btn"
+              type="button"
+              [disabled]="p.stock <= 0"
+              (click)="addToCart()"
+            >
+              {{ justAdded() ? ('productDetails.added' | translate) : ('productDetails.addToCart' | translate) }}
+            </button>
+
+            <button
+              class="btn-round wishlist-toggle"
+              type="button"
+              [class.active]="isInWishlist()"
+              (click)="toggleWishlist()"
+              [attr.aria-label]="'nav.wishlist' | translate"
+            >
+              {{ isInWishlist() ? '♥' : '♡' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      @if (relatedProducts().length > 0) {
+        <section class="related-section">
+          <h2>{{ 'productDetails.relatedProducts' | translate }}</h2>
+          <div class="related-grid">
+            @for (rp of relatedProducts(); track rp.id) {
+              <a class="related-card" [routerLink]="['/product', rp.id]">
+                <img [src]="rp.image" [alt]="productName(rp.name)" />
+                <div class="related-body">
+                  <span>{{ productName(rp.name) }}</span>
+                  <strong>{{ rp.price }} {{ 'home.currency' | translate }}</strong>
+                </div>
+              </a>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  </div>
+} @else {
+  <div class="pd-not-found container">
+    <h1>{{ 'productDetails.notFoundTitle' | translate }}</h1>
+    <p>{{ 'productDetails.notFoundDesc' | translate }}</p>
+    <a routerLink="/products" class="btn btn-primary">{{ 'productDetails.backToProducts' | translate }}</a>
+  </div>
+}

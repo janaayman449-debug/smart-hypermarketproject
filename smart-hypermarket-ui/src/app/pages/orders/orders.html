@@ -1,0 +1,71 @@
+﻿<div class="orders-page" [class.embedded]="embedded()">
+
+  @if (!embedded()) {
+    <div class="orders-page-header">
+      <h1>{{ 'orders.title' | translate }}</h1>
+    </div>
+  }
+
+  <div class="orders-tabs">
+    <button class="order-tab-btn" [class.active]="activeTab() === 'all'" (click)="setTab('all')">{{ 'orders.tabAll' | translate }}</button>
+    <button class="order-tab-btn" [class.active]="activeTab() === 'Placed'" (click)="setTab('Placed')">{{ 'orders.tabPlaced' | translate }}</button>
+    <button class="order-tab-btn" [class.active]="activeTab() === 'OutForDelivery'" (click)="setTab('OutForDelivery')">{{ 'orders.tabOutForDelivery' | translate }}</button>
+    <button class="order-tab-btn" [class.active]="activeTab() === 'Delivered'" (click)="setTab('Delivered')">{{ 'orders.tabDelivered' | translate }}</button>
+    <button class="order-tab-btn" [class.active]="activeTab() === 'Cancelled'" (click)="setTab('Cancelled')">{{ 'orders.tabCancelled' | translate }}</button>
+  </div>
+
+  @if (filteredOrders.length === 0) {
+    <div class="orders-empty-state">
+      <i class="fa-solid fa-box-open"></i>
+      <p>{{ 'orders.noOrders' | translate }}</p>
+      <a routerLink="/products" class="btn-luxury-primary">{{ 'orders.startShopping' | translate }}</a>
+    </div>
+  } @else {
+    <div class="orders-list">
+      @for (order of filteredOrders; track order.id) {
+        <div class="order-card">
+          <button type="button" class="order-card-head" (click)="toggleExpand(order.id)">
+            <div class="order-head-main">
+              <span class="order-number">#{{ order.orderNumber }}</span>
+              <span class="order-date">{{ formatDate(order.createdAt) }}</span>
+            </div>
+            <div class="order-head-side">
+              <span class="order-status-pill" [class]="order.orderStatus">{{ order.orderStatus }}</span>
+              <span class="order-total">{{ order.grandTotal }} EGP</span>
+              <i class="fa-solid fa-chevron-down expand-icon" [class.open]="expandedOrderId() === order.id"></i>
+            </div>
+          </button>
+
+          @if (expandedOrderId() === order.id) {
+            <div class="order-card-body animate-fade">
+              <div class="order-items-list">
+                @for (item of order.items; track item.product.id) {
+                  <div class="order-item-row">
+                    <img [src]="item.product.image" [alt]="item.product.name" class="order-item-img" />
+                    <div class="order-item-info">
+                      <span class="order-item-name">{{ item.product.name }}</span>
+                      <span class="order-item-qty">x{{ item.quantity }}</span>
+                    </div>
+                    <span class="order-item-price">{{ item.finalPrice }} EGP</span>
+                  </div>
+                }
+              </div>
+
+              <div class="order-card-footer">
+                <div class="order-total-line">
+                  <span>{{ 'orders.total' | translate }}</span>
+                  <strong>{{ order.grandTotal }} EGP</strong>
+                </div>
+                @if (isEligibleForReturn(order)) {
+                  <a [routerLink]="['/returns']" [queryParams]="{ orderId: order.id }" class="btn-return-link">
+                    <i class="fa-solid fa-rotate-left"></i> {{ 'orders.requestReturn' | translate }}
+                  </a>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

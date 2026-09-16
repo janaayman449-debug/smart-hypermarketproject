@@ -1,0 +1,43 @@
+<div class="panel-header">
+  <h3>{{ 'admin.orders' | translate }}</h3>
+</div>
+
+<div class="order-filter-row">
+  <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'All'" (click)="setOrderFilter('All')">{{ 'admin.all' | translate }}</div>
+  <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Placed'" (click)="setOrderFilter('Placed')">{{ 'admin.placed' | translate }}</div>
+  <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'OutForDelivery'" (click)="setOrderFilter('OutForDelivery')">{{ 'admin.outForDelivery' | translate }}</div>
+  <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Delivered'" (click)="setOrderFilter('Delivered')">{{ 'admin.delivered' | translate }}</div>
+  <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Cancelled'" (click)="setOrderFilter('Cancelled')">{{ 'admin.cancelled' | translate }}</div>
+</div>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>{{ 'admin.orderId' | translate }}</th>
+      <th>{{ 'admin.customer' | translate }}</th>
+      <th>{{ 'admin.date' | translate }}</th>
+      <th>{{ 'admin.status' | translate }}</th>
+      <th>{{ 'admin.total' | translate }}</th>
+      <th>{{ 'admin.updateStatus' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (order of filteredOrders(); track order.id) {
+      <tr>
+        <td>{{ order.orderNumber }}</td>
+        <td>{{ order.customerName }}</td>
+        <td>{{ order.createdAt | date:'short' }}</td>
+        <td><span class="status-pill">{{ order.orderStatus }}</span></td>
+        <td>{{ order.grandTotal }} EGP</td>
+        <td>
+          <select class="field-input" [ngModel]="order.orderStatus" (ngModelChange)="changeOrderStatus(order.id, $event)">
+            <option value="Placed">{{ 'admin.placed' | translate }}</option>
+            <option value="OutForDelivery">{{ 'admin.outForDelivery' | translate }}</option>
+            <option value="Delivered">{{ 'admin.delivered' | translate }}</option>
+            <option value="Cancelled">{{ 'admin.cancelled' | translate }}</option>
+          </select>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

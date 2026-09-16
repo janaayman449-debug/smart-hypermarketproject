@@ -1,0 +1,97 @@
+﻿<section class="products-page-container">
+  <div class="products-content container">
+    <form class="filters-bar" novalidate>
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/>
+          <path d="m20 20-3.6-3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input
+          type="text"
+          name="search"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="searchTerm.set($event)"
+          [placeholder]="translate('products.searchPlaceholder')"
+        />
+      </div>
+
+      <select
+        name="category"
+        class="select-field"
+        [ngModel]="selectedCategory()"
+        (ngModelChange)="selectedCategory.set($event)"
+      >
+        <option value="">{{ translate('products.allCategories') }}</option>
+@for (c of categories(); track c) {
+            <option [value]="c">{{ categoryLabel(c) }}</option>
+        }
+      </select>
+
+      <select
+        name="sort"
+        class="select-field"
+        [ngModel]="sortBy()"
+        (ngModelChange)="sortBy.set($event)"
+      >
+        <option value="newest">{{ translate('products.sortNewest') }}</option>
+        <option value="price-low">{{ translate('products.sortPriceLow') }}</option>
+        <option value="price-high">{{ translate('products.sortPriceHigh') }}</option>
+      </select>
+    </form>
+
+    <p class="results-count">
+      {{ filteredProducts().length }} {{ translate('products.resultsCount') }}
+    </p>
+
+    @if (filteredProducts().length > 0) {
+      <div class="product-grid">
+        @for (p of filteredProducts(); track p.id) {
+          <article class="product-card">
+            <div class="product-media">
+              <a [routerLink]="['/product', p.id]">
+                <img [src]="p.image" [alt]="productName(p.name)" loading="lazy" />
+              </a>
+              
+              <button 
+                type="button" 
+                class="wishlist-btn" 
+                (click)="toggleWishlist(p)" 
+                [class.active]="isInWishlist(p.id)"
+                aria-label="Add to wishlist"
+              >
+                ♥
+              </button>
+
+              @if (p.stock < 15) {
+                <span class="stock-badge">{{ language.lang() === 'ar' ? 'كمية محدودة' : 'Low stock' }}</span>
+              }
+            </div>
+
+            <div class="product-body">
+              <span class="product-category">{{ categoryLabel(p.category) }}</span>
+              
+<h3><a [routerLink]="['/product', p.id]" class="product-title-link">{{ truncate(productName(p.name)) }}</a></h3>
+              
+              <p class="unit">{{ p.unit }}</p>
+              
+              <div class="price-row">
+<span class="price">{{ p.price }} {{ translate('home.currency') }}</span>
+                <button
+                  class="btn-round"
+                  type="button"
+                  [class.added]="justAddedId() === p.id"
+                  (click)="addToCart(p)"
+                  [attr.aria-label]="translate('products.addToCart') + ' ' + productName(p.name)"
+                >
+                  {{ justAddedId() === p.id ? '✓' : '+' }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <p class="no-results">{{ translate('products.noResults') }}</p>
+    }
+  </div>
+</section>

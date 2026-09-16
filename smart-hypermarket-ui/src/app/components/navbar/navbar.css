@@ -1,0 +1,243 @@
+﻿﻿.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--color-cream);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-block: 14px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+}
+
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--color-forest-deep);
+}
+
+.logo-text strong {
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-ink);
+}
+
+.main-nav a {
+  cursor: pointer;
+  position: relative;
+  padding-block: 4px;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-gold);
+  transition: width 0.2s ease;
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+
+.icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line);
+  background: var(--color-white);
+  color: var(--color-forest-deep);
+  flex-shrink: 0;
+}
+
+.icon-btn svg {
+  width: 19px;
+  height: 19px;
+}
+
+.icon-btn:hover {
+  border-color: var(--color-forest);
+  background: var(--color-sage);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  inset-inline-end: -4px;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 3px;
+  border-radius: 999px;
+  background: var(--color-clay);
+  color: var(--color-white);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.account-menu-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  inset-inline-end: 0;
+  min-width: 220px;
+  background: var(--color-white);
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(24, 40, 28, 0.16);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 60;
+}
+
+.account-dropdown-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  color: var(--color-forest-deep);
+  padding: 4px 8px 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--color-line);
+  font-size: 14px;
+}
+
+.account-role-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--color-sage);
+  color: var(--color-forest);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.account-role-tag.admin {
+  background: var(--color-gold);
+  color: var(--color-forest-deep);
+}
+
+.account-dropdown a,
+.account-dropdown .logout-btn {
+  display: block;
+  padding: 9px 8px;
+  border-radius: 8px;
+  color: var(--color-ink);
+  text-decoration: none;
+  font-size: 14px;
+  font-family: inherit;
+  border: none;
+  background: none;
+  text-align: start;
+  cursor: pointer;
+  width: 100%;
+}
+
+.account-dropdown a:hover,
+.account-dropdown .logout-btn:hover {
+  background: var(--color-sage);
+}
+
+.account-dropdown a.admin-link {
+  color: var(--color-gold-600, var(--color-gold));
+  font-weight: 700;
+}
+
+.account-dropdown .logout-btn {
+  margin-top: 6px;
+  border-top: 1px solid var(--color-line);
+  padding-top: 12px;
+  color: var(--color-clay);
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+
+  .main-nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 65px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--color-cream);
+    border-bottom: 1px solid var(--color-line);
+    transform: translateY(-8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    padding: 8px 24px 16px;
+  }
+
+  .main-nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .main-nav a {
+    padding-block: 12px;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .account-btn {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+}

@@ -1,0 +1,134 @@
+<div class="panel-header">
+  <h3>{{ 'admin.products' | translate }}</h3>
+  <button class="btn-admin-primary" (click)="openAddForm()">
+    <i class="fa-solid fa-plus"></i> {{ 'admin.addProduct' | translate }}
+  </button>
+</div>
+
+@if (showAddForm()) {
+  <div class="add-product-form">
+    @if (addProductError()) {
+      <div class="form-error">{{ addProductError() | translate }}</div>
+    }
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.name' | translate }}</label>
+        <input type="text" class="field-input" [ngModel]="newProduct().name" (ngModelChange)="newProduct.set({ ...newProduct(), name: $event })" placeholder="Fresh Bananas 1kg" />
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.category' | translate }}</label>
+        <input type="text" class="field-input" [ngModel]="newProduct().category" (ngModelChange)="newProduct.set({ ...newProduct(), category: $event })" placeholder="Fruits" />
+      </div>
+    </div>
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.price' | translate }} (EGP)</label>
+        <input type="number" class="field-input" [ngModel]="newProduct().price" (ngModelChange)="newProduct.set({ ...newProduct(), price: $event })" placeholder="35" />
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.stock' | translate }}</label>
+        <input type="number" class="field-input" [ngModel]="newProduct().stock" (ngModelChange)="newProduct.set({ ...newProduct(), stock: $event })" placeholder="120" />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label>{{ 'admin.description' | translate }}</label>
+      <input type="text" class="field-input" [ngModel]="newProduct().description" (ngModelChange)="newProduct.set({ ...newProduct(), description: $event })" placeholder="Optional short description" />
+    </div>
+
+    <div class="form-field">
+      <label>{{ 'admin.productImage' | translate }}</label>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+      @if (previewUrl) {
+        <img [src]="previewUrl" style="width:70px; height:70px; object-fit:cover; border-radius:8px; margin-top:6px;" />
+      }
+    </div>
+
+    <div class="add-form-actions">
+      <button class="btn-admin-ghost" (click)="cancelAddProduct()">{{ 'admin.cancel' | translate }}</button>
+      <button class="btn-admin-primary" (click)="submitAddProduct()">
+        <i class="fa-solid fa-check"></i> {{ 'admin.saveProduct' | translate }}
+      </button>
+    </div>
+  </div>
+}
+
+@if (showEditForm()) {
+  <div class="add-product-form">
+    @if (editProductError()) {
+      <div class="form-error">{{ editProductError() | translate }}</div>
+    }
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.name' | translate }}</label>
+        <input type="text" class="field-input" [ngModel]="editProduct().name" (ngModelChange)="editProduct.set({ ...editProduct(), name: $event })" />
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.category' | translate }}</label>
+        <input type="text" class="field-input" [ngModel]="editProduct().category" (ngModelChange)="editProduct.set({ ...editProduct(), category: $event })" />
+      </div>
+    </div>
+    <div class="add-form-row">
+      <div class="form-field">
+        <label>{{ 'admin.price' | translate }} (EGP)</label>
+        <input type="number" class="field-input" [ngModel]="editProduct().price" (ngModelChange)="editProduct.set({ ...editProduct(), price: $event })" />
+      </div>
+      <div class="form-field">
+        <label>{{ 'admin.stock' | translate }}</label>
+        <input type="number" class="field-input" [ngModel]="editProduct().stock" (ngModelChange)="editProduct.set({ ...editProduct(), stock: $event })" />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label>{{ 'admin.description' | translate }}</label>
+      <input type="text" class="field-input" [ngModel]="editProduct().description" (ngModelChange)="editProduct.set({ ...editProduct(), description: $event })" />
+    </div>
+
+    <div class="form-field">
+      <label>{{ 'admin.productImage' | translate }} ({{ 'admin.optionalImageNote' | translate }})</label>
+      <input type="file" accept="image/*" (change)="onEditFileSelected($event)" />
+      @if (editPreviewUrl) {
+        <img [src]="editPreviewUrl" style="width:70px; height:70px; object-fit:cover; border-radius:8px; margin-top:6px;" />
+      }
+    </div>
+
+    <div class="add-form-actions">
+      <button class="btn-admin-ghost" (click)="cancelEditProduct()">{{ 'admin.cancel' | translate }}</button>
+      <button class="btn-admin-primary" (click)="submitEditProduct()">
+        <i class="fa-solid fa-check"></i> {{ 'admin.updateProduct' | translate }}
+      </button>
+    </div>
+  </div>
+}
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>{{ 'admin.image' | translate }}</th>
+      <th>{{ 'admin.name' | translate }}</th>
+      <th>{{ 'admin.category' | translate }}</th>
+      <th>{{ 'admin.price' | translate }}</th>
+      <th>{{ 'admin.stock' | translate }}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (product of productService.products(); track product.id) {
+      <tr>
+        <td><img [src]="product.image" style="width:40px; height:40px; object-fit:cover; border-radius:6px;" /></td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.price }} EGP</td>
+        <td>
+          <span class="stock-pill" [ngClass]="stockClass(product.stock)">
+            {{ stockLabel(product.stock) | translate }}
+          </span>
+        </td>
+        <td class="row-actions">
+          <button class="icon-btn" aria-label="Edit" (click)="openEditForm(product)"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button class="icon-btn" aria-label="Delete" (click)="deleteProduct(product.id)"><i class="fa-solid fa-trash"></i></button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

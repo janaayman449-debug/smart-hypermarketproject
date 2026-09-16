@@ -1,0 +1,106 @@
+﻿<section class="cart-page">
+  <div class="container">
+    <h1>{{ 'cart.title' | translate }}</h1>
+
+    @if (cart.items().length === 0) {
+      <div class="empty-cart">
+        <p>{{ 'cart.empty' | translate }}</p>
+        <a class="btn btn-primary" routerLink="/products">{{ 'cart.continueShopping' | translate }}</a>
+      </div>
+    } @else {
+      <div class="cart-layout">
+        <div class="cart-items">
+          @for (item of cart.items(); track item.product.id) {
+            <div class="cart-row">
+              <img [src]="item.product.image" [alt]="productName(item.product.name)" />
+              <div class="cart-row-body">
+                <h3>{{ productName(item.product.name) }}</h3>
+                <p class="unit">{{ item.product.unit }}</p>
+                <button type="button" class="remove-link" (click)="remove(item.product.id)">
+                  {{ 'cart.remove' | translate }}
+                </button>
+              </div>
+              <div class="qty-control">
+                <button type="button" class="qty-btn" (click)="decrease(item.product.id, item.quantity)">−</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" class="qty-btn" (click)="increase(item.product.id, item.quantity)">+</button>
+              </div>
+              <div class="cart-row-price">
+                <strong>{{ item.finalPrice }} {{ 'home.currency' | translate }}</strong>
+                @if (item.categoryDiscountAmount > 0) {
+                  <span class="old-price">{{ item.itemSubtotal }} {{ 'home.currency' | translate }}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <aside class="cart-summary">
+          <h3>{{ 'cart.orderSummary' | translate }}</h3>
+
+          <div class="coupon-box">
+            <input
+              type="text"
+              name="coupon"
+              [(ngModel)]="couponInput"
+              [placeholder]="'cart.couponPlaceholder' | translate"
+              class="coupon-input"
+            />
+            @if (!cart.appliedCoupon()) {
+              <button type="button" class="btn btn-outline" (click)="applyCoupon()">
+                {{ 'cart.applyCoupon' | translate }}
+              </button>
+            } @else {
+              <button type="button" class="btn btn-outline" (click)="removeCoupon()">
+                {{ 'cart.removeCoupon' | translate }}
+              </button>
+            }
+          </div>
+
+          @if (couponMessage()) {
+            <p class="coupon-message" [class.success]="couponSuccess()">{{ couponMessage() }}</p>
+          }
+
+          <div class="summary-row">
+            <span>{{ 'cart.subtotal' | translate }}</span>
+            <strong>{{ cart.subtotal() }} {{ 'home.currency' | translate }}</strong>
+          </div>
+
+          @if (cart.categoryDiscountTotal() > 0) {
+            <div class="summary-row discount">
+              <span>{{ 'cart.discount' | translate }}</span>
+              <strong>-{{ cart.categoryDiscountTotal() }} {{ 'home.currency' | translate }}</strong>
+            </div>
+          }
+
+          @if (cart.couponDiscountTotal() > 0) {
+            <div class="summary-row discount">
+              <span>{{ 'cart.couponDiscount' | translate }}</span>
+              <strong>-{{ cart.couponDiscountTotal() }} {{ 'home.currency' | translate }}</strong>
+            </div>
+          }
+
+          <div class="summary-row">
+            <span>{{ 'cart.deliveryFee' | translate }}</span>
+            <strong>
+              @if (cart.deliveryFee() === 0) {
+                {{ 'cart.free' | translate }}
+              } @else {
+                {{ cart.deliveryFee() }} {{ 'home.currency' | translate }}
+              }
+            </strong>
+          </div>
+
+          <div class="summary-row total">
+            <span>{{ 'cart.total' | translate }}</span>
+            <strong>{{ cart.grandTotal() }} {{ 'home.currency' | translate }}</strong>
+          </div>
+
+          <a class="btn btn-primary full-width" routerLink="/checkout">
+            {{ 'cart.checkout' | translate }}
+          </a>
+        </aside>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,26 @@
+<div class="panel-header">
+  <h3>{{ 'admin.customers' | translate }}</h3>
+</div>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>{{ 'admin.name' | translate }}</th>
+      <th>Email</th>
+      <th>{{ 'admin.phone' | translate }}</th>
+      <th>{{ 'admin.role' | translate }}</th>
+      <th>{{ 'admin.ordersCount' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (customer of customers(); track customer.id) {
+      <tr>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td><span class="status-pill">{{ customer.role }}</span></td>
+        <td>{{ customer.ordersCount }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

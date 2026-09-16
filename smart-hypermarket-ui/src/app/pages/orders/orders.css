@@ -1,0 +1,254 @@
+﻿.orders-page {
+  width: 100%;
+}
+
+.orders-page-header {
+  margin-bottom: 24px;
+}
+
+.orders-page-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-forest-900);
+}
+
+/* ---------- tabs ---------- */
+.orders-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.order-tab-btn {
+  background: var(--color-cream-soft);
+  border: 1px solid rgba(24, 59, 43, 0.12);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-forest-800);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.order-tab-btn:hover {
+  background: rgba(24, 59, 43, 0.08);
+}
+
+.order-tab-btn.active {
+  background: var(--color-forest-700);
+  color: #FFFFFF;
+  border-color: var(--color-forest-700);
+}
+
+/* ---------- empty state ---------- */
+.orders-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--color-cream-soft);
+  border-radius: 16px;
+}
+
+.orders-empty-state i {
+  font-size: 2.2rem;
+  color: var(--color-forest-700);
+  margin-bottom: 14px;
+}
+
+.orders-empty-state p {
+  color: var(--color-text-muted);
+  margin-bottom: 18px;
+  font-size: 0.95rem;
+}
+
+/* ---------- order cards ---------- */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.order-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(24, 59, 43, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.order-card-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  flex-wrap: wrap;
+}
+
+.order-head-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-number {
+  font-weight: 800;
+  color: var(--color-forest-900);
+  font-size: 0.95rem;
+}
+
+.order-date {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.order-head-side {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.order-status-pill {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--color-cream-soft);
+  color: var(--color-forest-800);
+  text-transform: capitalize;
+}
+
+.order-status-pill.Delivered {
+  background: #ECFDF5;
+  color: #059669;
+}
+
+.order-status-pill.OutForDelivery {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.order-status-pill.Placed,
+.order-status-pill.Packed {
+  background: #E0F2FE;
+  color: #0369A1;
+}
+
+.order-status-pill.Cancelled {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.order-total {
+  font-weight: 800;
+  color: var(--color-forest-900);
+  font-size: 0.9rem;
+}
+
+.expand-icon {
+  color: var(--color-text-muted);
+  transition: transform 0.2s;
+  font-size: 0.8rem;
+}
+
+.expand-icon.open {
+  transform: rotate(180deg);
+}
+
+/* ---------- expanded body ---------- */
+.order-card-body {
+  border-top: 1px solid rgba(24, 59, 43, 0.06);
+  padding: 18px 20px;
+}
+
+.order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.order-item-img {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid rgba(24, 59, 43, 0.08);
+}
+
+.order-item-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2px;
+}
+
+.order-item-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-forest-900);
+}
+
+.order-item-qty {
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+}
+
+.order-item-price {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-forest-800);
+}
+
+.order-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-top: 1px solid rgba(24, 59, 43, 0.06);
+  padding-top: 14px;
+}
+
+.order-total-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--color-forest-900);
+}
+
+.order-total-line strong {
+  color: var(--color-gold-600);
+  font-size: 1.05rem;
+}
+
+.btn-return-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-forest-800);
+  background: var(--color-cream-soft);
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: all 0.2s;
+}
+
+.btn-return-link:hover {
+  background: var(--color-forest-700);
+  color: #FFFFFF;
+}

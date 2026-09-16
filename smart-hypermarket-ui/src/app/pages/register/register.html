@@ -1,0 +1,86 @@
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-brand">Smart <b>Hypermarket</b></div>
+
+    <h2>{{ 'auth.registerTitle' | translate }}</h2>
+    <p class="auth-subtitle">{{ 'auth.registerSubtitle' | translate }}</p>
+
+    <div class="auth-error" *ngIf="errorKey()">{{ errorKey()! | translate }}</div>
+
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" novalidate>
+
+      <div class="field">
+        <label for="fullName">{{ 'auth.fullName' | translate }}</label>
+        <input
+          id="fullName" name="fullName" type="text"
+          [(ngModel)]="fullName" #nameField="ngModel"
+          required minlength="3"
+          [class.invalid]="nameField.invalid && (nameField.touched || submitted())">
+        @if (nameField.invalid && (nameField.touched || submitted())) {
+          <span class="error-msg">{{ 'auth.required' | translate }}</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="email">{{ 'auth.email' | translate }}</label>
+        <input
+          id="email" name="email" type="email"
+          [(ngModel)]="email" #emailField="ngModel"
+          required email
+          [class.invalid]="emailField.invalid && (emailField.touched || submitted())">
+        @if (emailField.invalid && (emailField.touched || submitted())) {
+          <span class="error-msg">
+            {{ emailField.errors?.['required'] ? ('auth.required' | translate) : ('auth.invalidEmail' | translate) }}
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="phone">{{ 'auth.phone' | translate }}</label>
+        <input
+          id="phone" name="phone" type="tel"
+          [(ngModel)]="phone" #phoneField="ngModel"
+          required minlength="7"
+          [class.invalid]="phoneField.invalid && (phoneField.touched || submitted())">
+        @if (phoneField.invalid && (phoneField.touched || submitted())) {
+          <span class="error-msg">{{ 'auth.required' | translate }}</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">{{ 'auth.password' | translate }}</label>
+        <input
+          id="password" name="password" type="password"
+          [(ngModel)]="password" #passwordField="ngModel"
+          required minlength="6"
+          [class.invalid]="passwordField.invalid && (passwordField.touched || submitted())">
+        @if (passwordField.invalid && (passwordField.touched || submitted())) {
+          <span class="error-msg">
+            {{ passwordField.errors?.['required'] ? ('auth.required' | translate) : ('auth.minPassword' | translate) }}
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">{{ 'auth.confirmPassword' | translate }}</label>
+        <input
+          id="confirmPassword" name="confirmPassword" type="password"
+          [(ngModel)]="confirmPassword" #confirmField="ngModel"
+          required
+          [class.invalid]="passwordsMismatch && (confirmField.touched || submitted())">
+        @if (passwordsMismatch && (confirmField.touched || submitted())) {
+          <span class="error-msg">{{ 'auth.passwordMismatch' | translate }}</span>
+        }
+      </div>
+
+      <button class="btn btn-primary auth-submit" type="submit" [disabled]="loading()">
+        {{ loading() ? ('auth.loading' | translate) : ('auth.registerButton' | translate) }}
+      </button>
+
+      <p class="auth-switch">
+        {{ 'auth.alreadyHaveAccount' | translate }}
+        <a routerLink="/login">{{ 'auth.signIn' | translate }}</a>
+      </p>
+    </form>
+  </div>
+</div>

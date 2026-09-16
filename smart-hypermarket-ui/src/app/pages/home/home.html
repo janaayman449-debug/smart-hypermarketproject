@@ -1,0 +1,295 @@
+﻿<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <h1>
+        {{ 'home.heroTitle1' | translate }}<br>
+        <span class="accent">{{ 'home.heroTitle2' | translate }}</span><br>
+        {{ 'home.heroTitle3' | translate }}
+      </h1>
+      <p class="hero-sub">
+        {{ 'home.heroSub' | translate }}
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" routerLink="/products">
+          {{ 'home.shopNow' | translate }}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a class="btn btn-outline" routerLink="/offers">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 4v16l7-4 7 4V4" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          {{ 'home.viewOffers' | translate }}
+        </a>
+      </div>
+      <div class="trust-marker">
+        <span class="trust-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3c3 2 5 2.6 7 2.6 0 8-3 12-7 15.4-4-3.4-7-7.4-7-15.4 2 0 4-.6 7-2.6Z" stroke="var(--color-moss)" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>
+          <strong>{{ 'home.freshDaily' | translate }}</strong>
+          <small>{{ 'home.freshDailyDesc' | translate }}</small>
+        </span>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <span class="seal">
+        <span class="seal-line small">{{ 'home.trustedSealSmall' | translate }}</span>
+        <span class="seal-line big">{{ 'home.trustedSealBig' | translate }}</span>
+        <span class="seal-stars">★★★★★</span>
+      </span>
+
+      <svg class="basket-illustration" viewBox="0 0 480 420" aria-hidden="true">
+        <defs>
+          <linearGradient id="basketGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#3e6b4f"/>
+            <stop offset="100%" stop-color="#1a3d2e"/>
+          </linearGradient>
+          <linearGradient id="basketRimGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f0c563"/>
+            <stop offset="50%" stop-color="var(--color-gold)"/>
+            <stop offset="100%" stop-color="#d4a53e"/>
+          </linearGradient>
+          <radialGradient id="appleGrad" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#e2724a"/>
+            <stop offset="100%" stop-color="#a83d1e"/>
+          </radialGradient>
+          <radialGradient id="orangeGrad" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#f5bc5c"/>
+            <stop offset="100%" stop-color="#d4880f"/>
+          </radialGradient>
+          <radialGradient id="grapeGrad" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#8a5cb8"/>
+            <stop offset="100%" stop-color="#4f2a6e"/>
+          </radialGradient>
+          <linearGradient id="milkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e8e4d8"/>
+          </linearGradient>
+          <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f231e" flood-opacity="0.25"/>
+          </filter>
+        </defs>
+
+        <ellipse cx="240" cy="382" rx="155" ry="16" fill="#0f231e" opacity=".18"/>
+
+        <circle cx="150" cy="150" r="42" fill="url(#appleGrad)" filter="url(#softShadow)"/>
+        <ellipse cx="136" cy="136" rx="10" ry="14" fill="#ffffff" opacity=".35"/>
+        <path d="M150 108c6-14 20-18 30-14" stroke="#3e6b4f" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+        <circle cx="230" cy="120" r="34" fill="url(#orangeGrad)" filter="url(#softShadow)"/>
+        <ellipse cx="219" cy="108" rx="8" ry="11" fill="#ffffff" opacity=".3"/>
+        <path d="M230 86c14 0 24 8 26 20" stroke="#8a5b23" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+        <g filter="url(#softShadow)">
+          <circle cx="305" cy="150" r="14" fill="url(#grapeGrad)"/>
+          <circle cx="322" cy="140" r="14" fill="url(#grapeGrad)"/>
+          <circle cx="322" cy="164" r="14" fill="url(#grapeGrad)"/>
+          <circle cx="340" cy="152" r="14" fill="url(#grapeGrad)"/>
+          <ellipse cx="300" cy="146" rx="4" ry="5" fill="#ffffff" opacity=".4"/>
+          <path d="M320 118c4-10 14-14 22-12" stroke="#3e6b4f" stroke-width="5" stroke-linecap="round" fill="none"/>
+        </g>
+
+        <g filter="url(#softShadow)">
+          <path d="M175 165c8-30 20-42 30-42s10 30 2 46Z" fill="url(#appleGrad)"/>
+          <path d="M198 128c8-4 16-2 20 4M204 126c-2-8 2-16 10-18" stroke="#3e6b4f" stroke-width="4" stroke-linecap="round" fill="none"/>
+        </g>
+
+        <g filter="url(#softShadow)">
+          <rect x="330" y="90" width="46" height="62" rx="6" fill="url(#milkGrad)" stroke="#274b3d" stroke-width="3"/>
+          <path d="M336 90v-14l8-8h18l8 8v14" fill="none" stroke="#274b3d" stroke-width="3" stroke-linejoin="round"/>
+          <rect x="330" y="112" width="46" height="10" fill="#3e6b4f"/>
+          <rect x="336" y="128" width="34" height="3" rx="1.5" fill="#d8d2c0"/>
+          <rect x="336" y="136" width="24" height="3" rx="1.5" fill="#d8d2c0"/>
+        </g>
+
+        <g filter="url(#softShadow)">
+          <ellipse cx="255" cy="185" rx="34" ry="20" fill="#d9a66a"/>
+          <ellipse cx="245" cy="178" rx="10" ry="6" fill="#f0c48a" opacity=".6"/>
+          <path d="M235 185h40M240 175v20M250 175v20M260 175v20" stroke="#8a5b23" stroke-width="2"/>
+        </g>
+
+        <path d="M90 190h300l-22 150a26 26 0 0 1-25.7 22H137.7A26 26 0 0 1 112 340L90 190Z" fill="url(#basketGrad)" filter="url(#softShadow)"/>
+
+        <path d="M96 220h288M104 260h272M114 300h252" stroke="#0f231e" stroke-width="2" opacity=".35"/>
+        <path d="M105 190L125 340M155 190L165 342M205 190L210 344M255 190L253 344M305 190L296 342M355 190L335 340" stroke="#0f231e" stroke-width="1.4" opacity=".25"/>
+
+        <path d="M105 200c-6 40-4 90 8 130" stroke="#ffffff" stroke-width="10" opacity=".06" stroke-linecap="round" fill="none"/>
+
+        <path d="M150 190c0-46 30-80 90-80s90 34 90 80" stroke="url(#basketRimGrad)" stroke-width="9" fill="none" stroke-linecap="round" filter="url(#softShadow)"/>
+        <path d="M150 190c0-46 30-80 90-80s90 34 90 80" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".3"/>
+
+        <path d="M60 90c10 4 16 10 20 20" stroke="var(--color-gold)" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/>
+        <path d="M410 260c-8 6-12 14-12 24" stroke="var(--color-gold)" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/>
+        <circle cx="430" cy="200" r="4" fill="var(--color-gold)"/>
+        <circle cx="46" cy="230" r="4" fill="var(--color-clay)"/>
+        <circle cx="420" cy="330" r="3" fill="var(--color-gold)" opacity=".7"/>
+        <circle cx="55" cy="140" r="3" fill="var(--color-clay)" opacity=".7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="feature-strip reveal-on-scroll">
+  <div class="container feature-grid">
+    @for (f of features; track f.key) {
+      <div class="feature-pill">
+        <span class="feature-icon">
+          @switch (f.icon) {
+            @case ('truck') {
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 7h11v9H3zM14 11h4l3 3v2h-7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="7.5" cy="18" r="1.8" fill="currentColor"/>
+                <circle cx="17.5" cy="18" r="1.8" fill="currentColor"/>
+              </svg>
+            }
+            @case ('shield') {
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+            @case ('tag') {
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M11 3h6a2 2 0 0 1 2 2v6L11 20l-8-8L11 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="15" cy="8" r="1.6" fill="currentColor"/>
+              </svg>
+            }
+            @case ('return') {
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 12a8 8 0 1 0 3-6.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M4 3v4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            }
+          }
+        </span>
+        <span class="feature-text">
+          <strong>{{ ('home.features.' + f.key + '.title') | translate }}</strong>
+          <small>{{ ('home.features.' + f.key + '.desc') | translate }}</small>
+        </span>
+      </div>
+    }
+  </div>
+</section>
+
+<section class="categories reveal-on-scroll">
+  <div class="container">
+    <h2>{{ 'home.shopByCategory' | translate }}</h2>
+    <div class="category-grid">
+      @for (c of categories; track c.key) {
+<a class="category-card tint-{{ c.tint }}" routerLink="/products" [queryParams]="{ category: backendCategory(c.key) }">          <span class="category-icon">
+            <img [src]="'/categories/' + c.icon + '.jpg'" [alt]="('home.categories.' + c.key) | translate" loading="lazy" />
+          </span>
+          <span class="category-name">{{ ('home.categories.' + c.key) | translate }}</span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="deals reveal-on-scroll">
+  <div class="container">
+    <div class="section-head">
+      <h2>{{ 'home.weeklyDeals' | translate }}</h2>
+      <p>{{ 'home.weeklyDealsSub' | translate }}</p>
+    </div>
+
+    <div class="product-grid">
+      @for (p of weeklyDeals; track p.id) {
+        <article class="product-card">
+          <a class="product-media" [routerLink]="['/product', p.id]">
+            <img [src]="p.image" [alt]="productName(p.name)" loading="lazy" />
+          </a>
+          <div class="product-body">
+            <h3><a [routerLink]="['/product', p.id]" class="product-title-link">{{ productName(p.name) }}</a></h3>
+            <p class="unit">{{ p.unit }}</p>
+            <div class="price-row">
+              <span class="price-group">
+                <span class="price">{{ p.price }} {{ 'home.currency' | translate }}</span>
+              </span>
+              <button
+                class="btn-round"
+                type="button"
+                [attr.aria-label]="('home.addToCart' | translate) + ' ' + productName(p.name)"
+                (click)="addToCart(p)"
+              >+</button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="view-all">
+      <a class="btn btn-outline" routerLink="/products">
+        {{ 'home.browseAll' | translate }}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="how-bulk reveal-on-scroll">
+  <div class="container how-bulk-grid">
+    <div class="how-it-works">
+      <h2>{{ 'home.howToOrder' | translate }}</h2>
+      <div class="steps">
+        @for (s of steps; track s.key) {
+          <div class="step">
+            <span class="step-number">{{ ('home.steps.' + s.key + '.number') | translate }}</span>
+            <h4>{{ ('home.steps.' + s.key + '.title') | translate }}</h4>
+            <p>{{ ('home.steps.' + s.key + '.desc') | translate }}</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="bulk-card">
+      <h3>{{ 'home.haveRestaurant' | translate }}</h3>
+      <p>{{ 'home.haveRestaurantDesc' | translate }}</p>
+      <a class="btn btn-gold" routerLink="/contact">{{ 'home.requestQuote' | translate }}</a>
+    </div>
+  </div>
+</section>
+
+<section class="app-banner reveal-on-scroll">
+  <div class="container app-banner-inner">
+    <div class="app-copy">
+      <h2>{{ 'home.takeMarket' | translate }}<br><span class="accent">{{ 'home.inYourPocket' | translate }}</span></h2>
+      <p>{{ 'home.appDesc' | translate }}</p>
+      <div class="store-badges">
+        <a class="store-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4v12M7 12l5 5 5-5M5 21h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{ 'home.googlePlay' | translate }}
+        </a>
+        <a class="store-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4v12M7 12l5 5 5-5M5 21h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{ 'home.appStore' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <div class="app-mock" aria-hidden="true">
+      <div class="app-mock-notch"></div>
+      <div class="app-mock-header">{{ 'home.appName' | translate }}</div>
+      <div class="app-mock-row">
+        <span>{{ productName(weeklyDeals[0]?.name) }}</span>
+        <strong>{{ weeklyDeals[0]?.price }} {{ 'home.currency' | translate }}</strong>
+      </div>
+      <div class="app-mock-row">
+        <span>{{ productName(weeklyDeals[1]?.name) }}</span>
+        <strong>{{ weeklyDeals[1]?.price }} {{ 'home.currency' | translate }}</strong>
+      </div>
+      <div class="app-mock-cta">{{ 'home.checkout' | translate }}</div>
+    </div>
+  </div>
+</section>

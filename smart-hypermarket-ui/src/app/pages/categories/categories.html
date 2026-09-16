@@ -1,0 +1,34 @@
+﻿<section class="categories-page">
+  <div class="container">
+    <div class="page-head">
+      <h1>{{ 'categories.title' | translate }}</h1>
+      <p>{{ 'categories.subtitle' | translate }}</p>
+    </div>
+
+    <div class="category-grid">
+      @for (c of categories(); track c; let i = $index) {
+        <button
+          class="category-card tint-{{ meta(c).tint }}"
+          [class.featured]="i === 0"
+          [class.wide]="i > 0 && (i + 1) % 5 === 0"
+          type="button"
+          (click)="goToProducts(c)"
+        >
+          <span class="card-blob" aria-hidden="true"></span>
+          <span class="category-icon">
+            <img [src]="'/categories/' + meta(c).icon + '.jpg'" [alt]="label(c)" loading="lazy" />
+          </span>
+          <span class="category-text">
+            <span class="category-name">{{ label(c) }}</span>
+            <span class="category-cta">
+              {{ 'categories.viewProducts' | translate }}
+              <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </span>
+        </button>
+      }
+    </div>
+  </div>
+</section>

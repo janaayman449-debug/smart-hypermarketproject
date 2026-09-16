@@ -1,0 +1,62 @@
+<div class="panel-header">
+  <h3>{{ 'admin.returns' | translate }}</h3>
+</div>
+
+@if (orderService.returns().length === 0) {
+  <p>{{ 'admin.noReturns' | translate }}</p>
+}
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>{{ 'admin.order' | translate }}</th>
+      <th>{{ 'admin.customer' | translate }}</th>
+      <th>{{ 'admin.product' | translate }}</th>
+      <th>{{ 'admin.reason' | translate }}</th>
+      <th>{{ 'admin.refund' | translate }}</th>
+      <th>{{ 'admin.date' | translate }}</th>
+      <th>{{ 'admin.status' | translate }}</th>
+      <th>{{ 'admin.updateStatus' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (r of orderService.returns(); track r.id) {
+      <tr>
+        <td>{{ r.orderNumber }}</td>
+        <td>{{ r.customerName }}</td>
+        <td>{{ r.productName }}</td>
+        <td>{{ r.reason }}</td>
+        <td>{{ r.refundAmount }} EGP</td>
+        <td>{{ r.createdAt | date:'short' }}</td>
+        <td>
+          @switch (r.status) {
+            @case ('Refunded') {
+              <span class="stock-pill stock-ok">{{ 'admin.refunded' | translate }}</span>
+            }
+            @case ('Rejected') {
+              <span class="stock-pill stock-out">{{ 'admin.rejected' | translate }}</span>
+            }
+            @case ('Approved') {
+              <span class="stock-pill stock-low">{{ 'admin.approved' | translate }}</span>
+            }
+            @default {
+              <span class="stock-pill stock-low">{{ 'admin.pending' | translate }}</span>
+            }
+          }
+        </td>
+        <td>
+          <select
+            class="field-input"
+            [ngModel]="r.status"
+            (ngModelChange)="changeReturnStatus(r.id, $event)"
+          >
+            <option value="Pending">{{ 'admin.pending' | translate }}</option>
+            <option value="Approved">{{ 'admin.approved' | translate }}</option>
+            <option value="Rejected">{{ 'admin.rejected' | translate }}</option>
+            <option value="Refunded">{{ 'admin.refunded' | translate }}</option>
+          </select>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
