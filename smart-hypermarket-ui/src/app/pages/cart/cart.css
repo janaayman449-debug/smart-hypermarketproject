@@ -1,187 +1,305 @@
-﻿.cart-page {
-  padding-block: 40px 60px;
+/* ==========================================================================
+   Cart
+   ========================================================================== */
+
+:host {
+  display: block;
 }
 
-.cart-page h1 {
-  font-size: clamp(26px, 3vw, 34px);
-  color: var(--color-forest-deep);
-  margin-bottom: 28px;
+.cart-page {
+  background: var(--cream);
+  padding-block: var(--section-y);
 }
 
-.empty-cart {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  padding-block: 80px;
-  text-align: center;
-  color: var(--color-ink-soft);
+.cart-count-line {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-mute);
 }
 
 .cart-layout {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.85fr);
+  gap: clamp(20px, 2.4vw, 38px);
   align-items: start;
 }
+
+/* --- Items --------------------------------------------------------------- */
 
 .cart-items {
   display: flex;
   flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.cart-items-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: 16px;
+  padding-block: 14px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-items-head-count {
+  color: var(--gold);
 }
 
 .cart-row {
   display: grid;
-  grid-template-columns: 80px 1fr auto auto;
+  grid-template-columns: var(--thumb-size) minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 16px;
-  background: var(--color-white);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
-  padding: 14px;
+  gap: clamp(14px, 1.5vw, 22px);
+  padding-block: clamp(15px, 1.6vw, 20px);
+  border-bottom: 1px solid var(--line-soft);
 }
 
-.cart-row img {
-  display: block;
-  width: 80px;
-  height: 80px;
-  min-width: 80px;
-  max-width: 80px;
-  object-fit: contain;
-  background: var(--color-cream-dim);
-  border-radius: var(--radius-md);
+/* Shared .thumb handles the box, padding and contain fit. */
+.cart-row-media {
+  border: 1px solid var(--line-soft);
+}
+
+.cart-row-media img {
+  transition: transform 0.8s var(--ease);
+}
+
+.cart-row-media:hover img {
+  transform: scale(1.06);
+}
+
+.cart-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cart-row-category {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--gold);
 }
 
 .cart-row-body h3 {
-  font-size: 15px;
-  color: var(--color-forest-deep);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--forest-deep);
+  /* Long names wrap instead of pushing the price/stepper out of the row. */
+  overflow-wrap: anywhere;
+}
+
+.cart-row-body h3 a {
+  transition: color var(--dur) var(--ease);
+}
+
+.cart-row-body h3 a:hover {
+  color: var(--gold);
 }
 
 .cart-row-body .unit {
-  font-size: 12.5px;
-  color: var(--color-ink-soft);
-  margin-top: 2px;
+  font-size: var(--fs-sm);
+  color: var(--ink-mute);
 }
 
 .remove-link {
-  background: none;
-  border: none;
-  color: var(--color-clay);
-  font-size: 12.5px;
-  cursor: pointer;
-  margin-top: 6px;
-  padding: 0;
-}
-
-.qty-control {
-  display: flex;
+  align-self: flex-start;
+  margin-top: 4px;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  min-height: 32px;
+  padding: 4px 12px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: #9a4a3c;
+  background: rgba(154, 74, 60, 0.06);
+  border: 1px solid rgba(154, 74, 60, 0.22);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
-.qty-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--color-line);
-  background: var(--color-cream-dim);
-  cursor: pointer;
-  font-size: 15px;
+.remove-link:hover {
+  color: #fff;
+  background: #9a4a3c;
+  border-color: #9a4a3c;
 }
 
 .cart-row-price {
-  text-align: end;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 2px;
+  gap: 4px;
+  white-space: nowrap;
 }
 
 .cart-row-price strong {
-  font-size: 15.5px;
-  color: var(--color-forest-deep);
+  font-family: var(--font-display);
+  font-size: var(--fs-price-lg);
+  font-weight: 500;
+  color: var(--forest-deep);
+  font-variant-numeric: tabular-nums;
 }
 
-.old-price {
-  font-size: 12px;
-  color: var(--color-ink-soft);
-  text-decoration: line-through;
-}
-
-/* Summary sidebar --------------------------------- */
+/* --- Summary ------------------------------------------------------------- */
 
 .cart-summary {
-  background: var(--color-white);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
-  padding: 22px;
   position: sticky;
-  top: 90px;
+  top: calc(var(--nav-h) + 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: clamp(20px, 2.2vw, 28px);
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .cart-summary h3 {
-  font-size: 16px;
-  color: var(--color-forest-deep);
-  margin-bottom: 16px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--forest);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .coupon-box {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .coupon-input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--color-line);
-  font-size: 13.5px;
-  background: var(--color-cream-dim);
+  flex: 1 1 130px;
+  min-width: 0;
+  min-height: var(--control-h);
+  padding: 11px 13px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  transition: border-color var(--dur) var(--ease);
+}
+
+.coupon-input:focus {
+  outline: none;
+  border-color: var(--forest);
+}
+
+.coupon-box .btn {
+  flex: 0 0 auto;
+}
+
+.coupon-active,
+.rewards-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: #8a6d2f;
+}
+
+.coupon-active .dot,
+.rewards-note .dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  margin-top: 0.55em;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.coupon-active code {
+  letter-spacing: 0.12em;
 }
 
 .coupon-message {
-  font-size: 12.5px;
-  color: var(--color-clay);
-  margin-bottom: 14px;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: #9a4a3c;
 }
 
 .coupon-message.success {
-  color: var(--color-forest);
+  color: var(--forest);
 }
 
 .summary-row {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  font-size: 14px;
-  color: var(--color-ink-soft);
-  margin-bottom: 10px;
+  gap: 12px;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.summary-row strong {
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .summary-row.discount strong {
-  color: var(--color-clay);
+  color: #8a6d2f;
+}
+
+.summary-rule {
+  height: 1px;
+  border: 0;
+  margin: 6px 0;
+  background: var(--line);
 }
 
 .summary-row.total {
-  font-size: 16px;
-  color: var(--color-forest-deep);
-  padding-top: 10px;
-  border-top: 1px dashed var(--color-line);
-  margin-top: 6px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--forest);
 }
 
 .summary-row.total strong {
-  font-size: 19px;
+  font-family: var(--font-display);
+  font-size: var(--fs-price-lg);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--forest-deep);
 }
 
-.full-width {
-  width: 100%;
-  justify-content: center;
-  margin-top: 16px;
+.cart-summary .btn {
+  margin-top: 10px;
 }
 
-@media (max-width: 900px) {
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1000px) {
   .cart-layout {
     grid-template-columns: 1fr;
   }
@@ -189,17 +307,55 @@
   .cart-summary {
     position: static;
   }
+}
 
+/* The qty stepper is ~122px (3 x --stepper-btn + borders), wider than the
+   --thumb-size track, so it gets its own band underneath. Column 2 is `auto`
+   so it absorbs the stepper and the price column (minmax(0, 1fr)) is the only
+   flexible one - that is what keeps a long Arabic name from forcing
+   horizontal overflow at 320-460px. */
+@media (max-width: 700px) {
   .cart-row {
-    grid-template-columns: 60px 1fr;
+    /* minmax(96px, 1fr) on the price track guarantees the nowrap price can
+       never be squeezed smaller than it needs, so the name is what wraps. */
+    grid-template-columns: var(--thumb-size) auto minmax(96px, 1fr);
     grid-template-areas:
-      "img body"
-      "img qty"
-      "img price";
+      'media body body'
+      'qty   qty  price';
+    align-items: start;
+    gap: 12px;
   }
 
-  .cart-row img { grid-area: img; }
-  .cart-row-body { grid-area: body; }
-  .qty-control { grid-area: qty; }
-  .cart-row-price { grid-area: price; align-items: flex-start; text-align: start; }
+  .cart-row-media {
+    grid-area: media;
+  }
+
+  .cart-row-body {
+    grid-area: body;
+  }
+
+  .cart-row .qty-control {
+    grid-area: qty;
+    align-self: center;
+  }
+
+  .cart-row-price {
+    grid-area: price;
+    align-items: flex-end;
+    align-self: center;
+  }
+}
+
+@media (max-width: 460px) {
+  :root {
+    --thumb-size: 88px;
+  }
+
+  .cart-row {
+    gap: 12px;
+  }
+
+  .cart-row-price strong {
+    font-size: var(--fs-price);
+  }
 }

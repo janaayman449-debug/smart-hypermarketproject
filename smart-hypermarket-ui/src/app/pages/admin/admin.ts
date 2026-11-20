@@ -7,6 +7,7 @@ import { AuthService, AdminUserSummary } from '../../services/auth.service';
 import { ProductService } from '../../services/product.service';
 import { OrderService } from '../../services/order.service';
 import { Product, ReturnStatus } from '../../models/hypermarket.models';
+import { API_URL } from '../../config/api.config';
 
 interface ContactMessage {
   _id: string;
@@ -18,7 +19,7 @@ interface ContactMessage {
   createdAt: string;
 }
 
-const MESSAGES_API = 'http://localhost:5000/api/messages';
+const MESSAGES_API = `${API_URL}/messages`;
 
 type AdminTab = 'products' | 'orders' | 'customers' | 'analytics' | 'messages' | 'returns';
 type OrderStatusFilter = 'All' | 'Placed' | 'OutForDelivery' | 'Delivered' | 'Cancelled';

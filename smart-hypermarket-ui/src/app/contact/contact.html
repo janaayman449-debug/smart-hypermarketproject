@@ -25,7 +25,7 @@
         <i class="fa-solid fa-phone"></i>
         <div>
           <strong>{{ 'contact.callUs' | translate }}</strong>
-          <span>+20 100 000 0000</span>
+          <span>{{ 'contact.phoneValue' | translate }}</span>
         </div>
       </div>
 
@@ -33,7 +33,7 @@
         <i class="fa-solid fa-envelope"></i>
         <div>
           <strong>{{ 'contact.email' | translate }}</strong>
-          <span>support&#64;smarthyper.com</span>
+          <span>{{ 'contact.emailValue' | translate }}</span>
         </div>
       </div>
 
@@ -43,12 +43,6 @@
           <strong>{{ 'contact.workingHours' | translate }}</strong>
           <span>{{ 'contact.workingHoursValue' | translate }}</span>
         </div>
-      </div>
-
-      <div class="contact-socials">
-        <a aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
       </div>
     </div>
 
@@ -62,7 +56,7 @@
       }
 
       @if (errorMsg()) {
-        <div class="contact-success-banner" style="background:#fbeaea;border-color:#e3b3b3;color:#7a1f1f;">
+        <div class="contact-success-banner is-error">
           <i class="fa-solid fa-circle-exclamation"></i>
           {{ 'contact.errorMsg' | translate }}
         </div>

@@ -18,7 +18,17 @@ export class LanguageService {
     this.lang.update((current) => (current === 'ar' ? 'en' : 'ar'));
   }
 
-  t(key: string): string {
+  /**
+   * Resolves a dotted key for the active language.
+   *
+   * `params` performs a simple {{name}} substitution on the resolved string,
+   * so a single translation entry can carry a dynamic value (a file size, a
+   * count) without needing a key per possible number.
+   *
+   * If the key is missing, the key itself is returned so the UI degrades to a
+   * readable identifier instead of blanking out.
+   */
+  t(key: string, params?: Record<string, string | number>): string {
     const currentLang = this.lang();
     const keys = key.split('.');
     let result: any = translations[currentLang];
@@ -30,6 +40,17 @@ export class LanguageService {
         return key;
       }
     }
-    return result || key;
+
+    if (typeof result !== 'string') {
+      return key;
+    }
+
+    if (!params) {
+      return result;
+    }
+
+    return result.replace(/\{\{\s*(\w+)\s*\}\}/g, (match, name) =>
+      params[name] !== undefined ? String(params[name]) : match
+    );
   }
 }

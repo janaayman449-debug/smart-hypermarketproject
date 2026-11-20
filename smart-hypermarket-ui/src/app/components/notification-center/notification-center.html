@@ -1,0 +1,61 @@
+<div class="notif-center">
+  <button
+    class="notif-bell"
+    type="button"
+    (click)="toggle()"
+    [attr.aria-label]="'notifications.title' | translate"
+    [attr.aria-expanded]="open()"
+  >
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12 3.6a5.4 5.4 0 0 0-5.4 5.4v3.3L5 15.4h14l-1.6-3.1V9A5.4 5.4 0 0 0 12 3.6Z"
+        stroke="currentColor"
+        stroke-width="1.7"
+        stroke-linejoin="round"
+      />
+      <path d="M9.8 18.1a2.3 2.3 0 0 0 4.4 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+    </svg>
+
+    @if (hasUnread) {
+      <span class="notif-badge">{{ notifications.unreadCount() }}</span>
+    }
+  </button>
+
+  @if (open()) {
+    <div class="notif-panel" role="dialog" [attr.aria-label]="'notifications.title' | translate">
+      <header class="notif-head">
+        <h3>{{ 'notifications.title' | translate }}</h3>
+        @if (hasUnread) {
+          <button type="button" class="notif-mark-all" (click)="markAllRead()">
+            {{ 'notifications.markAllRead' | translate }}
+          </button>
+        }
+      </header>
+
+      @if (notifications.loading()) {
+        <p class="notif-state">{{ 'notifications.loading' | translate }}</p>
+      } @else if (list.length === 0) {
+        <p class="notif-state">{{ 'notifications.empty' | translate }}</p>
+      } @else {
+        <ul class="notif-list">
+          @for (n of list; track n._id) {
+            <li>
+              <button
+                type="button"
+                class="notif-item"
+                [class.unread]="!n.read"
+                (click)="openItem(n)"
+              >
+                <span class="notif-dot" [class.visible]="!n.read" aria-hidden="true"></span>
+                <span class="notif-body">
+                  <span class="notif-text">{{ text(n) }}</span>
+                  <span class="notif-time">{{ timeAgo(n.createdAt) }}</span>
+                </span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</div>

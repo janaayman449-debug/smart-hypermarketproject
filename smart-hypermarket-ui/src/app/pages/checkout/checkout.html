@@ -5,6 +5,9 @@
         <div class="success-icon">✓</div>
         <h1>{{ 'checkout.successTitle' | translate }}</h1>
         <p>{{ 'checkout.successSub' | translate }} <strong>{{ order.orderNumber }}</strong></p>
+        @if (order.paymentMethod === 'InstaPay') {
+          <p class="success-note">{{ 'checkout.successPendingReview' | translate }}</p>
+        }
         <p class="redirect-note">{{ 'checkout.redirecting' | translate }}</p>
       </div>
     } @else if (cart.items().length === 0) {
@@ -13,7 +16,15 @@
         <a class="btn btn-primary" routerLink="/products">{{ 'cart.continueShopping' | translate }}</a>
       </div>
     } @else {
-      <h1>{{ 'checkout.title' | translate }}</h1>
+      <div class="page-head">
+        <div class="crumbs">
+          <a routerLink="/cart">{{ 'nav.cart' | translate }}</a>
+          <span aria-hidden="true">/</span>
+          <b>{{ 'checkout.title' | translate }}</b>
+        </div>
+        <h1>{{ 'checkout.title' | translate }}</h1>
+        <p>{{ cart.itemCount() }} &middot; {{ 'products.resultsCount' | translate }}</p>
+      </div>
 
       <form #checkoutForm="ngForm" (ngSubmit)="placeOrder(checkoutForm)" class="checkout-layout" novalidate>
         <div class="checkout-form">
@@ -143,37 +154,161 @@
           <div class="form-card">
             <h3>{{ 'checkout.paymentMethod' | translate }}</h3>
 
+            <!-- Cash on Delivery and InstaPay. Card payments are removed. -->
             <div class="payment-options">
-              <label class="payment-option" [class.selected]="paymentMethod === 'Cash'">
-                <input type="radio" name="paymentMethod" value="Cash" [(ngModel)]="paymentMethod" />
-                <span>{{ 'checkout.cashOnDelivery' | translate }}</span>
+              <label class="payment-option" [class.selected]="isCash">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Cash"
+                  [checked]="isCash"
+                  (change)="paymentMethod = 'Cash'; proofError.set(''); removeProof()"
+                />
+                <span>{{ 'checkout.cashLabel' | translate }}</span>
               </label>
-              <label class="payment-option" [class.selected]="paymentMethod === 'Card'">
-                <input type="radio" name="paymentMethod" value="Card" [(ngModel)]="paymentMethod" />
-                <span>{{ 'checkout.creditCard' | translate }}</span>
+
+              <label class="payment-option" [class.selected]="isInstapay">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="InstaPay"
+                  [checked]="isInstapay"
+                  (change)="paymentMethod = 'InstaPay'; proofError.set('')"
+                />
+                <span>{{ 'checkout.instapay.label' | translate }}</span>
               </label>
             </div>
 
-            @if (paymentMethod === 'Card') {
-              <div class="form-group" style="margin-top: 14px;">
-                <label for="cardNumber">{{ 'checkout.cardNumber' | translate }}</label>
-                <input
-                  id="cardNumber"
-                  type="text"
-                  name="cardNumber"
-                  [(ngModel)]="cardNumber"
-                  #cardField="ngModel"
-                  [required]="paymentMethod === 'Card'"
-                  minlength="12"
-                  maxlength="19"
-                  placeholder="•••• •••• •••• ••••"
-                  class="form-input"
-                  [class.invalid]="submitted() && cardField.invalid"
-                />
-                @if (submitted() && cardField.invalid) {
-                  <span class="error-text">{{ 'checkout.invalidCard' | translate }}</span>
-                }
+            <!-- Cash on Delivery: nothing further is required. -->
+            @if (isCash) {
+              <p class="cash-note">{{ 'checkout.cash.note' | translate }}</p>
+            }
+
+            <!-- InstaPay: instructions + mandatory proof screenshot. -->
+            @if (isInstapay) {
+              <h4 class="instapay-title">{{ 'checkout.instapay.title' | translate }}</h4>
+
+              @if (payment.loading()) {
+              <div class="proof-loading">{{ 'checkout.instapay.loading' | translate }}</div>
+            } @else if (instapay && instapay.configured) {
+              <!-- Receiving account, served from backend configuration. -->
+              <div class="instapay-box">
+                <dl class="instapay-details">
+                  @if (instapay.accountName) {
+                    <div class="instapay-row">
+                      <dt>{{ 'checkout.instapay.accountName' | translate }}</dt>
+                      <dd>{{ instapay.accountName }}</dd>
+                    </div>
+                  }
+                  @if (instapay.bankName) {
+                    <div class="instapay-row">
+                      <dt>{{ 'checkout.instapay.bankName' | translate }}</dt>
+                      <dd>{{ instapay.bankName }}</dd>
+                    </div>
+                  }
+                  @if (instapay.accountNumber) {
+                    <div class="instapay-row">
+                      <dt>{{ 'checkout.instapay.accountNumber' | translate }}</dt>
+                      <dd class="copyable">
+                        <span>{{ instapay.accountNumber }}</span>
+                        <button
+                          type="button"
+                          class="copy-btn"
+                          (click)="copyInstapayDetails()"
+                          [attr.aria-label]="'checkout.instapay.copy' | translate"
+                        >
+                          {{ (copied() ? 'checkout.instapay.copied' : 'checkout.instapay.copy') | translate }}
+                        </button>
+                      </dd>
+                    </div>
+                  }
+                  @if (instapay.accountId) {
+                    <div class="instapay-row">
+                      <dt>{{ 'checkout.instapay.accountId' | translate }}</dt>
+                      <dd class="copyable">
+                        <span>{{ instapay.accountId }}</span>
+                        <button
+                          type="button"
+                          class="copy-btn"
+                          (click)="copyInstapayDetails()"
+                          [attr.aria-label]="'checkout.instapay.copy' | translate"
+                        >
+                          {{ (copied() ? 'checkout.instapay.copied' : 'checkout.instapay.copy') | translate }}
+                        </button>
+                      </dd>
+                    </div>
+                  }
+                </dl>
+
+                <p class="instapay-note">{{ 'checkout.instapay.note' | translate }}</p>
               </div>
+            } @else {
+              <div class="proof-error" role="alert">
+                {{ 'checkout.instapay.notConfigured' | translate }}
+              </div>
+            }
+
+            <!-- Instructions and the upload control render for InstaPay whether
+                 or not an account is configured, so the flow is always usable. -->
+            <p class="instapay-intro">{{ 'checkout.instapay.intro' | translate }}</p>
+
+            <!-- Transfer reference: optional, speeds up matching. -->
+              <div class="form-group">
+                <label for="proofReference">
+                  {{ 'checkout.proof.referenceLabel' | translate }}
+                  <span class="optional-tag">{{ 'common.optional' | translate }}</span>
+                </label>
+                <input
+                  id="proofReference"
+                  type="text"
+                  name="proofReference"
+                  [(ngModel)]="proofReference"
+                  maxlength="64"
+                  class="form-input"
+                  [placeholder]="'checkout.proof.referencePlaceholder' | translate"
+                />
+              </div>
+
+              <!-- Transfer screenshot: required. -->
+              <div class="form-group">
+                <label for="proofInput">{{ 'checkout.proof.uploadLabel' | translate }}</label>
+
+                @if (proofPreview()) {
+                  <div class="proof-preview">
+                    <img [src]="proofPreview()" [alt]="'checkout.proof.preview' | translate" />
+                    <div class="proof-preview-actions">
+                      <span class="proof-file-name">{{ proofFile?.name }}</span>
+                      <button type="button" class="btn btn-outline btn-sm" (click)="removeProof()">
+                        {{ 'checkout.proof.remove' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                } @else {
+                  <label class="proof-dropzone" for="proofInput">
+                    <span class="proof-dropzone-icon" aria-hidden="true">&#128247;</span>
+                    <span class="proof-dropzone-title">{{ 'checkout.proof.choose' | translate }}</span>
+                    <span class="proof-dropzone-hint">
+                      {{ 'checkout.proof.hint' | translate: { max: maxProofMb } }}
+                    </span>
+                  </label>
+                }
+
+                <input
+                  #proofInput
+                  id="proofInput"
+                  type="file"
+                  name="proofInput"
+                  class="proof-file-input"
+                  accept="image/jpeg,image/png,image/webp"
+                  (change)="onProofSelected($event)"
+                />
+
+                <p class="proof-helper">{{ 'checkout.proof.helper' | translate }}</p>
+              </div>
+            }
+
+            @if (proofError()) {
+              <div class="proof-error" role="alert">{{ proofError() | translate }}</div>
             }
           </div>
         </div>
@@ -185,10 +320,12 @@
           <div class="summary-items">
             @for (item of cart.items(); track item.product.id) {
               <div class="summary-item">
-                <img [src]="item.product.image" [alt]="item.product.name" />
+                <span class="thumb">
+                  <img [src]="item.product.image" [alt]="productName(item.product.name)" loading="lazy" />
+                </span>
                 <div class="summary-item-body">
-                  <span class="name">{{ item.product.name }}</span>
-                  <span class="qty">× {{ item.quantity }}</span>
+                  <span class="name">{{ productName(item.product.name) }}</span>
+                  <span class="qty">&times; {{ item.quantity }}</span>
                 </div>
                 <span class="price">{{ item.finalPrice }} {{ 'home.currency' | translate }}</span>
               </div>
@@ -226,9 +363,22 @@
             <strong>{{ cart.grandTotal() }} {{ 'home.currency' | translate }}</strong>
           </div>
 
-          <button type="submit" class="btn btn-primary full-width">
-            {{ 'checkout.placeOrder' | translate }}
+          <!-- Uploading is disabled until a screenshot is attached, so the
+               order can never be placed without evidence of the transfer. -->
+          <button
+            type="submit"
+            class="btn btn-primary full-width"
+            [disabled]="proofUploading() || !canSubmit"
+          >
+            {{
+              (proofUploading()
+                ? 'checkout.submitting'
+                : 'checkout.placeOrder'
+              ) | translate
+            }}
           </button>
+
+          <p class="submit-hint">{{ 'checkout.proof.requiredHint' | translate }}</p>
         </aside>
       </form>
     }

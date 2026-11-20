@@ -1,6 +1,16 @@
 ﻿<section class="cart-page">
   <div class="container">
-    <h1>{{ 'cart.title' | translate }}</h1>
+    <div class="page-head">
+      <div class="crumbs">
+        <a routerLink="/">{{ 'nav.home' | translate }}</a>
+        <span aria-hidden="true">/</span>
+        <b>{{ 'cart.title' | translate }}</b>
+      </div>
+      <h1>{{ 'cart.title' | translate }}</h1>
+      <p class="cart-count-line">
+        {{ cart.itemCount() }} &middot; {{ 'products.resultsCount' | translate }}
+      </p>
+    </div>
 
     @if (cart.items().length === 0) {
       <div class="empty-cart">
@@ -10,21 +20,36 @@
     } @else {
       <div class="cart-layout">
         <div class="cart-items">
+          <div class="cart-items-head">
+            <span>{{ 'cart.title' | translate }}</span>
+            <span class="cart-items-head-count">{{ cart.itemCount() }}</span>
+          </div>
+
           @for (item of cart.items(); track item.product.id) {
             <div class="cart-row">
-              <img [src]="item.product.image" [alt]="productName(item.product.name)" />
+              <a class="cart-row-media" [routerLink]="['/product', item.product.id]">
+                <img [src]="item.product.image" [alt]="productName(item.product.name)" loading="lazy" />
+              </a>
+
               <div class="cart-row-body">
-                <h3>{{ productName(item.product.name) }}</h3>
-                <p class="unit">{{ item.product.unit }}</p>
+                <span class="cart-row-category">{{ categoryLabel(item.product.category) }}</span>
+                <h3>
+                  <a [routerLink]="['/product', item.product.id]">{{ productName(item.product.name) }}</a>
+                </h3>
+                @if (item.product.unit) {
+                  <p class="unit">{{ item.product.unit }}</p>
+                }
                 <button type="button" class="remove-link" (click)="remove(item.product.id)">
                   {{ 'cart.remove' | translate }}
                 </button>
               </div>
+
               <div class="qty-control">
-                <button type="button" class="qty-btn" (click)="decrease(item.product.id, item.quantity)">−</button>
+                <button type="button" class="qty-btn" (click)="decrease(item.product.id, item.quantity)" aria-label="-">−</button>
                 <span>{{ item.quantity }}</span>
-                <button type="button" class="qty-btn" (click)="increase(item.product.id, item.quantity)">+</button>
+                <button type="button" class="qty-btn" (click)="increase(item.product.id, item.quantity)" aria-label="+">+</button>
               </div>
+
               <div class="cart-row-price">
                 <strong>{{ item.finalPrice }} {{ 'home.currency' | translate }}</strong>
                 @if (item.categoryDiscountAmount > 0) {
@@ -56,6 +81,13 @@
               </button>
             }
           </div>
+
+          @if (cart.appliedCoupon()) {
+            <p class="coupon-active">
+              <span class="dot" aria-hidden="true"></span>
+              <code>{{ cart.appliedCoupon() }}</code>
+            </p>
+          }
 
           @if (couponMessage()) {
             <p class="coupon-message" [class.success]="couponSuccess()">{{ couponMessage() }}</p>
@@ -91,10 +123,18 @@
             </strong>
           </div>
 
+          <hr class="summary-rule" />
+
           <div class="summary-row total">
             <span>{{ 'cart.total' | translate }}</span>
             <strong>{{ cart.grandTotal() }} {{ 'home.currency' | translate }}</strong>
           </div>
+
+          @if (pointsNote(); as note) {
+            <p class="rewards-note">
+              <span class="dot" aria-hidden="true"></span>{{ note }}
+            </p>
+          }
 
           <a class="btn btn-primary full-width" routerLink="/checkout">
             {{ 'cart.checkout' | translate }}

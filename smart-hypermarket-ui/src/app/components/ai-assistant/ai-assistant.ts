@@ -1,10 +1,11 @@
-﻿import { Component, inject, signal, effect } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChatMessage, Product } from '../../models/hypermarket.models';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
+import { ProductCard } from '../../shared/product-card/product-card';
 import { LanguageService } from '../../services/language.service';
 
 type Intent =
@@ -24,7 +25,7 @@ interface SuggestionChip {
 @Component({
   selector: 'app-ai-assistant',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProductCard],
   templateUrl: './ai-assistant.html',
   styleUrl: './ai-assistant.css'
 })
@@ -41,15 +42,15 @@ export class AiAssistant {
 
   private lastSuggestionMap = new Map<string, Intent>();
 
-  /** بيفضل true لحد ما المستخدم يكتب أو يدوس أول رسالة، عشان نعرف نجدد رسالة الترحيب بأمان لو اللغة اتغيرت. */
+  /** Ø¨ÙŠÙØ¶Ù„ true Ù„Ø­Ø¯ Ù…Ø§ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙŠÙƒØªØ¨ Ø£Ùˆ ÙŠØ¯ÙˆØ³ Ø£ÙˆÙ„ Ø±Ø³Ø§Ù„Ø©ØŒ Ø¹Ø´Ø§Ù† Ù†Ø¹Ø±Ù Ù†Ø¬Ø¯Ø¯ Ø±Ø³Ø§Ù„Ø© Ø§Ù„ØªØ±Ø­ÙŠØ¨ Ø¨Ø£Ù…Ø§Ù† Ù„Ùˆ Ø§Ù„Ù„ØºØ© Ø§ØªØºÙŠØ±Øª. */
   private conversationStarted = false;
 
   constructor() {
     this.setGreetingMessage();
 
-    // كل ما اللغة تتغيّر، لو المستخدم لسه مبدأش المحادثة، نعيد رسالة الترحيب باللغة الجديدة
+    // ÙƒÙ„ Ù…Ø§ Ø§Ù„Ù„ØºØ© ØªØªØºÙŠÙ‘Ø±ØŒ Ù„Ùˆ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù„Ø³Ù‡ Ù…Ø¨Ø¯Ø£Ø´ Ø§Ù„Ù…Ø­Ø§Ø¯Ø«Ø©ØŒ Ù†Ø¹ÙŠØ¯ Ø±Ø³Ø§Ù„Ø© Ø§Ù„ØªØ±Ø­ÙŠØ¨ Ø¨Ø§Ù„Ù„ØºØ© Ø§Ù„Ø¬Ø¯ÙŠØ¯Ø©
     effect(() => {
-      this.language.lang(); // نقرأ القيمة عشان الـ effect يتابعها
+      this.language.lang(); // Ù†Ù‚Ø±Ø£ Ø§Ù„Ù‚ÙŠÙ…Ø© Ø¹Ø´Ø§Ù† Ø§Ù„Ù€ effect ÙŠØªØ§Ø¨Ø¹Ù‡Ø§
       if (!this.conversationStarted) {
         this.setGreetingMessage();
       }
@@ -150,11 +151,6 @@ export class AiAssistant {
     }, 700);
   }
 
-  addSuggestedProduct(product: Product) {
-    this.cartService.addToCart(product, 1);
-    this.cartService.openDrawer();
-  }
-
   private respondWithIntent(intent: Intent): void {
     let reply = '';
     let suggestionChips: SuggestionChip[] = [];
@@ -228,15 +224,15 @@ export class AiAssistant {
     const q = query.toLowerCase();
     let intent: Intent = 'fallback';
 
-    if (q.includes('discount') || q.includes('offer') || q.includes('coupon') || q.includes('خصم') || q.includes('عرض') || q.includes('كوبون')) {
+    if (q.includes('discount') || q.includes('offer') || q.includes('coupon') || q.includes('Ø®ØµÙ…') || q.includes('Ø¹Ø±Ø¶') || q.includes('ÙƒÙˆØ¨ÙˆÙ†')) {
       intent = 'discounts';
-    } else if (q.includes('recipe') || q.includes('dinner') || q.includes('lunch') || q.includes('طبخ') || q.includes('وصفة') || q.includes('عشا')) {
+    } else if (q.includes('recipe') || q.includes('dinner') || q.includes('lunch') || q.includes('Ø·Ø¨Ø®') || q.includes('ÙˆØµÙØ©') || q.includes('Ø¹Ø´Ø§')) {
       intent = 'recipe';
-    } else if (q.includes('delivery') || q.includes('time') || q.includes('fast') || q.includes('توصيل') || q.includes('وقت')) {
+    } else if (q.includes('delivery') || q.includes('time') || q.includes('fast') || q.includes('ØªÙˆØµÙŠÙ„') || q.includes('ÙˆÙ‚Øª')) {
       intent = 'delivery';
-    } else if (q.includes('return') || q.includes('refund') || q.includes('استرجاع') || q.includes('استرداد')) {
+    } else if (q.includes('return') || q.includes('refund') || q.includes('Ø§Ø³ØªØ±Ø¬Ø§Ø¹') || q.includes('Ø§Ø³ØªØ±Ø¯Ø§Ø¯')) {
       intent = 'returns';
-    } else if (q.includes('track') || q.includes('order') || q.includes('طلب') || q.includes('تتبع')) {
+    } else if (q.includes('track') || q.includes('order') || q.includes('Ø·Ù„Ø¨') || q.includes('ØªØªØ¨Ø¹')) {
       intent = 'tracking';
     }
 

@@ -4,8 +4,9 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { TranslatePipe } from '../pipes/translate';
+import { API_URL } from '../config/api.config';
 
-const API_BASE = 'http://localhost:5000/api/messages';
+const API_BASE = `${API_URL}/messages`;
 
 @Component({
   selector: 'app-contact',

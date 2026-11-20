@@ -28,6 +28,20 @@ export class AdminOrders {
     this.orderStatusFilter.set(status);
   }
 
+  /** Maps a real order status onto the shared admin pill palette. */
+  statusClass(status: string): string {
+    switch (status) {
+      case 'Delivered':
+        return 'is-green';
+      case 'OutForDelivery':
+        return 'is-gold';
+      case 'Cancelled':
+        return 'is-red';
+      default:
+        return '';
+    }
+  }
+
   async changeOrderStatus(
     orderId: string,
     status: 'Placed' | 'OutForDelivery' | 'Delivered' | 'Cancelled'

@@ -1,4 +1,10 @@
 node_modules/
 .env
+backups/
 uploads/products/*
 !uploads/products/.gitkeep
+
+# InstaPay payment proofs (customer bank transfers). These are sensitive
+# financial documents: never commit them, and they are intentionally kept
+# outside the publicly served uploads/ folder.
+private-uploads/

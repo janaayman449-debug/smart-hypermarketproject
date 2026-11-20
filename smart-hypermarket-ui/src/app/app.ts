@@ -18,5 +18,6 @@ import { AiAssistant } from './components/ai-assistant/ai-assistant';
     <app-ai-assistant />
     <app-footer />
   `,
+  styleUrl: './app.css',
 })
 export class App {}

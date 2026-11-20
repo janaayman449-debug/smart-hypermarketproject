@@ -10,7 +10,7 @@
   <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Cancelled'" (click)="setOrderFilter('Cancelled')">{{ 'admin.cancelled' | translate }}</div>
 </div>
 
-<table class="admin-table">
+<div class="table-scroll"><table class="admin-table">
   <thead>
     <tr>
       <th>{{ 'admin.orderId' | translate }}</th>
@@ -27,7 +27,7 @@
         <td>{{ order.orderNumber }}</td>
         <td>{{ order.customerName }}</td>
         <td>{{ order.createdAt | date:'short' }}</td>
-        <td><span class="status-pill">{{ order.orderStatus }}</span></td>
+        <td><span class="status-pill" [ngClass]="statusClass(order.orderStatus)">{{ order.orderStatus }}</span></td>
         <td>{{ order.grandTotal }} EGP</td>
         <td>
           <select class="field-input" [ngModel]="order.orderStatus" (ngModelChange)="changeOrderStatus(order.id, $event)">
@@ -40,4 +40,4 @@
       </tr>
     }
   </tbody>
-</table>
+</table></div>

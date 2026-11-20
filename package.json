@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "seed:products": "node scripts/seed-products.js"
   },
   "dependencies": {
     "@ngx-translate/core": "^18.0.0",
@@ -15,6 +16,7 @@
     "cors": "^2.8.6",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "google-auth-library": "^11.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^6.0.0",
     "mongoose": "^8.12.1",

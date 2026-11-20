@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="rewards-value-strip">
-          <span>{{ 'profile.worth' | translate }} <strong>{{ ((authService.currentUser()?.points || 0) * 0.1) | number:'1.0-0' }} EGP</strong> {{ 'profile.walletCredit' | translate }}</span>
+          <span>{{ 'profile.worth' | translate }} <strong>{{ ((authService.currentUser()?.points || 0) * 0.1) | number:'1.0-0' }} {{ 'home.currency' | translate }}</strong> {{ 'profile.walletCredit' | translate }}</span>
         </div>
       </div>
 
@@ -125,16 +125,12 @@
         }
       </form>
 
-      <!-- Payment Preferences Preview -->
-      <div class="saved-payment-preview">
-        <h4>{{ 'profile.savedPayment' | translate }}</h4>
-        <div class="payment-card-mini">
-          <i class="fa-brands fa-cc-visa"></i>
-          <div>
-            <strong>{{ 'profile.visaEnding' | translate }} •••• 4242</strong>
-            <small>{{ 'profile.expires' | translate }} 12/28 • {{ 'profile.defaultPayment' | translate }}</small>
-          </div>
-          <span class="active-badge">{{ 'profile.active' | translate }}</span>
+      <!-- Payment note: methods are chosen at checkout, nothing is stored here -->
+      <div class="payment-note">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <h4>{{ 'profile.paymentNoteTitle' | translate }}</h4>
+          <p>{{ 'profile.paymentNoteBody' | translate }}</p>
         </div>
       </div>
     </div>

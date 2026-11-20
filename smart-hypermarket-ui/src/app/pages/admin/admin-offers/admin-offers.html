@@ -18,13 +18,13 @@
       </div>
       <div class="form-field">
         <label>{{ 'admin.offerTitle' | translate }}</label>
-        <input type="text" class="field-input" [ngModel]="newOffer().title" (ngModelChange)="newOffer.set({ ...newOffer(), title: $event })" placeholder="خصم 10% على كل السلة" />
+        <input type="text" class="field-input" [ngModel]="newOffer().title" (ngModelChange)="newOffer.set({ ...newOffer(), title: $event })" placeholder="Ø®ØµÙ… 10% Ø¹Ù„Ù‰ ÙƒÙ„ Ø§Ù„Ø³Ù„Ø©" />
       </div>
     </div>
 
     <div class="form-field">
       <label>{{ 'admin.description' | translate }}</label>
-      <input type="text" class="field-input" [ngModel]="newOffer().description" (ngModelChange)="newOffer.set({ ...newOffer(), description: $event })" placeholder="صالح لأول طلب أو عميل جديد" />
+      <input type="text" class="field-input" [ngModel]="newOffer().description" (ngModelChange)="newOffer.set({ ...newOffer(), description: $event })" placeholder="ØµØ§Ù„Ø­ Ù„Ø£ÙˆÙ„ Ø·Ù„Ø¨ Ø£Ùˆ Ø¹Ù…ÙŠÙ„ Ø¬Ø¯ÙŠØ¯" />
     </div>
 
     <div class="add-form-row">
@@ -61,7 +61,7 @@
   </div>
 }
 
-<table class="admin-table">
+<div class="table-scroll"><table class="admin-table">
   <thead>
     <tr>
       <th>{{ 'admin.offerCode' | translate }}</th>
@@ -101,4 +101,4 @@
       </tr>
     }
   </tbody>
-</table>
+</table></div>

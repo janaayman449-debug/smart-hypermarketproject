@@ -2,6 +2,8 @@
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from './auth.service';
+import { getCategoryImage } from './category-meta';
+import { API_URL, UPLOADS_URL } from '../config/api.config';
 
 export interface WishlistItem {
   id: number | string;
@@ -14,8 +16,8 @@ export interface WishlistItem {
   [key: string]: any;
 }
 
-const API_BASE = 'http://localhost:5000/api/wishlist';
-const IMAGE_BASE = 'http://localhost:5000/uploads/';
+const API_BASE = `${API_URL}/wishlist`;
+const IMAGE_BASE = UPLOADS_URL;
 
 interface BackendWishlistItem {
   _id: string;
@@ -53,7 +55,7 @@ export class WishlistService {
       price: p.price,
       category: p.category,
       stock: p.stock,
-      image: p.image ? IMAGE_BASE + p.image : 'https://picsum.photos/seed/' + p._id + '/400/400',
+      image: p.image ? IMAGE_BASE + p.image : getCategoryImage(p.category),
     };
   }
 

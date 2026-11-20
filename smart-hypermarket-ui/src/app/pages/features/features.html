@@ -1,1 +1,58 @@
-<p>features works!</p>
+<section class="features-page">
+  <!-- ============================== HERO ============================== -->
+  <header class="features-hero">
+    <div class="container">
+      <span class="eyebrow is-invert no-rule">{{ 'nav.features' | translate }}</span>
+      <h1>{{ 'featuresPage.heroTitle' | translate }}</h1>
+      <p>{{ 'featuresPage.heroSub' | translate }}</p>
+    </div>
+  </header>
+
+  <!-- ============================ PILLARS ============================ -->
+  <section class="features-pillars">
+    <div class="container">
+      <div class="pillars-grid">
+        @for (f of features; track f.titleKey) {
+          <article class="pillar">
+            <span class="pillar-icon">
+              <i class="fa-solid {{ f.icon }}"></i>
+            </span>
+            <h2>{{ f.titleKey | translate }}</h2>
+            <p>{{ f.descKey | translate }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== STEPS ============================== -->
+  <section class="features-steps">
+    <div class="container">
+      <div class="section-head text-center">
+        <span class="eyebrow no-rule">{{ 'featuresPage.howTitle' | translate }}</span>
+        <h2>{{ 'featuresPage.howSub' | translate }}</h2>
+      </div>
+
+      <ol class="steps-list">
+        @for (s of steps; track s.number) {
+          <li class="step">
+            <span class="step-number">{{ s.number }}</span>
+            <h3>{{ s.titleKey | translate }}</h3>
+            <p>{{ s.descKey | translate }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================== CTA ============================== -->
+  <section class="features-cta">
+    <div class="container cta-inner">
+      <div>
+        <h2>{{ 'featuresPage.ctaTitle' | translate }}</h2>
+        <p>{{ 'featuresPage.ctaSub' | translate }}</p>
+      </div>
+      <a class="btn btn-gold" routerLink="/products">{{ 'featuresPage.ctaButton' | translate }}</a>
+    </div>
+  </section>
+</section>

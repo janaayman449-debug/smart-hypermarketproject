@@ -1,10 +1,14 @@
 import Order from "../models/order.js";
 import Cart from "../models/cart.js";
 import User from "../models/user.js";
+import { events } from "../services/notification.service.js";
+import { isInstapayConfigured } from "../config/instapay.js";
 
 function generateOrderNumber() {
   return "SH-" + Math.floor(10000 + Math.random() * 89999);
 }
+
+const ALLOWED_PAYMENT_METHODS = ["Cash", "InstaPay"];
 
 export const createOrder = async (req, res) => {
   try {
@@ -25,14 +29,34 @@ export const createOrder = async (req, res) => {
       deliveryFee,
       grandTotal,
       paymentMethod,
-      paymentStatus,
-      cardLastFour,
     } = req.body;
+
+    // paymentStatus is intentionally NOT read from the request body. A client
+    // could otherwise POST { paymentStatus: "Paid" } and mark its own order as
+    // paid without transferring anything. The status is always derived here
+    // and advanced later only by /api/payments/proof/:orderId (to
+    // ProofSubmitted) and the admin review endpoint (to Verified/Rejected).
 
     if (!customerName || !customerEmail || !customerPhone || !deliveryAddress || !deliveryCity) {
       return res.status(400).json({
         status: "fail",
         message: "Missing required customer/delivery fields",
+      });
+    }
+
+    if (!ALLOWED_PAYMENT_METHODS.includes(paymentMethod)) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Unsupported payment method",
+      });
+    }
+
+    // Fail fast rather than accepting an InstaPay order that can never be
+    // settled because no receiving account has been configured.
+    if (paymentMethod === "InstaPay" && !isInstapayConfigured()) {
+      return res.status(503).json({
+        status: "fail",
+        message: "InstaPay is not configured yet. Please contact support.",
       });
     }
 
@@ -88,12 +112,13 @@ const orderItems = validCartItems.map((i) => ({
   pointsRedeemed,
   pointsDiscountTotal,
   deliveryFee,
-  grandTotal,
-  paymentMethod,
-  paymentStatus,
-  cardLastFour,
-  orderStatus: "Placed",
-});
+    grandTotal,
+    paymentMethod,
+    // Every new order starts as Pending. Proof submission and admin review are
+    // the only things that move this forward.
+    paymentStatus: "Pending",
+    orderStatus: "Placed",
+  });
 
 for (const item of validCartItems) {
   item.product.stock -= item.quantity;
@@ -102,6 +127,11 @@ for (const item of validCartItems) {
 
 cart.items = [];
 await cart.save();
+
+    // Tells the customer their order landed, and for InstaPay, reminds them
+    // that the transfer proof still has to be uploaded. Not awaited so a slow
+    // notification insert can never fail an otherwise successful checkout.
+    void events.orderPlaced(order);
 
     res.status(201).json({
       status: "success",
@@ -197,6 +227,10 @@ export const updateOrderStatus = async (req, res) => {
         await user.save();
       }
     }
+
+    // Keeps the customer informed as the order progresses, and tells them
+    // about a cancellation.
+    void events.orderStatusChanged(order, status);
 
     res.status(200).json({
       status: "success",

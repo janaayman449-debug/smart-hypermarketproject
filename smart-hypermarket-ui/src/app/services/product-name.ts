@@ -21,7 +21,7 @@ export function getProductName(rawName: string, lang: AppLang | string): string 
   const englishPart = parts.find((p) => !ARABIC_REGEX.test(p));
 
   if (lang === 'ar') {
-    return arabicPart ?? rawName;
+    return arabicPart ?? parts[0];
   }
-  return englishPart ?? rawName;
+  return englishPart ?? parts[0];
 }

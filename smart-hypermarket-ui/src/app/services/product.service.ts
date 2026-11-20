@@ -2,9 +2,11 @@
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Product } from '../models/hypermarket.models';
+import { getCategoryImage } from './category-meta';
+import { API_URL, UPLOADS_URL } from '../config/api.config';
 
-const API_BASE = 'http://localhost:5000/api/products';
-const IMAGE_BASE = 'http://localhost:5000/uploads/';
+const API_BASE = `${API_URL}/products`;
+const IMAGE_BASE = UPLOADS_URL;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -49,7 +51,7 @@ export class ProductService {
       price: p.price,
       stock: p.stock,
       description: p.description,
-      image: p.image ? IMAGE_BASE + p.image : 'https://picsum.photos/seed/' + p._id + '/400/400',
+      image: p.image ? IMAGE_BASE + p.image : getCategoryImage(p.category),
     } as Product;
   }
 

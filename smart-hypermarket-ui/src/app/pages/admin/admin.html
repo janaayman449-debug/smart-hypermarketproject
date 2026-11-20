@@ -1,4 +1,4 @@
-﻿<div class="admin-nav-links" style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
+<div class="admin-nav-links" style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
   <div class="admin-link-item" [class.tab-active]="activeTab() === 'products'" (click)="setTab('products')">Products</div>
   <div class="admin-link-item" [class.tab-active]="activeTab() === 'orders'" (click)="setTab('orders')">Orders</div>
   <div class="admin-link-item" [class.tab-active]="activeTab() === 'customers'" (click)="setTab('customers')">Customers</div>
@@ -124,7 +124,7 @@
   }
   <!-- ⬆️ لحد هنا -->
 
-  <table class="admin-table">
+  <div class="table-scroll"><table class="admin-table">
     <thead>
       <tr>
         <th>Image</th>
@@ -156,7 +156,7 @@
         </tr>
       }
     </tbody>
-  </table>
+  </table></div>
 }
 
 <!-- Orders tab -->
@@ -173,7 +173,7 @@
     <div class="filter-pill" [class.filter-active]="orderStatusFilter() === 'Cancelled'" (click)="setOrderFilter('Cancelled')">Cancelled</div>
   </div>
 
-  <table class="admin-table">
+  <div class="table-scroll"><table class="admin-table">
     <thead>
       <tr>
         <th>Order ID</th>
@@ -207,7 +207,7 @@
         </tr>
       }
     </tbody>
-  </table>
+  </table></div>
 }
 
 <!-- Customers tab -->
@@ -217,7 +217,7 @@
     <h3>Customers</h3>
   </div>
 
-  <table class="admin-table">
+  <div class="table-scroll"><table class="admin-table">
     <thead>
       <tr>
         <th>Name</th>
@@ -238,7 +238,7 @@
         </tr>
       }
     </tbody>
-  </table>
+  </table></div>
 }
 <!-- Analytics tab -->
 @if (activeTab() === 'analytics') {
@@ -284,7 +284,7 @@
     <p>لا توجد رسائل حتى الآن.</p>
   }
 
-  <table class="admin-table">
+  <div class="table-scroll"><table class="admin-table">
     <thead>
       <tr>
         <th>Status</th>
@@ -319,7 +319,7 @@
         </tr>
       }
     </tbody>
-  </table>
+  </table></div>
 }
 
 <!-- Returns tab -->
@@ -332,7 +332,7 @@
     <p>لا توجد طلبات إرجاع حتى الآن.</p>
   }
 
-  <table class="admin-table">
+  <div class="table-scroll"><table class="admin-table">
     <thead>
       <tr>
         <th>Order</th>
@@ -374,5 +374,5 @@
         </tr>
       }
     </tbody>
-  </table>
+  </table></div>
 }

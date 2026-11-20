@@ -11,12 +11,13 @@ import { LanguageService } from '../../services/language.service';
 import { TranslatePipe } from '../../pipes/translate';
 import { getCategoryLabel } from '../../services/category-meta';
 import { getProductName } from '../../services/product-name';
+import { ProductCard } from '../../shared/product-card/product-card';
 import { Product } from '../../models/hypermarket.models';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslatePipe],
+  imports: [CommonModule, RouterLink, TranslatePipe, ProductCard],
   templateUrl: './product-details.html',
   styleUrl: './product-details.css',
 })
@@ -50,7 +51,7 @@ export class ProductDetails {
   });
 
   constructor() {
-    // كل ما اليوزر ينتقل لمنتج تاني (من "منتجات مشابهة" مثلاً)، رجّع عداد الكمية لـ 1
+    // ÙƒÙ„ Ù…Ø§ Ø§Ù„ÙŠÙˆØ²Ø± ÙŠÙ†ØªÙ‚Ù„ Ù„Ù…Ù†ØªØ¬ ØªØ§Ù†ÙŠ (Ù…Ù† "Ù…Ù†ØªØ¬Ø§Øª Ù…Ø´Ø§Ø¨Ù‡Ø©" Ù…Ø«Ù„Ø§Ù‹)ØŒ Ø±Ø¬Ù‘Ø¹ Ø¹Ø¯Ø§Ø¯ Ø§Ù„ÙƒÙ…ÙŠØ© Ù„Ù€ 1
     effect(() => {
       this.product();
       this.quantity.set(1);

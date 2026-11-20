@@ -3,9 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Product, CartItem } from '../models/hypermarket.models';
 import { AuthService } from './auth.service';
+import { getCategoryImage } from './category-meta';
+import { API_URL, UPLOADS_URL } from '../config/api.config';
 
-const API_BASE = 'http://localhost:5000/api/cart';
-const IMAGE_BASE = 'http://localhost:5000/uploads/';
+const API_BASE = `${API_URL}/cart`;
+const IMAGE_BASE = UPLOADS_URL;
 
 const VALID_COUPONS: Record<string, number> = {
   WELCOME10: 0.10,
@@ -77,7 +79,7 @@ export class CartService {
           category: p.category,
           stock: p.stock,
           description: p.description,
-          image: p.image ? IMAGE_BASE + p.image : 'https://picsum.photos/seed/' + p._id + '/400/400',
+          image: p.image ? IMAGE_BASE + p.image : getCategoryImage(p.category),
         } as Product;
 
         const itemSubtotal = product.price * i.quantity;

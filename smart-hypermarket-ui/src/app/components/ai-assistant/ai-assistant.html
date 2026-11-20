@@ -1,4 +1,4 @@
-﻿<!-- Floating AI Trigger Bubble -->
+<!-- Floating AI Trigger Bubble -->
 <div class="ai-assistant-wrapper">
   @if (!isOpen()) {
     <button class="ai-floating-btn" (click)="toggleChat()" title="Talk with SmartBot AI Assistant">
@@ -24,7 +24,6 @@
           <div>
             <div class="bot-title-row">
               <h4>{{ translate('aiAssistant.headerTitle') }}</h4>
-              <span class="ai-badge">AI 2.0</span>
             </div>
             <p class="bot-sub">{{ translate('aiAssistant.headerSub') }}</p>
           </div>
@@ -50,14 +49,12 @@
               <!-- Optional Product Card Attachment from AI -->
               @if (msg.productCard) {
                 <div class="ai-product-recommendation">
-                  <img [src]="msg.productCard.image" [alt]="msg.productCard.name" />
-                  <div class="rec-info">
-                    <strong>{{ msg.productCard.name }}</strong>
-                    <span>{{ msg.productCard.price }} {{ translate('home.currency') }}</span>
-                    <button class="btn-quick-add" (click)="addSuggestedProduct(msg.productCard)">
-                      <i class="fa-solid fa-plus"></i> {{ translate('aiAssistant.addToBasket') }}
-                    </button>
-                  </div>
+                  <app-product-card
+                    [product]="msg.productCard"
+                    size="mini"
+                    [actionLabel]="translate('aiAssistant.addToBasket')"
+                    [openDrawerOnAdd]="true"
+                  />
                 </div>
               }
             </div>

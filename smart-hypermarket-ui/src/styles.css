@@ -1,39 +1,126 @@
 ﻿/* ==========================================================================
-   Smart Hypermarket – Design tokens & global styles
+   Smart Hypermarket — Editorial Design System
+   Forest green / cream / warm white, restrained gold accents.
    ========================================================================== */
 
 :root {
-  /* Colors */
-  --color-forest: #16302a;
-  --color-forest-deep: #0f231e;
-  --color-moss: #3e6b4f;
-  --color-gold: #c9962c;
-  --color-gold-soft: #e7c987;
-  --color-clay: #b65c38;
-  --color-cream: #fbf7ee;
-  --color-cream-dim: #f3ecdd;
-  --color-sage: #eaf0e3;
-  --color-ink: #22281f;
-  --color-ink-soft: #52584c;
-  --color-line: #dcd4bf;
-  --color-white: #ffffff;
+  /* --- Brand palette ----------------------------------------------------- */
+  --forest: #1f3a2e;
+  --forest-deep: #162a21;
+  --cream: #f7f4ed;
+  --warm-white: #fcfbf7;
+  --sage: #a8b7a3;
+  --gold: #c9a45c;
 
-  /* Type */
-  --font-display: 'Fraunces', 'Georgia', serif;
-  --font-body: 'Manrope', 'Segoe UI', sans-serif;
+  /* --- Derived neutrals -------------------------------------------------- */
+  --ink: #1b2620;
+  --ink-soft: #4e5b53;
+  --ink-mute: #8a958d;
+  --cream-deep: #efeade;
+  --white: #ffffff;
 
-  /* Layout */
+  /* --- Lines & shadows --------------------------------------------------- */
+  --line: rgba(31, 58, 46, 0.14);
+  --line-soft: rgba(31, 58, 46, 0.07);
+  --line-strong: rgba(31, 58, 46, 0.26);
+  --line-invert: rgba(247, 244, 237, 0.18);
+  --line-invert-soft: rgba(247, 244, 237, 0.09);
+  --shadow-xs: 0 1px 2px rgba(22, 42, 33, 0.04);
+  --shadow-sm: 0 6px 18px -12px rgba(22, 42, 33, 0.2);
+  --shadow-md: 0 18px 40px -26px rgba(22, 42, 33, 0.32);
+  --shadow-lg: 0 32px 70px -40px rgba(22, 42, 33, 0.4);
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-label: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+
+  /* --- Layout ------------------------------------------------------------ */
   --page-max: 1240px;
-  --radius-sm: 10px;
-  --radius-md: 18px;
-  --radius-lg: 28px;
-  --shadow-card: 0 12px 30px -14px rgba(22, 48, 42, 0.28);
+  --page-narrow: 760px;
+  --gutter: 40px;
+  --section-y: clamp(52px, 5vw, 84px);
+  --nav-h: 76px;
+
+  /* --- Type scale --------------------------------------------------------
+     --fs-micro is the hard floor for any visible text. Anything smaller
+     stops being legible once letter-spacing is applied, and 0.12em+ of
+     tracking on a 9-10px label is what makes Arabic look "eaten".
+     Do not introduce font sizes below --fs-micro. */
+  --fs-h1: clamp(2.15rem, 3.6vw, 3.375rem);
+  --fs-h2: clamp(1.6rem, 2.6vw, 2.375rem);
+  --fs-h3: clamp(1.1rem, 1.3vw, 1.3125rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.9375rem;
+  --fs-label: 0.75rem;
+  --fs-micro: 0.6875rem;
+  --tracking-label: 0.12em;
+
+  /* --- Prices ----------------------------------------------------------- */
+  --fs-price: 1.0625rem;
+  --fs-price-lg: 1.3rem;
+
+  /* --- Controls --------------------------------------------------------- */
+  --control-h: 44px;
+  --stepper-btn: 40px;
+  --tap: 44px;
+
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  /* --- Product card system ------------------------------------------------
+     One token set drives the shared <app-product-card> so every product
+     surface (home deals, catalogue, offers, wishlist, PDP related, AI) stays
+     in the same rhythm.
+
+     These are deliberately in px, not rem: the card is a locked design unit
+     that must not drift when the global root font size changes. */
+  --pc-surface: #ffffff;
+  --pc-border: rgba(31, 58, 46, 0.1);
+  --pc-border-hover: rgba(31, 58, 46, 0.22);
+  --pc-radius: 10px;
+  --pc-media-ratio: 4 / 3;
+  --pc-media-max: 220px;
+  --pc-media-bg: linear-gradient(180deg, #f6f3ec 0%, #efeade 100%);
+  --pc-media-pad: 12px;
+  --pc-img-zoom: 1.045;
+  --pc-fav-size: 30px;
+  --pc-fav-offset: 9px;
+  --pc-fav-bg: rgba(255, 255, 255, 0.9);
+  --pc-body-gap: 4px;
+  --pc-body-pad: 13px 14px 14px;
+  --pc-cat-size: 8.5px;
+  --pc-title-size: 15px;
+  --pc-unit-size: 11.25px;
+  --pc-price-size: 17.8px;
+  --pc-currency-size: 9.4px;
+  --pc-old-size: 10.3px;
+  --pc-foot-pad: 11px;
+  --pc-action-size: 36px;
+
+  /* --- Line-item thumbnails (cart / checkout / order lines) -------------
+     Shared with the product card so small product images across the app
+     look like one family. `contain` keeps grocery packaging uncropped and
+     undistorted regardless of the source image's aspect ratio. */
+  --thumb-bg: linear-gradient(180deg, #f6f3ec 0%, #efeade 100%);
+  --thumb-pad: 9px;
+  --thumb-size: 112px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 0.28s;
 
   color-scheme: light;
 }
 
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -49,30 +136,57 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  background: var(--color-cream);
-  color: var(--color-ink);
+  background: var(--cream);
+  color: var(--ink);
   font-family: var(--font-body);
+  /* 16px is the design root. Nearly every size in this app is expressed in
+     rem, so this single value sets the scale of the entire interface. Do not
+     lower it — a smaller root shrinks the whole UI at once. The product card
+     opts out by using px (see --pc-* tokens). */
   font-size: 16px;
-  line-height: 1.6;
+  font-weight: 400;
+  line-height: 1.68;
+  letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: var(--font-display);
-  color: var(--color-forest-deep);
+  color: var(--forest-deep);
+  font-weight: 500;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.22;
+  letter-spacing: -0.005em;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
 }
 
 p {
   margin: 0;
+  color: var(--ink-soft);
 }
 
-ul {
+ul,
+ol {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -85,126 +199,1183 @@ a {
 
 button {
   font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
   cursor: pointer;
 }
 
-img, svg {
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+img,
+svg {
   display: block;
   max-width: 100%;
 }
 
-:focus-visible {
-  outline: 3px solid var(--color-gold);
-  outline-offset: 2px;
+code {
+  font-family: 'SFMono-Regular', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  letter-spacing: 0.08em;
 }
 
-/* Layout helpers -------------------------------------------------------- */
+::selection {
+  background: var(--forest);
+  color: var(--cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Layout primitives
+   ========================================================================== */
 
 .container {
   width: 100%;
   max-width: var(--page-max);
   margin-inline: auto;
-  padding-inline: 24px;
+  padding-inline: var(--gutter);
 }
 
+.container-narrow {
+  max-width: var(--page-narrow);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section-tight {
+  padding-block: clamp(36px, 3.6vw, 56px);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-bottom: clamp(24px, 2.4vw, 38px);
+}
+
+.section-head.is-split {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.section-head p,
+.section-subtitle {
+  max-width: 58ch;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-center .section-head p,
+.text-center .section-subtitle {
+  margin-inline: auto;
+}
+
+/* Small uppercase label ------------------------------------------------- */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-moss);
-  letter-spacing: 0.02em;
+  gap: 9px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
 }
 
-/* Buttons ---------------------------------------------------------------- */
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+  flex: none;
+}
+
+.eyebrow.no-rule::before {
+  display: none;
+}
+
+.eyebrow.is-gold {
+  color: var(--gold);
+}
+.eyebrow.is-invert {
+  color: var(--sage);
+}
+.eyebrow.is-invert::before {
+  background: var(--gold);
+}
+
+/* Editorial page header (inner pages) ------------------------------------ */
+.page-head {
+  padding-block: clamp(36px, 4vw, 56px) clamp(22px, 2.2vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-head h1 {
+  max-width: 22ch;
+}
+
+.page-head p {
+  max-width: 60ch;
+  color: var(--ink-soft);
+  font-size: var(--fs-body);
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.crumbs a {
+  transition: color var(--dur) var(--ease);
+}
+
+.crumbs a:hover {
+  color: var(--forest);
+}
+
+.crumbs b {
+  font-weight: 500;
+  color: var(--forest);
+}
+
+/* Hairline rules --------------------------------------------------------- */
+.rule {
+  height: 1px;
+  border: 0;
+  margin: 0;
+  background: var(--line);
+}
+
+/* ==========================================================================
+   Arabic (RTL) typography normalisation
+
+   The label/eyebrow treatment in this design uses wide `letter-spacing` +
+   `text-transform: uppercase`, which is correct for Latin but actively harms
+   Arabic: tracking separates the cursive letter joins and Arabic has no
+   uppercase, so the transform is a no-op at best. These rules neutralise both
+   for RTL only, so the same components stay legible in both languages.
+
+   The `html[dir='rtl']` prefix is deliberate: it outranks the extra attribute
+   selector Angular's emulated encapsulation adds to component styles, so these
+   rules also win inside <app-product-card>. */
+html[dir='rtl'] .main-nav a,
+html[dir='rtl'] .logo-rest,
+html[dir='rtl'] .eyebrow,
+html[dir='rtl'] .crumbs,
+html[dir='rtl'] .results-count,
+html[dir='rtl'] .account-role-tag,
+html[dir='rtl'] .lang-btn,
+html[dir='rtl'] .count-badge,
+html[dir='rtl'] .m-idx,
+html[dir='rtl'] .mobile-utility a,
+html[dir='rtl'] .admin-mobile-title,
+html[dir='rtl'] .stock-badge,
+html[dir='rtl'] .pc-cat,
+html[dir='rtl'] .btn,
+html[dir='rtl'] .link-arrow,
+html[dir='rtl'] .badge,
+html[dir='rtl'] .cart-count-line,
+html[dir='rtl'] .cart-items-head,
+html[dir='rtl'] .cart-row-category,
+html[dir='rtl'] .remove-link,
+html[dir='rtl'] .cart-summary h3,
+html[dir='rtl'] .summary-row.total,
+html[dir='rtl'] .form-card h3,
+html[dir='rtl'] .form-group label,
+html[dir='rtl'] .checkout-summary h3,
+html[dir='rtl'] .redirect-note,
+html[dir='rtl'] .empty-checkout p {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Arabic needs a touch more leading than Latin at the same size. */
+html[dir='rtl'] .main-nav a,
+html[dir='rtl'] .btn,
+html[dir='rtl'] .pc-cat,
+html[dir='rtl'] .m-idx,
+html[dir='rtl'] .cart-row-category,
+html[dir='rtl'] .form-group label {
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Product card system
+   The single card design lives in shared/product-card. This section only
+   provides the grid rhythm every product listing reuses.
+   ========================================================================== */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 1.5vw, 22px);
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .product-grid {
+    gap: 12px;
+  }
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 26px;
-  border-radius: 999px;
-  border: 1.5px solid transparent;
-  font-weight: 700;
-  font-size: 15px;
-  transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+  gap: 8px;
+  min-height: var(--control-h);
+  padding: 10px 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
   white-space: nowrap;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
 }
 
-.btn:active {
-  transform: translateY(1px);
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
 }
 
 .btn-primary {
-  background: var(--color-forest);
-  color: var(--color-cream);
-  box-shadow: 0 10px 24px -10px rgba(22, 48, 42, 0.55);
+  background: var(--forest);
+  color: var(--cream);
 }
 
-.btn-primary:hover {
-  background: var(--color-forest-deep);
+.btn-primary:hover:not(:disabled) {
+  background: var(--forest-deep);
 }
 
 .btn-outline {
   background: transparent;
-  border-color: var(--color-forest);
-  color: var(--color-forest);
+  border-color: var(--line-strong);
+  color: var(--forest);
 }
 
-.btn-outline:hover {
-  background: var(--color-sage);
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--forest);
+  background: rgba(31, 58, 46, 0.04);
+}
+
+.btn-outline-invert {
+  background: transparent;
+  border-color: var(--line-invert);
+  color: var(--cream);
+}
+
+.btn-outline-invert:hover:not(:disabled) {
+  border-color: var(--cream);
 }
 
 .btn-gold {
-  background: var(--color-gold);
-  color: var(--color-forest-deep);
+  background: var(--gold);
+  color: var(--forest-deep);
 }
 
-.btn-gold:hover {
-  background: var(--color-gold-soft);
+.btn-gold:hover:not(:disabled) {
+  background: #b8954f;
 }
 
+.btn-light {
+  background: var(--warm-white);
+  color: var(--forest-deep);
+}
+
+.btn-light:hover:not(:disabled) {
+  background: var(--cream);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Text-only editorial link ---------------------------------------------- */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-label);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--forest);
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--line-strong);
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.link-arrow svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--dur) var(--ease);
+}
+
+.link-arrow:hover {
+  border-color: var(--forest);
+}
+
+.link-arrow:hover svg {
+  transform: translateX(3px);
+}
+
+[dir='rtl'] .link-arrow:hover svg {
+  transform: translateX(-3px);
+}
+
+.link-arrow.is-invert {
+  color: var(--cream);
+  border-color: var(--line-invert);
+}
+
+.link-arrow.is-invert:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* Round icon button ------------------------------------------------------ */
 .btn-round {
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  border: 1px solid var(--line);
   border-radius: 50%;
-  padding: 0;
-  background: var(--color-forest);
-  color: var(--color-cream);
-  flex-shrink: 0;
+  background: var(--warm-white);
+  color: var(--forest);
+  font-size: 0.95rem;
+  line-height: 1;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
 }
 
 .btn-round:hover {
-  background: var(--color-forest-deep);
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--cream);
 }
+
+.btn-round svg {
+  width: 15px;
+  height: 15px;
+}
+
+.btn-round.added {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--forest-deep);
+}
+
 /* ==========================================================================
-   Compatibility tokens for pre-built pages (Admin, Cart, Offers, AI Assistant...)
+   Forms & primitives
+   ========================================================================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label,
+.form-field label,
+.form-group label {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.field-input,
+.form-input,
+.field input,
+.field select,
+.field textarea,
+.form-input,
+select.select-field {
+  width: 100%;
+  padding: 10px 13px;
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: 0.875rem;
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.field-input:focus,
+.form-input:focus {
+  outline: none;
+  border-color: var(--forest);
+}
+
+.field input:disabled,
+.field-input:disabled {
+  background: var(--cream-deep);
+  color: var(--ink-mute);
+  cursor: not-allowed;
+}
+
+.field input.invalid,
+.field-input.invalid {
+  border-color: #9a4a3c;
+}
+
+.error-msg,
+.field-error,
+.form-error {
+  font-size: 0.8rem;
+  color: #9a4a3c;
+}
+
+.note-text,
+.hint {
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-row,
+.form-row-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 620px) {
+  .form-row,
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Badges & pills --------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-label);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--cream-deep);
+  color: var(--forest);
+}
+
+.badge.is-gold {
+  background: rgba(201, 164, 92, 0.16);
+  color: #8a6d2f;
+}
+
+.badge.is-forest {
+  background: var(--forest);
+  color: var(--cream);
+}
+
+.badge.is-invert {
+  background: rgba(247, 244, 237, 0.1);
+  color: var(--cream);
+  border: 1px solid var(--line-invert-soft);
+}
+
+.old-price {
+  color: var(--ink-mute);
+  text-decoration: line-through;
+  font-size: 0.85em;
+}
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-label);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a6d2f;
+  background: rgba(201, 164, 92, 0.16);
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+}
+
+.stock-badge.in-stock {
+  color: var(--forest);
+  background: rgba(168, 183, 163, 0.3);
+}
+
+.stock-badge.out-stock {
+  color: #9a4a3c;
+  background: rgba(154, 74, 60, 0.1);
+}
+
+/* Price ------------------------------------------------------------------ */
+.price {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--forest-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Line-item thumbnail
+
+   The single source of truth for small product images outside the product
+   card (cart rows, checkout summary, order lines). Square box, `contain`
+   fit, padded like the card media so nothing is cropped or stretched, and
+   the same gradient as the card so the family reads as one system.
+   ========================================================================== */
+
+.thumb {
+  --thumb-size: 112px;
+  position: relative;
+  display: block;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  flex: none;
+  padding: var(--thumb-pad);
+  background: var(--thumb-bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  /* contain, never cover: a tall bottle or a wide box must both fit the box
+     undistorted instead of being cropped. */
+  object-fit: contain;
+  display: block;
+}
+
+a.thumb {
+  transition: box-shadow var(--dur) var(--ease);
+}
+
+a.thumb:hover {
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+/* Quantity stepper ------------------------------------------------------- */
+.qty-control,
+.qty-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--warm-white);
+  overflow: hidden;
+  flex: none;
+}
+
+.qty-control button,
+.qty-stepper button,
+.qty-btn {
+  width: var(--stepper-btn);
+  min-height: var(--stepper-btn);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--forest);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.qty-control button:hover,
+.qty-stepper button:hover,
+.qty-btn:hover {
+  background: var(--forest);
+  color: var(--cream);
+}
+
+.qty-control button:disabled,
+.qty-stepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.qty-control span,
+.qty-stepper span {
+  min-width: var(--stepper-btn);
+  padding-inline: 4px;
+  text-align: center;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  border-inline: 1px solid var(--line-soft);
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Empty / no-result states ----------------------------------------------- */
+.empty-cart,
+.no-results,
+.empty,
+.empty-checkout,
+.orders-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-block: clamp(40px, 5vw, 68px);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.no-results {
+  font-size: 0.9375rem;
+}
+
+/* ==========================================================================
+   Motion — subtle only
+   ========================================================================== */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade {
+  animation: fade-in var(--dur) var(--ease) both;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s var(--ease) both;
+}
+
+/* Scroll reveal (used by the home page IntersectionObserver) ------------- */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+
+.reveal-on-scroll.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ==========================================================================
+   Compatibility tokens
+   Legacy pages (Admin, Cart, Offers, AI Assistant) still reference these.
    ========================================================================== */
 
 :root {
-  --color-forest-900: #0f231e;
-  --color-forest-800: #14342a;
-  --color-forest-700: #16302a;
-  --color-forest-600: #244839;
-  --color-leaf-500: #3e6b4f;
+  --color-forest: #1f3a2e;
+  --color-forest-deep: #162a21;
+  --color-forest-900: #162a21;
+  --color-forest-800: #1f3a2e;
+  --color-forest-700: #294a3b;
+  --color-forest-600: #3a5c4b;
+  --color-moss: #46604f;
+  --color-leaf-500: #a8b7a3;
+  --color-sage: #a8b7a3;
 
-  --color-gold-100: #f6e8c8;
-  --color-gold-500: #c9962c;
-  --color-gold-600: #a87a1f;
+  --color-gold: #c9a45c;
+  --color-gold-100: #f3ecdd;
+  --color-gold-400: #d6bb85;
+  --color-gold-500: #c9a45c;
+  --color-gold-600: #a5853f;
+  --color-gold-soft: #ddc393;
 
-  --color-cream-bg: #fbf7ee;
-  --color-cream-soft: #f3ecdd;
+  --color-cream: #f7f4ed;
+  --color-cream-bg: #f7f4ed;
+  --color-cream-soft: #efeade;
+  --color-cream-dim: #efeade;
+  --color-warm-white: #fcfbf7;
 
-  --color-text-body: #22281f;
-  --color-text-muted: #52584c;
-  --color-text-light: #8b9186;
+  --color-ink: #1b2620;
+  --color-ink-soft: #4e5b53;
+  --color-text-body: #1b2620;
+  --color-text-muted: #4e5b53;
+  --color-text-light: #8a958d;
+  --color-line: rgba(31, 58, 46, 0.14);
+  --color-white: #ffffff;
 
-  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --shadow-xs: 0 1px 2px rgba(22, 42, 33, 0.04);
+  --shadow-sm: 0 6px 18px -12px rgba(22, 42, 33, 0.2);
+  --shadow-md: 0 18px 40px -26px rgba(22, 42, 33, 0.32);
+  --shadow-lg: 0 32px 70px -40px rgba(22, 42, 33, 0.4);
+  --shadow-floating: 0 32px 70px -40px rgba(22, 42, 33, 0.4);
 
-  --shadow-sm: 0 4px 14px -8px rgba(22, 48, 42, 0.2);
-  --shadow-md: 0 12px 30px -14px rgba(22, 48, 42, 0.28);
-  --shadow-lg: 0 20px 44px -18px rgba(22, 48, 42, 0.32);
-  --shadow-floating: 0 24px 60px -20px rgba(15, 35, 30, 0.4);
+  --ease-soft: var(--ease);
+  --transition-bounce: var(--ease);
+}
+
+/* ==========================================================================
+   Responsive gutters, navbar height & section rhythm
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+  :root {
+    --gutter: 28px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --nav-h: 68px;
+  }
+}
+
+@media (max-width: 820px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --gutter: 18px;
+    --nav-h: 60px;
+    --section-y: clamp(44px, 9vw, 60px);
+  }
+}
+
+@media (max-width: 400px) {
+  :root {
+    --gutter: 16px;
+  }
+}
+
+/* ==========================================================================
+   Auth pages — shared shell
+   Shared by login / register / forgot-password / reset-password
+   ========================================================================== */
+
+.auth-wrap {
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(32px, 4.5vw, 56px) var(--gutter);
+  background: var(--cream);
+}
+
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: clamp(26px, 3vw, 36px) clamp(22px, 2.6vw, 32px);
+  animation: fade-up 0.5s var(--ease) both;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 2px;
+  background: var(--gold);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.auth-brand {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--forest-deep);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+
+.auth-brand b {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.auth-card h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.1vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--forest-deep);
+  margin-bottom: 8px;
+}
+
+.auth-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--ink-mute);
+  margin-bottom: 20px;
+}
+
+.auth-error,
+.auth-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 11px 14px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.auth-error {
+  background: rgba(154, 74, 60, 0.07);
+  border: 1px solid rgba(154, 74, 60, 0.24);
+  color: #9a4a3c;
+}
+
+.auth-success {
+  background: rgba(31, 58, 46, 0.07);
+  border: 1px solid rgba(31, 58, 46, 0.2);
+  color: var(--forest);
+}
+
+.auth-card .field {
+  margin-bottom: 16px;
+}
+
+.auth-card .field label {
+  display: block;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 7px;
+}
+
+.auth-card .field input {
+  width: 100%;
+  padding: 11px 13px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--ink);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.auth-card .field input:focus {
+  outline: none;
+  border-color: var(--forest);
+  background: var(--warm-white);
+}
+
+.auth-card .field input.invalid {
+  border-color: #9a4a3c;
+}
+
+.error-msg {
+  display: block;
+  margin-top: 7px;
+  font-size: 0.76rem;
+  color: #9a4a3c;
+}
+
+.auth-card .field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.auth-card .remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  margin: 0;
+}
+
+.auth-card .remember input {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--forest);
+}
+
+.forgot {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line-strong);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.forgot:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.auth-submit {
+  width: 100%;
+  height: 42px;
+}
+
+.auth-switch {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--ink-mute);
+}
+
+.auth-switch a {
+  color: var(--forest);
+  font-weight: 500;
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--gold);
+  transition: color var(--dur) var(--ease);
+}
+
+.auth-switch a:hover {
+  color: var(--gold);
+}
+
+/* ---------------- Social sign-in ---------------- */
+/* Sized to match .auth-submit (42px) so the row of buttons reads as one
+   block, and full width so neither button looks like a secondary afterthought. */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 16px;
+  color: var(--ink-mute);
+  font-size: 0.8125rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.social-btn-slot {
+  display: flex;
+  justify-content: center;
+  min-height: 42px;
+  width: 100%;
+}
+
+/* Google renders its own button inside this slot; keep it from overflowing. */
+.social-btn-slot > div {
+  max-width: 100%;
+}
+
+/* Slot is always in the DOM so nothing reflows when the SDK arrives. An empty
+   slot must not add a phantom gap above the styled Google button. */
+.social-slot-empty {
+  display: none;
+}
+
+/* Google's official button has replaced ours: step aside, the control the user
+   sees and clicks is still present. */
+.social-hidden {
+  display: none;
+}
+
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 42px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-sm, 4px);
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.btn-social:hover:not(:disabled) {
+  background: #f7f7f5;
+  border-color: var(--gold);
+}
+
+.btn-social:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.btn-google .social-icon,
+.btn-facebook .social-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-facebook .social-icon {
+  color: #1877f2;
+}
+
+/* No direction override: flex `row` already puts the first child (the brand
+   icon) at the inline start, which is the right edge under RTL and the left
+   edge under LTR. Forcing row-reverse put the logo on the wrong side in Arabic. */
+
+@media (max-width: 480px) {
+  .social-buttons {
+    gap: 8px;
+  }
+}
+
+.demo-creds-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  background: var(--cream);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.demo-creds-box strong {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--forest);
 }

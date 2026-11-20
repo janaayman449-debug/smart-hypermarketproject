@@ -117,7 +117,7 @@ export const routes: Routes = [
       import('./pages/admin/admin-layout/admin-layout').then((m) => m.AdminLayout),
     title: 'لوحة التحكم | سمارت هايبر ماركت',
     children: [
-      { path: '', redirectTo: 'products', pathMatch: 'full' },
+       { path: '', redirectTo: 'analytics', pathMatch: 'full' }, 
       {
         path: 'products',
         loadComponent: () => import('./pages/admin/admin-products/admin-products').then((m) => m.AdminProducts),
@@ -145,6 +145,10 @@ export const routes: Routes = [
       {
         path: 'returns',
         loadComponent: () => import('./pages/admin/admin-returns/admin-returns').then((m) => m.AdminReturns),
+      },
+      {
+        path: 'payments',
+        loadComponent: () => import('./pages/admin/admin-payments/admin-payments').then((m) => m.AdminPayments),
       },
     ],
   },

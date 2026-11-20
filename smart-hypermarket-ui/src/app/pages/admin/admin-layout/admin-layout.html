@@ -1,21 +1,66 @@
-<div class="admin-nav-links" style="display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap;">
-  <a class="admin-link-item" routerLink="products" routerLinkActive="tab-active">{{ 'admin.products' | translate }}</a>
-  <a class="admin-link-item" routerLink="orders" routerLinkActive="tab-active">{{ 'admin.orders' | translate }}</a>
-  <a class="admin-link-item" routerLink="offers" routerLinkActive="tab-active">{{ 'admin.offers' | translate }}</a>
-  <a class="admin-link-item" routerLink="customers" routerLinkActive="tab-active">{{ 'admin.customers' | translate }}</a>
-  <a class="admin-link-item" routerLink="analytics" routerLinkActive="tab-active">{{ 'admin.analytics' | translate }}</a>
-  <a class="admin-link-item" routerLink="messages" routerLinkActive="tab-active" style="display:flex; align-items:center; gap:8px;">
-    <span>{{ 'admin.messages' | translate }}</span>
-    @if (unreadMessagesCount() > 0) {
-      <span class="stock-pill stock-out">{{ unreadMessagesCount() }}</span>
-    }
-  </a>
-  <a class="admin-link-item" routerLink="returns" routerLinkActive="tab-active" style="display:flex; align-items:center; gap:8px;">
-    <span>{{ 'admin.returns' | translate }}</span>
-    @if (pendingReturnsCount() > 0) {
-      <span class="stock-pill stock-out">{{ pendingReturnsCount() }}</span>
-    }
-  </a>
-</div>
+<div class="admin-shell">
+  <!-- Mobile top bar -->
+  <div class="admin-mobile-bar">
+    <button class="sidebar-toggle-btn" (click)="toggleSidebar()" aria-label="Toggle menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <span class="admin-mobile-title">{{ 'admin.dashboard' | translate }}</span>
+    <div class="admin-avatar admin-avatar-sm">{{ adminInitial() }}</div>
+  </div>
+  @if (sidebarOpen()) {
+    <div class="sidebar-backdrop" (click)="closeSidebar()"></div>
+  }
 
-<router-outlet></router-outlet>
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" [class.sidebar-open]="sidebarOpen()">
+    <div class="admin-sidebar-header">
+      <div class="admin-logo-badge"><i class="fa-solid fa-store"></i></div>
+      <div>
+        <p class="admin-brand-name">Smart Hyper</p>
+        <p class="admin-brand-sub">{{ 'admin.dashboard' | translate }}</p>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      @for (item of navItems; track item.route) {
+        <a class="admin-link-item" [routerLink]="item.route" routerLinkActive="tab-active" (click)="closeSidebar()">
+          <span class="link-icon"><i class="fa-solid {{ item.icon }}"></i></span>
+          <span class="link-label">{{ item.label | translate }}</span>
+          @if (badgeFor(item.route) > 0) {
+            <span class="link-badge">{{ badgeFor(item.route) }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="admin-sidebar-footer">
+      <a routerLink="/" class="admin-link-item back-to-store">
+        <span class="link-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+        <span class="link-label">{{ 'admin.backToStore' | translate }}</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <h1 class="admin-topbar-title">{{ 'admin.dashboard' | translate }}</h1>
+        <p class="admin-topbar-sub">{{ 'admin.welcomeBack' | translate }}, {{ adminName() }} 👋</p>
+      </div>
+
+<div class="admin-topbar-right">
+  <app-notification-center />
+  <a routerLink="/" class="btn-admin-ghost">
+    <i class="fa-solid fa-store"></i>
+    {{ 'admin.backToStore' | translate }}
+  </a>
+  <div class="admin-avatar">{{ adminInitial() }}</div>
+</div>
+    </header>
+
+    <div class="admin-content-card">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

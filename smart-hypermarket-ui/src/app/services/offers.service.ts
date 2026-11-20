@@ -1,6 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { API_URL } from '../config/api.config';
 
 export interface Offer {
   id: string;
@@ -28,7 +29,7 @@ interface BackendOffer {
   createdAt: string;
 }
 
-const API_BASE = 'http://localhost:5000/api/offers';
+const API_BASE = `${API_URL}/offers`;
 
 @Injectable({ providedIn: 'root' })
 export class OfferService {

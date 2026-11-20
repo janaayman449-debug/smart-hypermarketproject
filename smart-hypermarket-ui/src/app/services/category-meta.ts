@@ -44,6 +44,16 @@ export function getCategoryMeta(category: string): CategoryMeta {
   );
 }
 
+/**
+ * Real, locally-hosted category photography (public/categories/<icon>.jpg).
+ * Used as the product-card image fallback so products without their own photo
+ * still show a genuine, relevant image instead of a random placeholder.
+ */
+export function getCategoryImage(category?: string | null): string {
+  const icon = getCategoryMeta(category ?? '').icon;
+  return `/categories/${icon}.jpg`;
+}
+
 export const homeCategoryKeyToDbCategory: Record<string, string> = {
   produce: 'Fresh Produce',
   dairy: 'Dairy & Eggs',

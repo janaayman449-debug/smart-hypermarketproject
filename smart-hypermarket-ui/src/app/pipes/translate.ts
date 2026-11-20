@@ -9,7 +9,11 @@ import { LanguageService } from '../services/language.service';
 export class TranslatePipe implements PipeTransform {
   private languageService = inject(LanguageService);
 
-  transform(value: string): string {
-    return this.languageService.t(value);
+  /**
+   * `{{ 'key' | translate }}` or, with substitution,
+   * `{{ 'key' | translate: { max: 4 } }}`.
+   */
+  transform(value: string, params?: Record<string, string | number>): string {
+    return this.languageService.t(value, params);
   }
 }

@@ -1,18 +1,18 @@
-﻿import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { OfferService } from '../../services/offers.service';
 import { LanguageService } from '../../services/language.service';
-import { getCategoryLabel } from '../../services/category-meta';
+import { ProductCard } from '../../shared/product-card/product-card';
 import { Product } from '../../models/hypermarket.models';
 import { TranslatePipe } from '../../pipes/translate';
 
 @Component({
   selector: 'app-offers',
   standalone: true,
-  imports: [CommonModule, RouterLink, TranslatePipe],
+  imports: [CommonModule, RouterLink, TranslatePipe, ProductCard],
   templateUrl: './offers.html',
   styleUrl: './offers.css'
 })
@@ -65,32 +65,14 @@ export class Offers implements OnInit, OnDestroy {
     }, 2500);
   }
 
-  addDealProduct(product: Product) {
-    this.cartService.addToCart(product, 1);
-    this.cartService.openDrawer();
+
+  /** Translation lookup for template bindings. */
+  t(key: string): string {
+    return this.language.t(key);
   }
 
   minSpendLabel(minSpend: number): string {
     if (minSpend <= 0) return 'offers.noMinimum';
     return `offers.minSpendCustom`;
-  }
-
-  /** Splits a mixed "Arabic/English" product name and returns only the part
-   *  matching the current UI language. Falls back to the full name if the
-   *  string has no "/" separator or no part matches the current language. */
-  productName(name: string | undefined): string {
-    if (!name) return '';
-    const parts = name.split('/').map((s) => s.trim()).filter(Boolean);
-    if (parts.length < 2) return name;
-
-    const isArabic = (s: string) => /[\u0600-\u06FF]/.test(s);
-    const lang = this.language.lang();
-
-    const match = parts.find((p) => (lang === 'ar' ? isArabic(p) : !isArabic(p)));
-    return match ?? name;
-  }
-
-  categoryLabel(category: string | undefined): string {
-    return category ? getCategoryLabel(category, this.language.lang()) : '';
   }
 }

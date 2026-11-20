@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
+import { API_URL } from '../config/api.config';
 
 export interface AuthUser {
   id: string;
@@ -24,7 +25,7 @@ export interface AdminUserSummary {
   createdAt: string;
 }
 
-const API_BASE = 'http://localhost:5000/api/auth';
+const API_BASE = `${API_URL}/auth`;
 const TOKEN_KEY = 'sh_token';
 const SESSION_KEY = 'sh_current_user';
 
@@ -160,6 +161,18 @@ export class AuthService {
       console.error('Failed to fetch users', err);
       return [];
     }
+  }
+
+  /**
+   * Adopts a session produced by another sign-in method (social login) using
+   * the SAME storage and shape as email/password login, so protected routes,
+   * the role check and logout behave identically no matter how the user
+   * signed in. The role always comes from our backend, never from the provider.
+   */
+  adoptSession(token: string, user: AuthUser): void {
+    this._currentUser.set(user);
+    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    localStorage.setItem(TOKEN_KEY, token);
   }
 
   logout(): void {

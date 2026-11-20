@@ -1,30 +1,22 @@
-﻿<header class="site-header">
-  <div class="container bar">
-
+﻿<header class="site-header" [class.is-scrolled]="isScrolled()">
+  <div class="bar container">
     <!-- Logo -->
-    <a class="logo" routerLink="/" (click)="closeMenu()">
-      <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path
-          d="M8 15h24l-2.4 15.2a4 4 0 0 1-3.95 3.4H14.35a4 4 0 0 1-3.95-3.4L8 15Z"
-          fill="var(--color-forest)"
-        />
-        <path
-          d="M13 15c0-5.5 3.5-9.5 7-9.5s7 4 7 9.5"
-          stroke="var(--color-forest)"
-          stroke-width="2.4"
-          stroke-linecap="round"
-        />
-        <circle cx="16" cy="22" r="1.6" fill="var(--color-gold)" />
-        <circle cx="21" cy="25" r="1.6" fill="var(--color-gold)" />
-        <circle cx="25.5" cy="21.5" r="1.6" fill="var(--color-gold)" />
+    <a class="logo" routerLink="/" (click)="closeMenu()" [attr.aria-label]="'nav.home' | translate">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M5 12h22l-2.1 13.6A3.6 3.6 0 0 1 21.3 28H10.7a3.6 3.6 0 0 1-3.6-2.4L5 12Z" fill="currentColor" />
+        <path d="M10 12c0-5 3.2-8.6 6-8.6s6 3.6 6 8.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        <circle cx="13" cy="18.5" r="1.2" fill="var(--gold)" />
+        <circle cx="17.5" cy="21" r="1.2" fill="var(--gold)" />
+        <circle cx="20.5" cy="17.5" r="1.2" fill="var(--gold)" />
       </svg>
       <span class="logo-text">
-        <strong>Smart</strong> Hypermarket
+        <span class="logo-strong">Smart</span>
+        <span class="logo-rest">Hypermarket</span>
       </span>
     </a>
 
-    <!-- Navigation -->
-    <nav class="main-nav" [class.open]="menuOpen()">
+    <!-- Desktop navigation -->
+    <nav class="main-nav" [class.is-open]="menuOpen()" [attr.aria-label]="'nav.home' | translate">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
         {{ 'nav.home' | translate }}
       </a>
@@ -44,53 +36,53 @@
 
     <!-- Actions -->
     <div class="actions">
-
-      <!-- Search -->
-      <button class="icon-btn" type="button" aria-label="Search" routerLink="/products">
+      <button class="icon-btn" type="button" [attr.aria-label]="'products.searchPlaceholder' | translate" routerLink="/products">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2" />
-          <path d="m20 20-3.6-3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <circle cx="11" cy="11" r="6.4" stroke="currentColor" stroke-width="1.7" />
+          <path d="m20 20-3.7-3.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
         </svg>
       </button>
 
-      <!-- Wishlist -->
-      <button class="icon-btn wishlist-btn" type="button" aria-label="Wishlist" routerLink="/wishlist">
+      <button class="icon-btn lang-btn" type="button" (click)="language.toggle()"
+        [attr.aria-label]="language.lang() === 'ar' ? 'Switch to English' : 'التبديل للعربي'">
+        {{ language.lang() === 'ar' ? 'EN' : 'AR' }}
+      </button>
+
+      @if (authService.isLoggedIn()) {
+        <app-notification-center />
+      }
+
+      <a class="icon-btn" [routerLink]="authService.isLoggedIn() ? '/wishlist' : '/login'"
+        [attr.aria-label]="'nav.wishlist' | translate">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c2 0 3.5 1.2 4.5 2.7C12 6.2 13.5 5 15.5 5 19 5 21.5 8.5 19.5 12.5 17 16.65 12 21 12 21z"
-            stroke="currentColor" stroke-width="2" stroke-linejoin="round"
-          />
+          <path d="M12 20.5s-6.6-4.1-9-8C1.1 8.8 3.4 5.5 6.7 5.5c1.9 0 3.4 1.1 4.3 2.5.9-1.4 2.4-2.5 4.3-2.5 3.3 0 5.6 3.3 3.7 7-2.4 3.9-9 8-9 8z"
+            stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
         </svg>
         @if (wishlistCount() > 0) {
-          <span class="cart-badge">{{ wishlistCount() }}</span>
+          <span class="count-badge">{{ wishlistCount() }}</span>
         }
-      </button>
+      </a>
 
-      <!-- Account -->
       <div class="account-menu-wrap">
-        <button
-          class="icon-btn account-btn"
-          type="button"
-          aria-label="Account"
-          (click)="authService.isLoggedIn() ? toggleAccountMenu() : null"
-          [routerLink]="authService.isLoggedIn() ? null : '/login'"
-        >
+        <button class="icon-btn" type="button" (click)="authService.isLoggedIn() ? toggleAccountMenu() : null"
+          [routerLink]="authService.isLoggedIn() ? null : '/login'" [attr.aria-label]="'nav.myProfile' | translate">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="8.5" r="3.5" stroke="currentColor" stroke-width="2" />
-            <path d="M4.5 20a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <circle cx="12" cy="8.4" r="3.4" stroke="currentColor" stroke-width="1.7" />
+            <path d="M4.8 19.6a7.2 7.2 0 0 1 14.4 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
           </svg>
         </button>
 
         @if (accountMenuOpen() && authService.isLoggedIn()) {
           <div class="account-dropdown">
-            <div class="account-dropdown-name">
-              {{ authService.currentUser()?.name }}
+            <div class="account-dropdown-head">
+              <span class="account-dropdown-name">{{ authService.currentUser()?.name }}</span>
               <span class="account-role-tag" [class.admin]="authService.isAdmin()">
                 {{ authService.currentUser()?.role }}
               </span>
             </div>
+            <hr class="hairline" />
 
-                       <a routerLink="/profile" (click)="closeMenu()">{{ 'nav.myProfile' | translate }}</a>
+            <a routerLink="/profile" (click)="closeMenu()">{{ 'nav.myProfile' | translate }}</a>
             <a routerLink="/profile" [queryParams]="{ tab: 'orders' }" (click)="closeMenu()">{{ 'nav.myOrders' | translate }}</a>
             <a routerLink="/wishlist" (click)="closeMenu()">{{ 'nav.wishlist' | translate }}</a>
 
@@ -103,38 +95,58 @@
         }
       </div>
 
-      <!-- Cart -->
-      <button class="icon-btn cart-btn" type="button" aria-label="Cart" routerLink="/cart">
+      <button class="icon-btn cart-btn" type="button" [attr.aria-label]="'cart.title' | translate" routerLink="/cart">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M4 7h2.2l1.9 10.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 9H7"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          />
-          <circle cx="10.5" cy="21" r="1.4" fill="currentColor" />
-          <circle cx="17.5" cy="21" r="1.4" fill="currentColor" />
+          <path d="M4 7h2.2l1.9 10.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 9H7"
+            stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="10.4" cy="20.6" r="1.2" fill="currentColor" />
+          <circle cx="17.4" cy="20.6" r="1.2" fill="currentColor" />
         </svg>
         @if (cartCount() > 0) {
-          <span class="cart-badge">{{ cartCount() }}</span>
+          <span class="count-badge">{{ cartCount() }}</span>
         }
       </button>
 
-      <!-- Language -->
-      <button
-        class="icon-btn lang-btn"
-        type="button"
-        (click)="language.toggle()"
-        [attr.aria-label]="language.lang() === 'ar' ? 'Switch to English' : 'التبديل للعربي'"
-      >
-        {{ language.lang() === 'ar' ? 'EN' : 'AR' }}
+      <button class="menu-toggle" type="button" [attr.aria-expanded]="menuOpen()" aria-label="Menu" (click)="toggleMenu()">
+        <span class="burger" [class.is-open]="menuOpen()"><i></i><i></i></span>
       </button>
-
-      <!-- Mobile Menu -->
-      <button class="icon-btn menu-toggle" type="button" aria-label="القائمة" (click)="toggleMenu()">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-        </svg>
-      </button>
-
     </div>
   </div>
+
+  <!-- Mobile full-screen overlay -->
+  <div class="mobile-panel" [class.is-open]="menuOpen()">
+    <nav class="mobile-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+        <span class="m-idx">01</span>{{ 'nav.home' | translate }}
+      </a>
+      <a routerLink="/products" routerLinkActive="active" (click)="closeMenu()">
+        <span class="m-idx">02</span>{{ 'nav.products' | translate }}
+      </a>
+      <a routerLink="/offers" routerLinkActive="active" (click)="closeMenu()">
+        <span class="m-idx">03</span>{{ 'nav.offers' | translate }}
+      </a>
+      <a routerLink="/categories" routerLinkActive="active" (click)="closeMenu()">
+        <span class="m-idx">04</span>{{ 'nav.categories' | translate }}
+      </a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">
+        <span class="m-idx">05</span>{{ 'nav.contact' | translate }}
+      </a>
+    </nav>
+
+    <div class="mobile-utility">
+      <a routerLink="/wishlist" (click)="closeMenu()">{{ 'nav.wishlist' | translate }}</a>
+      <a routerLink="/cart" (click)="closeMenu()">{{ 'cart.title' | translate }}</a>
+      <a [routerLink]="authService.isLoggedIn() ? '/profile' : '/login'" (click)="closeMenu()">
+        {{ (authService.isLoggedIn() ? 'nav.myProfile' : 'auth.loginButton') | translate }}
+      </a>
+    </div>
+
+    <button class="mobile-lang" type="button" (click)="language.toggle()">
+      {{ language.lang() === 'ar' ? 'English' : 'العربية' }}
+    </button>
+  </div>
+
+  @if (menuOpen()) {
+    <div class="panel-backdrop" (click)="closeMenu()"></div>
+  }
 </header>

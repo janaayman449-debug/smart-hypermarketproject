@@ -1,12 +1,13 @@
 ﻿import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { Order, OrderStatus, ReturnRequest, ReturnStatus } from '../models/hypermarket.models';
+import { Order, OrderStatus, ReturnRequest, ReturnStatus, PaymentMethod, PaymentStatus, PaymentProof, PaymentReview } from '../models/hypermarket.models';
 import { AuthService } from './auth.service';
+import { API_URL, UPLOADS_URL } from '../config/api.config';
 
-const API_BASE = 'http://localhost:5000/api/orders';
-const RETURNS_API = 'http://localhost:5000/api/returns';
-const IMAGE_BASE = 'http://localhost:5000/uploads/';
+const API_BASE = `${API_URL}/orders`;
+const RETURNS_API = `${API_URL}/returns`;
+const IMAGE_BASE = UPLOADS_URL;
 
 interface BackendOrderItem {
   product: string;
@@ -33,9 +34,10 @@ interface BackendOrder {
   pointsDiscountTotal: number;
   deliveryFee: number;
   grandTotal: number;
-  paymentMethod: 'Cash' | 'Card';
-  paymentStatus: 'Pending' | 'Paid';
-  cardLastFour?: string;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  paymentProof?: PaymentProof | null;
+  paymentReview?: PaymentReview | null;
   orderStatus: OrderStatus;
   createdAt: string;
 }
@@ -101,7 +103,8 @@ export class OrderService {
       grandTotal: o.grandTotal,
       paymentMethod: o.paymentMethod,
       paymentStatus: o.paymentStatus,
-      cardLastFour: o.cardLastFour,
+      paymentProof: o.paymentProof ?? null,
+      paymentReview: o.paymentReview ?? null,
       orderStatus: o.orderStatus,
       createdAt: o.createdAt,
     } as Order;
@@ -142,10 +145,11 @@ export class OrderService {
     pointsDiscountTotal: number;
     deliveryFee: number;
     grandTotal: number;
-    paymentMethod: 'Cash' | 'Card';
-    paymentStatus: 'Pending' | 'Paid';
-    cardLastFour?: string;
+    paymentMethod: PaymentMethod;
   }): Promise<Order> {
+    // paymentStatus is deliberately absent from this payload. The backend
+    // derives it; sending it would be meaningless at best and, before the
+    // server-side fix, let a client mark its own order as paid.
     const res = await firstValueFrom(
       this.http.post<{ data: { order: BackendOrder } }>(API_BASE, data)
     );

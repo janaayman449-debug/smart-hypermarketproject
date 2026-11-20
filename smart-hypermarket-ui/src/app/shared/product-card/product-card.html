@@ -1,0 +1,126 @@
+<article
+  class="pc"
+  [class.pc--grid]="size() === 'grid'"
+  [class.pc--compact]="size() === 'compact'"
+  [class.pc--mini]="size() === 'mini'"
+  [class.pc--wide]="size() === 'wide'"
+  [class.is-out]="outOfStock()"
+  [class.has-action-label]="!!actionLabel()"
+>
+
+  <!-- Media: fixed ratio, contain-fit, no random cropping -->
+  <div class="pc-media">
+    <a class="pc-media-link" [routerLink]="['/product', product().id]" tabindex="-1" aria-hidden="true">
+      <img
+        class="pc-img"
+        [src]="imageUrl()"
+        [alt]="name()"
+        loading="lazy"
+        decoding="async"
+        width="240"
+        height="180"
+      />
+    </a>
+
+    @if (showFavorite()) {
+      <button
+        type="button"
+        class="pc-fav"
+        [class.is-active]="isFavorite()"
+        (click)="toggleFavorite($event)"
+        [attr.aria-label]="ariaFavorite()"
+        [attr.aria-pressed]="isFavorite()"
+        [title]="ariaFavorite()"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 20.4s-7.1-4.4-9.3-8.4C1 8.3 3.4 5 6.8 5c2 0 3.6 1.2 4.4 2.6C12 5.6 13.6 5 15.6 5c3.4 0 5.8 3.3 4.1 7-2.2 4-9.7 8.4-9.7 8.4z"
+            [attr.fill]="isFavorite() ? 'currentColor' : 'none'"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    }
+
+    @if (ribbon()) {
+      <span class="pc-ribbon">{{ ribbon() }}</span>
+    }
+
+    @if (outOfStock()) {
+      <span class="pc-stock is-out">
+        {{ language.lang() === 'ar' ? 'نفدت الكمية' : 'Out of stock' }}
+      </span>
+    } @else if (lowStock()) {
+      <span class="pc-stock">{{ lowStockLabel() }}</span>
+    }
+  </div>
+
+  <!-- Body: strict hierarchy, equal height, action pinned to the bottom -->
+  <div class="pc-body">
+    @if (category()) {
+      <span class="pc-cat">{{ category() }}</span>
+    }
+
+    <h3 class="pc-title">
+      <a [routerLink]="['/product', product().id]">{{ name() }}</a>
+    </h3>
+
+    @if (product().unit) {
+      <p class="pc-unit">{{ product().unit }}</p>
+    }
+
+    @if (note()) {
+      <p class="pc-note">{{ note() }}</p>
+    }
+
+    <div class="pc-foot">
+      <div class="pc-prices">
+        <span class="pc-price">
+          <span class="pc-amount">{{ product().price }}</span>
+          <span class="pc-currency">{{ 'home.currency' | translate }}</span>
+        </span>
+        @if (oldPriceValue() !== null) {
+          <span class="pc-old">{{ oldPriceValue() }} {{ 'home.currency' | translate }}</span>
+        }
+      </div>
+
+      @if (showAdd() || actionLabel()) {
+        <button
+          type="button"
+          class="pc-action"
+          [class.is-done]="justAdded()"
+          [class.is-remove]="actionIsRemove()"
+          [class.is-wide]="!!actionLabel()"
+          [disabled]="outOfStock()"
+          (click)="addToCart($event)"
+          [attr.aria-label]="actionLabel() || ariaAdd()"
+        >
+          @if (actionIsRemove()) {
+            <svg class="pc-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            @if (actionLabel()) {
+              <span>{{ actionLabel() }}</span>
+            }
+          } @else if (justAdded()) {
+            <svg class="pc-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="m5 12.5 4.5 4.5L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            @if (actionLabel()) {
+              <span>{{ actionLabel() }}</span>
+            }
+          } @else {
+            <svg class="pc-action-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 5.5v13M5.5 12h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (actionLabel()) {
+              <span>{{ actionLabel() }}</span>
+            }
+          }
+        </button>
+      }
+    </div>
+  </div>
+</article>

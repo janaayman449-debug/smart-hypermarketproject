@@ -1,4 +1,4 @@
-﻿<div class="orders-page" [class.embedded]="embedded()">
+<div class="orders-page" [class.embedded]="embedded()">
 
   @if (!embedded()) {
     <div class="orders-page-header">
@@ -31,7 +31,7 @@
             </div>
             <div class="order-head-side">
               <span class="order-status-pill" [class]="order.orderStatus">{{ order.orderStatus }}</span>
-              <span class="order-total">{{ order.grandTotal }} EGP</span>
+              <span class="order-total">{{ order.grandTotal }} {{ 'home.currency' | translate }}</span>
               <i class="fa-solid fa-chevron-down expand-icon" [class.open]="expandedOrderId() === order.id"></i>
             </div>
           </button>
@@ -46,15 +46,91 @@
                       <span class="order-item-name">{{ item.product.name }}</span>
                       <span class="order-item-qty">x{{ item.quantity }}</span>
                     </div>
-                    <span class="order-item-price">{{ item.finalPrice }} EGP</span>
+                    <span class="order-item-price">{{ item.finalPrice }} {{ 'home.currency' | translate }}</span>
                   </div>
                 }
               </div>
 
+              <div class="order-pay-block">
+                <div class="order-pay-row">
+                  <span class="order-pay-label">{{ 'orders.paymentStatus.label' | translate }}</span>
+                  <span class="order-pay-pill" [class]="paymentStatusClass(order.paymentStatus)">
+                    {{ paymentStatusLabel(order.paymentStatus) }}
+                  </span>
+                </div>
+
+                @if (order.paymentProof?.reference) {
+                  <div class="order-pay-row">
+                    <span class="order-pay-label">{{ 'orders.payment.reference' | translate }}</span>
+                    <span class="order-pay-value">{{ order.paymentProof?.reference }}</span>
+                  </div>
+                }
+
+                @if (order.paymentProof?.uploadedAt) {
+                  <div class="order-pay-row">
+                    <span class="order-pay-label">{{ 'orders.payment.submittedAt' | translate }}</span>
+                    <span class="order-pay-value">{{ formatDate(order.paymentProof!.uploadedAt!) }}</span>
+                  </div>
+                }
+
+                @if (order.paymentStatus === 'Rejected' && rejectionReason(order)) {
+                  <p class="order-pay-rejected">
+                    {{ 'orders.payment.rejectedNotice' | translate: { reason: rejectionReason(order) } }}
+                  </p>
+                }
+
+                @if (resubmittingFor() === order.id) {
+                  <div class="order-reupload">
+                    <p class="order-reupload-hint">{{ 'orders.payment.resubmitNotice' | translate }}</p>
+
+                    @if (proofPreview(); as preview) {
+                      <div class="order-reupload-preview">
+                        <img [src]="preview" [alt]="'checkout.proof.preview' | translate" />
+                        <button type="button" class="order-reupload-btn is-ghost"
+                          (click)="cancelResubmit()">
+                          {{ 'checkout.proof.remove' | translate }}
+                        </button>
+                      </div>
+                    } @else {
+                      <label class="order-reupload-drop" [for]="'replacement-' + order.id">
+                        {{ 'checkout.proof.choose' | translate }}
+                      </label>
+                    }
+
+                    <input
+                      #replacementInput
+                      [id]="'replacement-' + order.id"
+                      type="file"
+                      class="order-reupload-input"
+                      accept="image/jpeg,image/png,image/webp"
+                      (change)="onReplacementSelected($event)"
+                    />
+
+                    @if (resubmitError()) {
+                      <p class="order-reupload-error">{{ resubmitError() | translate }}</p>
+                    }
+
+                    <div class="order-reupload-actions">
+                      <button type="button" class="order-reupload-btn is-solid"
+                        (click)="submitReplacement(order)" [disabled]="resubmitBusy()">
+                        {{ 'orders.payment.resubmit' | translate }}
+                      </button>
+                      <button type="button" class="order-reupload-btn is-ghost" (click)="cancelResubmit()">
+                        {{ 'common.close' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                } @else if (canUploadProof(order)) {
+                  <button type="button" class="order-reupload-open" (click)="openResubmit(order)">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    {{ 'orders.payment.resubmit' | translate }}
+                  </button>
+                }              </div>
+
               <div class="order-card-footer">
                 <div class="order-total-line">
                   <span>{{ 'orders.total' | translate }}</span>
-                  <strong>{{ order.grandTotal }} EGP</strong>
+                  <strong>{{ order.grandTotal }} {{ 'home.currency' | translate }}</strong>
                 </div>
                 @if (isEligibleForReturn(order)) {
                   <a [routerLink]="['/returns']" [queryParams]="{ orderId: order.id }" class="btn-return-link">

@@ -1,0 +1,153 @@
+<div class="panel-header">
+  <div>
+    <h3>{{ 'admin.paymentVerification.title' | translate }}</h3>
+  </div>
+  <button class="icon-btn" type="button" (click)="load()" [disabled]="loading()"
+    [attr.aria-label]="'admin.loading' | translate">
+    <i class="fa-solid fa-rotate-right"></i>
+  </button>
+</div>
+
+<!-- Filter pills, same pattern as admin-orders. -->
+<div class="order-filter-row">
+  <div class="filter-pill" [class.filter-active]="filter() === 'pending'"
+    (click)="setFilter('pending')">
+    {{ 'admin.paymentVerification.tabPending' | translate }}
+  </div>
+  <div class="filter-pill" [class.filter-active]="filter() === 'verified'"
+    (click)="setFilter('verified')">
+    {{ 'admin.paymentVerification.tabVerified' | translate }}
+  </div>
+  <div class="filter-pill" [class.filter-active]="filter() === 'rejected'"
+    (click)="setFilter('rejected')">
+    {{ 'admin.paymentVerification.tabRejected' | translate }}
+  </div>
+  <div class="filter-pill" [class.filter-active]="filter() === 'all'"
+    (click)="setFilter('all')">
+    {{ 'admin.paymentVerification.tabAll' | translate }}
+  </div>
+</div>
+
+@if (actionError()) {
+  <div class="form-error">{{ actionError() | translate }}</div>
+}
+
+@if (loading()) {
+  <p>{{ 'admin.loading' | translate }}</p>
+} @else if (orders.length === 0) {
+  <p>{{ 'admin.paymentVerification.empty' | translate }}</p>
+} @else {
+  <div class="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>{{ 'admin.orderId' | translate }}</th>
+          <th>{{ 'admin.customer' | translate }}</th>
+          <th>{{ 'admin.paymentVerification.amountDue' | translate }}</th>
+          <th>{{ 'admin.paymentVerification.reference' | translate }}</th>
+          <th>{{ 'admin.paymentVerification.submittedAt' | translate }}</th>
+          <th>{{ 'admin.status' | translate }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders; track order.id) {
+          <tr>
+            <td><b>{{ order.orderNumber }}</b></td>
+            <td style="max-width: 200px; white-space: normal;">{{ order.customerName }}</td>
+            <td>{{ order.grandTotal }} {{ 'home.currency' | translate }}</td>
+            <td>
+              @if (order.paymentProof?.reference) {
+                <span class="pv-ref">{{ order.paymentProof?.reference }}</span>
+              } @else {
+                &mdash;
+              }
+            </td>
+            <td>
+              @if (order.paymentProof?.uploadedAt) {
+                {{ order.paymentProof?.uploadedAt | date: 'short' }}
+              } @else {
+                &mdash;
+              }
+            </td>
+            <td>
+              <span class="status-pill" [ngClass]="statusClass(order.paymentStatus)">
+                {{ statusLabel(order.paymentStatus) }}
+              </span>
+            </td>
+            <td class="row-actions">
+              <!-- Expand / collapse the private proof image. -->
+              <button class="icon-btn" type="button" (click)="toggleProof(order)"
+                [attr.aria-label]="'admin.paymentVerification.viewProof' | translate">
+                <i class="fa-regular fa-image"></i>
+              </button>
+
+              @if (order.paymentStatus === 'ProofSubmitted') {
+                <button class="icon-btn" type="button" (click)="confirmVerify(order)"
+                  [disabled]="busyOrderId() === order.id"
+                  [attr.aria-label]="'admin.paymentVerification.verify' | translate">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+                <button class="icon-btn is-danger" type="button" (click)="openReject(order)"
+                  [attr.aria-label]="'admin.paymentVerification.reject' | translate">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              }
+            </td>
+          </tr>
+
+          <!-- Expanded proof viewer. -->
+          @if (isExpanded(order.id)) {
+            <tr class="pv-row">
+              <td colspan="7">
+                <div class="pv-viewer">
+                  @if (proofLoading().has(order.id)) {
+                    <p>{{ 'admin.paymentVerification.proofLoading' | translate }}</p>
+                  } @else if (proofError().has(order.id)) {
+                    <div class="form-error">
+                      {{ 'admin.paymentVerification.proofUnavailable' | translate }}
+                    </div>
+                  } @else if (proofUrl(order.id); as url) {
+                    <img [src]="url" [alt]="proofAlt(order)" class="pv-image" />
+                    @if (order.paymentProof?.originalName) {
+                      <p class="pv-meta">
+                        {{ order.paymentProof?.originalName }} &middot;
+                        {{ order.paymentProof?.size }} bytes
+                      </p>
+                    }
+                  }
+
+                  <!-- Reject reason form. -->
+                  @if (rejectFor() === order.id) {
+                    <div class="pv-reject">
+                      <label [attr.for]="'reject-' + order.id">
+                        {{ 'admin.paymentVerification.rejectTitle' | translate }}
+                      </label>
+                      <textarea
+                        [id]="'reject-' + order.id"
+                        class="field-input"
+                        rows="2"
+                        maxlength="300"
+                        [(ngModel)]="rejectReason"
+                        [placeholder]="'admin.paymentVerification.rejectPlaceholder' | translate"
+                      ></textarea>
+                      <div class="pv-reject-actions">
+                        <button class="btn-admin-primary" type="button" (click)="submitReject(order)"
+                          [disabled]="busyOrderId() === order.id">
+                          {{ 'admin.paymentVerification.reject' | translate }}
+                        </button>
+                        <button class="btn-admin-ghost" type="button" (click)="cancelReject()">
+                          {{ 'admin.cancel' | translate }}
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

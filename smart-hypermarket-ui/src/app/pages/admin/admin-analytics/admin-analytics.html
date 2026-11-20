@@ -4,19 +4,65 @@
 
 <div class="stats-grid">
   <div class="stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
     <span class="stat-label">{{ 'admin.totalRevenue' | translate }}</span>
-    <span class="stat-value">{{ totalRevenue() }} EGP</span>
+    <span class="stat-value">{{ totalRevenue() }} {{ 'home.currency' | translate }}</span>
   </div>
   <div class="stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
     <span class="stat-label">{{ 'admin.totalProducts' | translate }}</span>
     <span class="stat-value">{{ productService.products().length }}</span>
   </div>
   <div class="stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
     <span class="stat-label">{{ 'admin.lowStockItems' | translate }}</span>
     <span class="stat-value">{{ lowStockCount() }}</span>
   </div>
   <div class="stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
     <span class="stat-label">{{ 'admin.totalOrders' | translate }}</span>
     <span class="stat-value">{{ orderService.orders().length }}</span>
   </div>
+  <div class="stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-chart-simple"></i></div>
+    <span class="stat-label">{{ 'admin.avgOrderValue' | translate }}</span>
+    <span class="stat-value">{{ avgOrderValue() }} {{ 'home.currency' | translate }}</span>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon"><i class="fa-solid fa-rotate-left"></i></div>
+    <span class="stat-label">{{ 'admin.returns' | translate }}</span>
+    <span class="stat-value">{{ pendingReturnsCount() }}</span>
+  </div>
 </div>
+
+@if (categoryBreakdown().length > 0) {
+  <div class="chart-panel">
+    <h4>{{ 'admin.categoryBreakdown' | translate }}</h4>
+    @for (row of categoryBreakdown(); track row.name) {
+      <div class="bar-row">
+        <span class="bar-name">{{ row.name }}</span>
+        <div class="bar-track">
+          <div class="bar-fill" [style.width.%]="row.percent"></div>
+        </div>
+        <span class="bar-count">{{ row.count }}</span>
+      </div>
+    }
+  </div>
+}
+
+@if (recentOrders().length > 0) {
+  <div class="chart-panel">
+    <h4>{{ 'admin.recentOrders' | translate }}</h4>
+    <div class="recent-list">
+      @for (order of recentOrders(); track order.id) {
+        <div class="recent-item">
+          <div>
+            <div class="recent-name">{{ order.customerName }}</div>
+            <div class="recent-meta">{{ order.orderNumber }} · {{ order.createdAt | date:'short' }}</div>
+          </div>
+          <div class="recent-total">{{ order.grandTotal }} {{ 'home.currency' | translate }}</div>
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { API_URL } from '../config/api.config';
 
 export interface ContactMessage {
   _id: string;
@@ -12,7 +13,7 @@ export interface ContactMessage {
   createdAt: string;
 }
 
-const MESSAGES_API = 'http://localhost:5000/api/messages';
+const MESSAGES_API = `${API_URL}/messages`;
 
 @Injectable({ providedIn: 'root' })
 export class MessagesService {

@@ -61,7 +61,7 @@
 
         <div class="refund-row">
           <span>{{ 'returns.estimatedRefund' | translate }}</span>
-          <b>EGP {{ refundEstimate }}</b>
+          <b>{{ refundEstimate }} {{ 'home.currency' | translate }}</b>
         </div>
 
         @if (submitted() && !hasSelectedItems) {
@@ -90,7 +90,7 @@
             <div class="request-items">{{ r.productName }}</div>
             <div class="request-footer">
               <span>{{ 'returns.reasonLabel' | translate }}: {{ ('returns.reasons.' + r.reason) | translate }}</span>
-              <b>EGP {{ r.refundAmount }}</b>
+              <b>{{ r.refundAmount }} {{ 'home.currency' | translate }}</b>
             </div>
           </div>
         }

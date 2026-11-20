@@ -1,265 +1,680 @@
+/* ==========================================================================
+   Checkout
+   ========================================================================== */
+
+:host {
+  display: block;
+}
+
 .checkout-page {
-  padding-block: 40px 60px;
+  background: var(--cream);
+  /* Top spacing is owned by .page-head, so no padding here. */
+  padding-block-end: var(--section-y);
+  min-height: 70vh;
 }
 
-.checkout-page h1 {
-  font-size: clamp(26px, 3vw, 34px);
-  color: var(--color-forest-deep);
-  margin-bottom: 28px;
+.checkout-page > .container > .page-head h1 {
+  /* Arabic needs the roomier global heading leading, not 1.15. */
+  line-height: 1.22;
 }
 
-.empty-checkout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  padding-block: 80px;
-  text-align: center;
-  color: var(--color-ink-soft);
-}
-
-/* Success state ------------------------------------ */
-
-.order-success {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding-block: 80px;
-  text-align: center;
-}
-
-.success-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--color-forest);
-  color: var(--color-cream);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  margin-bottom: 8px;
-}
-
-.order-success h1 {
-  color: var(--color-forest-deep);
-  margin-bottom: 0;
-}
-
-.order-success p {
-  color: var(--color-ink-soft);
-}
-
-.redirect-note {
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-/* Layout --------------------------------------------- */
-
+/* 1.35 / 0.95 instead of 1.45 / 0.85: at 1001-1240px the summary is the
+   narrowest it ever gets while still side-by-side, and a wider aside is what
+   leaves room for the product name next to an 88px image and a price. */
 .checkout-layout {
   display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.95fr);
+  gap: clamp(20px, 2.4vw, 38px);
   align-items: start;
 }
 
 .checkout-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: clamp(13px, 1.5vw, 20px);
 }
 
+/* --- Form cards ---------------------------------------------------------- */
+
 .form-card {
-  background: var(--color-white);
-  border: 1px solid var(--color-line);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(18px, 2.2vw, 28px);
+  background: var(--warm-white);
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 22px;
 }
 
 .form-card h3 {
-  font-size: 16px;
-  color: var(--color-forest-deep);
-  margin-bottom: 16px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--forest);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .form-group {
-  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
 }
 
 .form-group label {
-  display: block;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--color-forest-deep);
-  margin-bottom: 6px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
 .form-input {
   width: 100%;
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--color-line);
-  font-size: 14px;
-  background: var(--color-cream-dim);
-  font-family: inherit;
+  min-height: var(--control-h);
+  padding: 11px 14px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 76px;
+  line-height: 1.6;
+}
+
+select.form-input {
+  cursor: pointer;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: var(--color-forest);
+  border-color: var(--forest);
+  background: var(--warm-white);
 }
 
 .form-input.invalid {
-  border-color: var(--color-clay);
+  border-color: #9a4a3c;
 }
 
 .error-text {
-  display: block;
-  font-size: 12px;
-  color: var(--color-clay);
-  margin-top: 4px;
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+  color: #9a4a3c;
 }
 
+/* --- Payment options ----------------------------------------------------- */
+
+/* InstaPay is the only method, so the grid is a single column. */
 .payment-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 
 .payment-option {
-  flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 11px;
+  min-height: var(--tap);
   padding: 12px 14px;
-  border: 1.5px solid var(--color-line);
-  border-radius: var(--radius-md);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.payment-option.selected {
-  border-color: var(--color-forest);
-  background: var(--color-sage);
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .payment-option input {
-  accent-color: var(--color-forest);
+  accent-color: var(--forest);
+  width: 18px;
+  height: 18px;
+  flex: none;
 }
 
-/* Summary sidebar ------------------------------------- */
+.payment-option:hover {
+  border-color: var(--line-strong);
+}
+
+.payment-option.selected {
+  background: rgba(31, 58, 46, 0.05);
+  border-color: var(--forest);
+  color: var(--forest-deep);
+  font-weight: 500;
+}
+
+/* --- InstaPay ------------------------------------------------------------- */
+
+.instapay-box {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--forest);
+  border-radius: var(--radius-sm);
+}
+
+.instapay-intro {
+  margin: 0 0 12px;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.instapay-details {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.instapay-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.instapay-row dt {
+  font-size: var(--fs-micro);
+  color: var(--ink-muted);
+}
+
+.instapay-row dd {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* The receiving account is the detail a customer most often mistypes, so it
+   gets a monospace value plus an inline copy action. */
+.copyable {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.copy-btn {
+  padding: 4px 10px;
+  min-height: 30px;
+  font: inherit;
+  font-size: var(--fs-micro);
+  color: var(--forest-deep);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.copy-btn:hover {
+  background: rgba(31, 58, 46, 0.06);
+  border-color: var(--forest);
+}
+
+.copy-btn:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+}
+
+.instapay-note {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-size: var(--fs-micro);
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+
+.instapay-row .copy-btn,
+.copyable .copy-btn {
+  white-space: nowrap;
+}
+/* --- Proof upload --------------------------------------------------------- */
+
+.proof-loading {
+  margin-top: 16px;
+  font-size: var(--fs-sm);
+  color: var(--ink-muted);
+}
+
+/* The native file input is replaced by the styled dropzone label, which is
+   keyboard reachable because it is a <label for> pointing at a real input. */
+.proof-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.proof-file-input:focus-visible + .proof-helper,
+.proof-file-input:focus-visible ~ .proof-dropzone {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+}
+
+.proof-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 16px;
+  text-align: center;
+  background: var(--cream);
+  border: 2px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.proof-dropzone:hover {
+  border-color: var(--forest);
+  background: rgba(31, 58, 46, 0.04);
+}
+
+.proof-dropzone-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.proof-dropzone-title {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--forest-deep);
+}
+
+.proof-dropzone-hint {
+  font-size: var(--fs-micro);
+  color: var(--ink-muted);
+}
+
+.proof-preview {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--cream);
+}
+
+/* The preview is a customer's own screenshot, so it is contained rather than
+   cropped - a long bank receipt must stay readable. */
+.proof-preview img {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+}
+
+.proof-preview-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  flex-wrap: wrap;
+}
+
+.proof-file-name {
+  font-size: var(--fs-micro);
+  color: var(--ink-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.proof-helper {
+  margin: 8px 0 0;
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.optional-tag {
+  margin-inline-start: 6px;
+  font-size: var(--fs-micro);
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+.proof-error {
+  margin-top: 14px;
+  padding: 12px 14px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: #9a4a3c;
+  background: rgba(154, 74, 60, 0.07);
+  border: 1px solid rgba(154, 74, 60, 0.28);
+  border-radius: var(--radius-sm);
+}
+
+.submit-hint {
+  margin: 10px 0 0;
+  font-size: var(--fs-micro);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink-muted);
+}
+
+.success-note {
+  margin: 8px 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* --- Summary ------------------------------------------------------------- */
 
 .checkout-summary {
-  background: var(--color-white);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-md);
-  padding: 22px;
   position: sticky;
-  top: 90px;
+  top: calc(var(--nav-h) + 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(18px, 2.2vw, 26px);
+  background: var(--warm-white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .checkout-summary h3 {
-  font-size: 16px;
-  color: var(--color-forest-deep);
-  margin-bottom: 16px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--forest);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
 }
 
 .summary-items {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px dashed var(--color-line);
-  max-height: 260px;
+  max-height: 336px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-inline-end: 4px;
 }
 
 .summary-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--thumb-size) minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
+  gap: 13px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--line-soft);
 }
 
-.summary-item img {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  object-fit: cover;
-  flex-shrink: 0;
+.summary-item:last-child {
+  border-bottom: 0;
+}
+
+/* Shared thumbnail: square box, contain fit, uncropped + undistorted. */
+.summary-item .thumb {
+  --thumb-size: 88px;
+  --thumb-pad: 7px;
+  border: 1px solid var(--line-soft);
 }
 
 .summary-item-body {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  font-size: 12.5px;
+  gap: 4px;
+  min-width: 0;
 }
 
 .summary-item-body .name {
-  color: var(--color-forest-deep);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  /* 1.45 keeps Arabic legible over two lines instead of clipping descenders. */
+  line-height: 1.45;
+  color: var(--forest-deep);
+  /* Two lines max, then ellipsis: a long name must never push the price out. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 .summary-item-body .qty {
-  color: var(--color-ink-soft);
+  font-size: var(--fs-micro);
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
 }
 
 .summary-item .price {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-forest-deep);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  color: var(--forest-deep);
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-.summary-row {
+.checkout-summary .summary-row {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  font-size: 14px;
-  color: var(--color-ink-soft);
-  margin-bottom: 10px;
-}
-
-.summary-row.discount strong {
-  color: var(--color-clay);
-}
-
-.summary-row.total {
-  font-size: 16px;
-  color: var(--color-forest-deep);
+  gap: 12px;
   padding-top: 10px;
-  border-top: 1px dashed var(--color-line);
+  border-top: 1px solid var(--line-soft);
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+}
+
+.checkout-summary .summary-row:first-of-type {
   margin-top: 6px;
 }
 
-.summary-row.total strong {
-  font-size: 19px;
+.checkout-summary .summary-row strong {
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.full-width {
-  width: 100%;
-  justify-content: center;
-  margin-top: 16px;
+.checkout-summary .summary-row.discount strong {
+  color: #8a6d2f;
 }
 
-@media (max-width: 900px) {
+.checkout-summary .summary-row.total {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+.checkout-summary .summary-row.total strong {
+  font-family: var(--font-display);
+  font-size: var(--fs-price-lg);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--forest-deep);
+}
+
+.checkout-summary .btn {
+  margin-top: 10px;
+}
+
+/* --- Success / empty ----------------------------------------------------- */
+
+.order-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-block: clamp(40px, 6vw, 72px);
+  text-align: center;
+}
+
+.success-icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--forest);
+  color: var(--cream);
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+}
+
+.order-success h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+  line-height: 1.22;
+  color: var(--forest-deep);
+}
+
+.order-success p {
+  color: var(--ink-soft);
+  max-width: 46ch;
+  line-height: 1.8;
+}
+
+.order-success p strong {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.redirect-note {
+  font-family: var(--font-label);
+  font-size: var(--fs-micro);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 8px;
+}
+
+.empty-checkout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding-block: clamp(44px, 7vw, 90px);
+  text-align: center;
+}
+
+.empty-checkout p {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--forest-deep);
+  max-width: 40ch;
+}
+
+/* --- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 1000px) {
   .checkout-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .form-row {
     grid-template-columns: 1fr;
   }
 
   .checkout-summary {
     position: static;
   }
+}
+
+@media (max-width: 620px) {
+  .form-row,
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card,
+  .checkout-summary {
+    padding: 16px 14px;
+  }
+
+  /* Shrink the box, never the text: the name/qty/price stay legible. */
+  .summary-item .thumb {
+    --thumb-size: 72px;
+    --thumb-pad: 6px;
+  }
+
+  .summary-item {
+    gap: 11px;
+    padding-block: 10px;
+  }
+
+  .summary-items {
+    max-height: 300px;
+  }
+}
+
+/* Very narrow phones: give the product name back the room the image and the
+   price were taking, otherwise a 2-line name is all that fits at 320px. */
+@media (max-width: 400px) {
+  .summary-item .thumb {
+    --thumb-size: 60px;
+    --thumb-pad: 5px;
+  }
+
+  .summary-item-body .name {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}
+
+/* Payment method chooser: the two cards must read as clearly selectable. */
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  min-height: 2.75rem;
+}
+
+.payment-option.selected {
+  font-weight: 700;
+}
+
+/* Heading for the InstaPay section, e.g. "????? ?? ???? InstaPay". */
+.instapay-title {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Cash on Delivery reassurance line. */
+.cash-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.85;
 }
